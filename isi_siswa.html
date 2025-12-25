@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Simulasi Pengolahan Data Siswa</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#f4f6f8; margin:0; padding:20px; }
+    h1 { color:#333; }
+    .card { background:#fff; padding:20px; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,.1); max-width:900px; margin:auto; }
+    table { width:100%; border-collapse:collapse; margin-top:15px; }
+    th, td { border:1px solid #ddd; padding:10px; text-align:center; }
+    th { background:#0077cc; color:white; }
+    tr:nth-child(even){ background:#f2f2f2; }
+    .controls { margin-bottom:15px; display:flex; gap:10px; }
+    select, button { padding:8px; border-radius:6px; border:1px solid #ccc; }
+    button { background:#0077cc; color:white; cursor:pointer; }
+    button:hover { background:#005fa3; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>📊 Simulasi Pengolahan Data Siswa</h1>
+    <p>Data diambil dari file JSON (simulasi GitHub Raw).</p>
+
+    <div class="controls">
+      <select id="kelasFilter">
+        <option value="">Semua Kelas</option>
+      </select>
+      <button onclick="hitungRataRata()">Hitung Rata-rata</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Nama</th>
+          <th>Kelas</th>
+          <th>Nilai</th>
+        </tr>
+      </thead>
+      <tbody id="tabelSiswa"></tbody>
+    </table>
+
+    <h3 id="output"></h3>
+  </div>
+
+  <script>
+    // SIMULASI DATA DARI GITHUB (biasanya fetch ke raw.githubusercontent.com)
+    const dataSiswa = [
+      { nama: "Andi", kelas: "X-A", nilai: 85 },
+      { nama: "Budi", kelas: "X-A", nilai: 78 },
+      { nama: "Citra", kelas: "X-B", nilai: 90 },
+      { nama: "Dewi", kelas: "X-B", nilai: 88 },
+      { nama: "Eka", kelas: "X-C", nilai: 70 }
+    ];
+
+    const tabel = document.getElementById('tabelSiswa');
+    const kelasFilter = document.getElementById('kelasFilter');
+    const output = document.getElementById('output');
+
+    function init() {
+      tampilkanData(dataSiswa);
+      isiFilterKelas();
+    }
+
+    function tampilkanData(data) {
+      tabel.innerHTML = '';
+      data.forEach((s, i) => {
+        tabel.innerHTML += `
+          <tr>
+            <td>${i + 1}</td>
+            <td>${s.nama}</td>
+            <td>${s.kelas}</td>
+            <td>${s.nilai}</td>
+          </tr>`;
+      });
+    }
+
+    function isiFilterKelas() {
+      const kelasUnik = [...new Set(dataSiswa.map(s => s.kelas))];
+      kelasUnik.forEach(k => {
+        const opt = document.createElement('option');
+        opt.value = k;
+        opt.textContent = k;
+        kelasFilter.appendChild(opt);
+      });
+
+      kelasFilter.addEventListener('change', () => {
+        const val = kelasFilter.value;
+        const hasil = val ? dataSiswa.filter(s => s.kelas === val) : dataSiswa;
+        tampilkanData(hasil);
+        output.textContent = '';
+      });
+    }
+
+    function hitungRataRata() {
+      const val = kelasFilter.value;
+      const data = val ? dataSiswa.filter(s => s.kelas === val) : dataSiswa;
+      const rata = data.reduce((a, b) => a + b.nilai, 0) / data.length;
+      output.textContent = `Rata-rata nilai ${val || 'semua kelas'}: ${rata.toFixed(2)}`;
+    }
+
+    init();
+  </script>
+</body>
+</html>
