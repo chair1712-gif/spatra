@@ -1,0 +1,1775 @@
+ <!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Koreksi Esai - Remedial & Pengayaan</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        /* CSS sebelumnya tetap sama, tambahkan bagian ini */
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #34495e;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+        
+        .config-panel {
+            flex: 1;
+            min-width: 350px;
+            padding: 20px;
+            background: var(--light);
+            border-radius: 8px;
+            margin-right: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .results-panel {
+            flex: 2;
+            min-width: 700px;
+            padding: 20px;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--secondary);
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        h3 {
+            color: var(--dark);
+            margin: 15px 0 10px;
+            font-size: 1.2rem;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 120px;
+            margin-bottom: 10px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .btn:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background: var(--success);
+        }
+        
+        .btn-warning {
+            background: var(--warning);
+        }
+        
+        .btn-info {
+            background: #17a2b8;
+        }
+        
+        .file-input {
+            margin: 15px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        tr:hover {
+            background-color: #f1f8ff;
+        }
+        
+        .score-cell {
+            font-weight: bold;
+        }
+        
+        .student-detail {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .score-display {
+            display: flex;
+            gap: 20px;
+            margin: 15px 0;
+        }
+        
+        .score-box {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            background: var(--light);
+        }
+        
+        .score-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .score-label {
+            font-size: 0.9rem;
+            color: var(--dark);
+            margin-top: 5px;
+        }
+        
+        .student-answer, .key-answer {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 3px solid var(--secondary);
+        }
+        
+        .keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 10px 0;
+        }
+        
+        .keyword {
+            background: var(--light);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        
+        .keyword.found {
+            background: var(--success);
+            color: white;
+        }
+        
+        .keyword.missing {
+            background: var(--danger);
+            color: white;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .template-info {
+            background: #e8f4fc;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .soal-container {
+            margin-bottom: 25px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+        
+        .soal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .soal-title {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .soal-content {
+            margin-bottom: 10px;
+        }
+        
+        .tab-container {
+            margin-top: 20px;
+        }
+        
+        .tab-buttons {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            flex-wrap: wrap;
+        }
+        
+        .tab-button {
+            padding: 10px 20px;
+            background: #f1f1f1;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .tab-button.active {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .tab-content {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-top: none;
+        }
+        
+        .tab-pane {
+            display: none;
+        }
+        
+        .tab-pane.active {
+            display: block;
+        }
+        
+        .resume-item {
+            margin-bottom: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        
+        .resume-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .resume-title {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .resume-score {
+            font-weight: bold;
+            color: var(--secondary);
+        }
+        
+        .resume-desc {
+            margin-top: 10px;
+            line-height: 1.5;
+        }
+        
+        .remedial-plan, .pengayaan-plan {
+            background: #fff9e6;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid var(--warning);
+        }
+        
+        .pengayaan-plan {
+            background: #e6f7ff;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .rekomendasi-item {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .status-remedial {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .status-pengayaan {
+            background: var(--success);
+            color: white;
+        }
+        
+        .status-cukup {
+            background: var(--warning);
+            color: white;
+        }
+        
+        /* Modal/Popup Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: modalFadeIn 0.3s;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            background: var(--primary);
+            color: white;
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .soal-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .soal-btn {
+            padding: 10px 15px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .soal-btn:hover {
+            background: var(--primary);
+        }
+        
+        .soal-btn.active {
+            background: var(--primary);
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .config-panel, .results-panel {
+                min-width: 100%;
+                margin-right: 0;
+            }
+            
+            .score-display {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .tab-buttons {
+                flex-wrap: wrap;
+            }
+            
+            .modal-content {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Sistem Koreksi Esai Otomatis</h1>
+            <p class="subtitle">Analisis Kualitas Jawaban dengan Program Remedial & Pengayaan</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="config-panel">
+                <div class="section">
+                    <h2>Konfigurasi Sistem</h2>
+                    
+                    <h3>1. Kunci Jawaban Guru</h3>
+ 
+                    <button class="btn" onclick="openSoalModal()">Konfigurasi Kunci Jawaban</button>
+                    <button class="btn" onclick="saveAnswerKeys()">Simpan Semua Kunci Jawaban</button>
+                    
+                    <h3>2. Template Excel</h3>
+                    <div class="template-info">
+                        <p>Unduh template Excel untuk mengisi data siswa dengan format yang benar.</p>
+                        <button class="btn btn-info" onclick="downloadExcelTemplate()">Unduh Template Excel Siswa</button>
+                        <button class="btn btn-info" onclick="downloadSoalTemplate()">Unduh Template Excel Soal</button>
+                    </div>
+                    
+                    <h3>3. Upload Data</h3>
+                    <div class="file-input">
+                        <label>Upload Data Siswa:</label>
+                        <input type="file" id="fileInputSiswa" accept=".xlsx, .xls">
+                        <p style="margin-top: 10px; font-size: 0.9rem; color: #666;">Format Excel: Kolom A (NAMA), B (KELAS), C (JAWABAN1), D (JAWABAN2), E (JAWABAN3), F (JAWABAN4), G (JAWABAN5)</p>
+                    </div>
+                    <div class="file-input">
+                        <label>Upload Data Soal:</label>
+                        <input type="file" id="fileInputSoal" accept=".xlsx, .xls">
+                        <p style="margin-top: 10px; font-size: 0.9rem; color: #666;">Format Excel: Kolom A (SOAL), B (PERTANYAAN), C (KUNCI_JAWABAN), D (KATA_KUNCI)</p>
+                    </div>
+                    <button class="btn btn-success" onclick="processStudentData()">Proses Data Siswa</button>
+                    <button class="btn btn-success" onclick="processSoalData()">Proses Data Soal</button>
+                    <button class="btn btn-warning" onclick="loadSampleData()">Gunakan Data Contoh</button>
+                </div>
+                
+                <div class="section">
+                    <h2>Informasi Sistem</h2>
+                    <p>Sistem ini menganalisis jawaban esai siswa berdasarkan:</p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li><strong>Kedalaman:</strong> Panjang jawaban dan variasi kosakata</li>
+                        <li><strong>Relevansi:</strong> Kesesuaian dengan kunci jawaban dan kata kunci</li>
+                        <li><strong>Logika:</strong> Struktur penalaran dan kata penghubung</li>
+                    </ul>
+                    <p style="margin-top: 15px;">Skor akhir dihitung dengan bobot: Kedalaman (40%), Relevansi (35%), Logika (25%)</p>
+                    <p style="margin-top: 10px;"><strong>KKM:</strong> 70 | <strong>Remedial:</strong> &lt; 70 | <strong>Pengayaan:</strong> ≥ 80</p>
+                </div>
+            </div>
+            
+            <div class="results-panel">
+                <div class="section">
+                    <h2>Hasil Analisis</h2>
+                    
+                    <div class="tab-container">
+                        <div class="tab-buttons">
+                            <button class="tab-button active" onclick="switchTab('ringkasan')">Ringkasan Nilai</button>
+                            <button class="tab-button" onclick="switchTab('resume')">Resume Penilaian</button>
+                            <button class="tab-button" onclick="switchTab('remedial')">Program Remedial</button>
+                            <button class="tab-button" onclick="switchTab('pengayaan')">Program Pengayaan</button>
+                        </div>
+                        
+                        <div class="tab-content">
+                            <!-- Tab Ringkasan -->
+                            <div id="ringkasan" class="tab-pane active">
+                                <div id="resultsContainer">
+                                    <p id="noDataMessage">Belum ada data yang diproses. Silakan konfigurasi sistem dan upload data siswa.</p>
+                                    <div id="resultsTable" style="display: none;"></div>
+                                </div>
+                                
+                                <div class="student-detail" id="studentDetail" style="display: none;">
+                                    <div class="detail-header">
+                                        <h2 id="detailTitle">Detail Jawaban Siswa</h2>
+                                        <button class="btn" onclick="hideStudentDetail()">Tutup</button>
+                                    </div>
+                                    
+                                    <div class="tab-container">
+                                        <div class="tab-buttons" id="soalTabs">
+                                            <!-- Tab buttons akan di-generate oleh JavaScript -->
+                                        </div>
+                                        <div class="tab-content" id="soalTabContent">
+                                            <!-- Tab content akan di-generate oleh JavaScript -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Tab Resume -->
+                            <div id="resume" class="tab-pane">
+                                <div id="resumeContainer">
+                                    <p id="noResumeMessage">Belum ada data yang diproses. Silakan konfigurasi sistem dan upload data siswa.</p>
+                                    <div id="resumeContent" style="display: none;"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Tab Remedial -->
+                            <div id="remedial" class="tab-pane">
+                                <div id="remedialContainer">
+                                    <p id="noRemedialMessage">Belum ada data yang diproses. Silakan konfigurasi sistem dan upload data siswa.</p>
+                                    <div id="remedialContent" style="display: none;"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Tab Pengayaan -->
+                            <div id="pengayaan" class="tab-pane">
+                                <div id="pengayaanContainer">
+                                    <p id="noPengayaanMessage">Belum ada data yang diproses. Silakan konfigurasi sistem dan upload data siswa.</p>
+                                    <div id="pengayaanContent" style="display: none;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Sistem Koreksi Esai Otomatis &copy; 2023 - Dilengkapi Program Remedial & Pengayaan</p>
+        </footer>
+    </div>
+
+    <!-- Modal untuk konfigurasi soal -->
+    <div class="modal-overlay" id="soalModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Konfigurasi Kunci Jawaban</h2>
+                <button class="modal-close" onclick="closeSoalModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="soal-list" id="modalSoalList">
+                    <!-- Tombol soal akan di-generate oleh JavaScript -->
+                </div>
+                
+                <div id="soalContent">
+                    <!-- Konten soal akan di-generate oleh JavaScript -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="saveCurrentSoal()">Simpan Soal Ini</button>
+                <button class="btn" onclick="closeSoalModal()">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data sistem
+        const systemData = {
+            answerKeys: [],
+            students: [],
+            currentDetailIndex: -1,
+            jumlahSoal: 5,
+            kkm: 70,
+            batasPengayaan: 80,
+            currentSoalIndex: 0
+        };
+
+        // Inisialisasi kunci jawaban
+        for (let i = 0; i < systemData.jumlahSoal; i++) {
+            systemData.answerKeys.push({
+                pertanyaan: "",
+                kunciJawaban: "",
+                kataKunci: []
+            });
+        }
+
+        // Kelas untuk menganalisis esai
+        class EssayAnalyzer {
+            constructor() {
+                this.answerKeys = [];
+            }
+
+            // Preprocessing teks
+            preprocessText(text) {
+                if (!text) return "";
+                return text.toLowerCase()
+                    .replace(/[^\w\s]/g, '')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+            }
+
+            // Hitung similarity dengan cosine similarity sederhana
+            calculateSimilarity(text1, text2) {
+                if (!text1 || !text2) return 0;
+                
+                const words1 = this.preprocessText(text1).split(' ');
+                const words2 = this.preprocessText(text2).split(' ');
+                
+                const intersection = words1.filter(word => 
+                    words2.includes(word)
+                ).length;
+                
+                const union = new Set([...words1, ...words2]).size;
+                
+                return union === 0 ? 0 : intersection / union;
+            }
+
+            // Analisis kedalaman berdasarkan panjang dan variasi kosakata
+            analyzeDepth(text) {
+                if (!text || text.trim() === '') return 0;
+                
+                const words = text.split(' ');
+                const uniqueWords = new Set(words);
+                const wordCount = words.length;
+                
+                // Skor berdasarkan panjang dan variasi kosakata
+                const lengthScore = Math.min(wordCount / 50, 1); // Normalisasi
+                const vocabularyScore = Math.min(uniqueWords.size / 30, 1);
+                
+                return (lengthScore * 0.6 + vocabularyScore * 0.4) * 100;
+            }
+
+            // Analisis relevansi dengan kunci jawaban dan kata kunci
+            analyzeRelevance(studentAnswer, keyAnswer, keywords) {
+                if (!studentAnswer || studentAnswer.trim() === '') return 0;
+                
+                // Hitung similarity dengan kunci jawaban
+                const similarityToKey = this.calculateSimilarity(studentAnswer, keyAnswer);
+                
+                // Hitung persentase kata kunci yang ditemukan
+                let foundKeywords = 0;
+                keywords.forEach(keyword => {
+                    if (studentAnswer.toLowerCase().includes(keyword.toLowerCase())) {
+                        foundKeywords++;
+                    }
+                });
+                
+                const keywordScore = keywords.length > 0 ? foundKeywords / keywords.length : 0;
+                
+                // Gabungkan skor (70% similarity, 30% kata kunci)
+                return (similarityToKey * 0.7 + keywordScore * 0.3) * 100;
+            }
+
+            // Analisis struktur logika
+            analyzeLogic(text) {
+                if (!text || text.trim() === '') return 0;
+                
+                const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+                if (sentences.length < 2) return 30;
+                
+                // Hitung rasio kata per kalimat (indikator kompleksitas)
+                const avgWordsPerSentence = text.split(' ').length / sentences.length;
+                const complexityScore = Math.min(avgWordsPerSentence / 15, 1);
+                
+                // Cek kata penghubung logika
+                const logicalConnectors = ['karena', 'oleh sebab itu', 'dengan demikian', 
+                                         'akibatnya', 'oleh karena itu', 'sebagai contoh',
+                                         'pertama', 'kedua', 'selanjutnya', 'akhirnya',
+                                         'dengan kata lain', 'misalnya', 'contohnya',
+                                         'oleh karena itu', 'dengan demikian', 'sebagai akibat'];
+                const connectorCount = logicalConnectors.filter(connector => 
+                    text.toLowerCase().includes(connector)
+                ).length;
+                
+                const connectorScore = Math.min(connectorCount / 3, 1);
+                
+                return (complexityScore * 0.4 + connectorScore * 0.6) * 100;
+            }
+
+            // Dapatkan kata kunci yang ditemukan dan tidak ditemukan
+            getKeywordMatches(studentAnswer, keywords) {
+                const matches = [];
+                keywords.forEach(keyword => {
+                    const found = studentAnswer.toLowerCase().includes(keyword.toLowerCase());
+                    matches.push({
+                        keyword: keyword,
+                        found: found
+                    });
+                });
+                return matches;
+            }
+
+            // Koreksi utama untuk satu soal
+            gradeEssay(studentAnswer, keyAnswer, keywords) {
+                const depth = this.analyzeDepth(studentAnswer);
+                const relevance = this.analyzeRelevance(studentAnswer, keyAnswer, keywords);
+                const logic = this.analyzeLogic(studentAnswer);
+                
+                // Hitung skor akhir dengan bobot
+                const overall = (depth * 0.4 + relevance * 0.35 + logic * 0.25);
+                
+                return {
+                    depth: depth,
+                    relevance: relevance,
+                    logic: logic,
+                    overall: overall,
+                    keywordMatches: this.getKeywordMatches(studentAnswer, keywords)
+                };
+            }
+
+            // Koreksi untuk semua soal seorang siswa
+            gradeAllEssays(studentAnswers) {
+                const scores = [];
+                let totalOverall = 0;
+                
+                for (let i = 0; i < systemData.jumlahSoal; i++) {
+                    const answerKey = systemData.answerKeys[i];
+                    const score = this.gradeEssay(
+                        studentAnswers[i] || "", 
+                        answerKey.kunciJawaban, 
+                        answerKey.kataKunci
+                    );
+                    scores.push(score);
+                    totalOverall += score.overall;
+                }
+                
+                const averageOverall = totalOverall / systemData.jumlahSoal;
+                
+                return {
+                    scores: scores,
+                    average: averageOverall
+                };
+            }
+        }
+
+        // Inisialisasi analyzer
+        const analyzer = new EssayAnalyzer();
+
+        // Fungsi untuk meng-generate tombol soal di UI utama
+        function generateSoalButtons() {
+            const soalList = document.getElementById('soalList');
+            soalList.innerHTML = '';
+            
+            for (let i = 0; i < systemData.jumlahSoal; i++) {
+                const soalBtn = document.createElement('button');
+                soalBtn.className = 'soal-btn';
+                soalBtn.textContent = `Soal ${i+1}`;
+                soalBtn.onclick = () => openSoalModal(i);
+                soalList.appendChild(soalBtn);
+            }
+        }
+
+        // Fungsi untuk membuka modal konfigurasi soal
+        function openSoalModal(soalIndex = 0) {
+            systemData.currentSoalIndex = soalIndex;
+            const modal = document.getElementById('soalModal');
+            modal.style.display = 'flex';
+            
+            generateModalSoalButtons();
+            showSoalContent(soalIndex);
+        }
+
+        // Fungsi untuk menutup modal konfigurasi soal
+        function closeSoalModal() {
+            const modal = document.getElementById('soalModal');
+            modal.style.display = 'none';
+        }
+
+        // Fungsi untuk meng-generate tombol soal di modal
+        function generateModalSoalButtons() {
+            const modalSoalList = document.getElementById('modalSoalList');
+            modalSoalList.innerHTML = '';
+            
+            for (let i = 0; i < systemData.jumlahSoal; i++) {
+                const soalBtn = document.createElement('button');
+                soalBtn.className = `soal-btn ${i === systemData.currentSoalIndex ? 'active' : ''}`;
+                soalBtn.textContent = `Soal ${i+1}`;
+                soalBtn.onclick = () => showSoalContent(i);
+                modalSoalList.appendChild(soalBtn);
+            }
+        }
+
+        // Fungsi untuk menampilkan konten soal di modal
+        function showSoalContent(soalIndex) {
+            systemData.currentSoalIndex = soalIndex;
+            generateModalSoalButtons();
+            
+            const soalContent = document.getElementById('soalContent');
+            const answerKey = systemData.answerKeys[soalIndex] || {};
+            
+            soalContent.innerHTML = `
+                <div class="soal-container">
+                    <div class="soal-header">
+                        <span class="soal-title">Soal ${soalIndex+1}</span>
+                    </div>
+                    <div class="soal-content">
+                        <label>Pertanyaan (opsional):</label>
+                        <textarea id="modalPertanyaan${soalIndex}" placeholder="Masukkan pertanyaan soal ${soalIndex+1}...">${answerKey.pertanyaan || ''}</textarea>
+                        <label>Kunci Jawaban:</label>
+                        <textarea id="modalKunciJawaban${soalIndex}" placeholder="Masukkan kunci jawaban untuk soal ${soalIndex+1}...">${answerKey.kunciJawaban || ''}</textarea>
+                        <label>Kata Kunci (pisahkan dengan koma):</label>
+                        <textarea id="modalKataKunci${soalIndex}" placeholder="Masukkan kata kunci untuk soal ${soalIndex+1}...">${answerKey.kataKunci ? answerKey.kataKunci.join(', ') : ''}</textarea>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Fungsi untuk menyimpan soal yang sedang ditampilkan
+        function saveCurrentSoal() {
+            const soalIndex = systemData.currentSoalIndex;
+            const pertanyaan = document.getElementById(`modalPertanyaan${soalIndex}`).value;
+            const kunciJawaban = document.getElementById(`modalKunciJawaban${soalIndex}`).value;
+            const kataKunciText = document.getElementById(`modalKataKunci${soalIndex}`).value;
+            
+            if (kunciJawaban.trim() === '') {
+                alert(`Kunci jawaban untuk Soal ${soalIndex+1} tidak boleh kosong!`);
+                return;
+            }
+            
+            systemData.answerKeys[soalIndex] = {
+                pertanyaan: pertanyaan,
+                kunciJawaban: kunciJawaban,
+                kataKunci: kataKunciText.split(',').map(k => k.trim()).filter(k => k !== '')
+            };
+            
+            alert(`Kunci jawaban untuk Soal ${soalIndex+1} berhasil disimpan!`);
+        }
+
+        // Fungsi untuk menyimpan semua kunci jawaban
+        function saveAnswerKeys() {
+            // Validasi semua soal
+            for (let i = 0; i < systemData.jumlahSoal; i++) {
+                if (!systemData.answerKeys[i] || systemData.answerKeys[i].kunciJawaban.trim() === '') {
+                    alert(`Kunci jawaban untuk Soal ${i+1} masih kosong!`);
+                    return;
+                }
+            }
+            
+            analyzer.answerKeys = systemData.answerKeys;
+            alert(`Semua kunci jawaban berhasil disimpan! (${systemData.jumlahSoal} soal)`);
+        }
+
+        // Fungsi untuk mengunduh template Excel untuk soal
+        function downloadSoalTemplate() {
+            // Header untuk template soal
+            const headers = ["SOAL", "PERTANYAAN", "KUNCI_JAWABAN", "KATA_KUNCI"];
+            
+            // Data untuk template
+            const templateData = [headers];
+            
+            // Contoh data
+            for (let i = 0; i < systemData.jumlahSoal; i++) {
+                const row = [
+                    `Soal ${i+1}`,
+                    `Pertanyaan untuk soal ${i+1}...`,
+                    `Kunci jawaban untuk soal ${i+1}...`,
+                    `kata kunci 1, kata kunci 2, kata kunci 3`
+                ];
+                templateData.push(row);
+            }
+            
+            // Buat worksheet
+            const ws = XLSX.utils.aoa_to_sheet(templateData);
+            
+            // Buat workbook dan tambahkan worksheet
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Data Soal");
+            
+            // Unduh file
+            XLSX.writeFile(wb, "Template_Data_Soal.xlsx");
+        }
+
+        // Fungsi untuk mengunduh template Excel untuk siswa
+        function downloadExcelTemplate() {
+            // Header untuk template
+            const headers = ["NAMA", "KELAS"];
+            for (let i = 1; i <= systemData.jumlahSoal; i++) {
+                headers.push(`JAWABAN${i}`);
+            }
+            
+            // Data untuk template
+            const templateData = [headers];
+            
+            // Contoh data
+            for (let i = 0; i < 3; i++) {
+                const row = [`Siswa ${i+1}`, `Kelas ${i+1}`];
+                for (let j = 0; j < systemData.jumlahSoal; j++) {
+                    row.push(`Jawaban contoh untuk soal ${j+1}...`);
+                }
+                templateData.push(row);
+            }
+            
+            // Buat worksheet
+            const ws = XLSX.utils.aoa_to_sheet(templateData);
+            
+            // Buat workbook dan tambahkan worksheet
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Data Siswa");
+            
+            // Unduh file
+            XLSX.writeFile(wb, "Template_Data_Siswa_Multiple_Soal.xlsx");
+        }
+
+        // Fungsi untuk memproses data soal dari Excel
+        function processSoalData() {
+            const fileInput = document.getElementById('fileInputSoal');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Pilih file Excel data soal terlebih dahulu!');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, {type: 'array'});
+                
+                // Ambil data dari sheet pertama
+                const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+                const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
+                
+                // Hapus header
+                const headers = jsonData.shift();
+                
+                parseSoalData(jsonData);
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        // Parse data soal
+        function parseSoalData(data) {
+            // Reset data soal
+            for (let i = 0; i < systemData.jumlahSoal; i++) {
+                systemData.answerKeys[i] = {
+                    pertanyaan: "",
+                    kunciJawaban: "",
+                    kataKunci: []
+                };
+            }
+            
+            data.forEach((row, index) => {
+                // Skip baris kosong
+                if (row.length === 0) return;
+                
+                // Validasi kolom
+                if (row.length < 4) {
+                    console.warn(`Baris ${index+1} tidak memiliki cukup kolom. Diperlukan 4 kolom.`);
+                    return;
+                }
+                
+                const soal = row[0] || "";
+                const pertanyaan = row[1] || "";
+                const kunciJawaban = row[2] || "";
+                const kataKunciText = row[3] || "";
+                
+                // Cari nomor soal
+                const soalMatch = soal.toString().match(/\d+/);
+                if (!soalMatch) {
+                    console.warn(`Baris ${index+1}: Format nomor soal tidak valid: ${soal}`);
+                    return;
+                }
+                
+                const soalIndex = parseInt(soalMatch[0]) - 1;
+                
+                // Validasi nomor soal
+                if (soalIndex < 0 || soalIndex >= systemData.jumlahSoal) {
+                    console.warn(`Baris ${index+1}: Nomor soal tidak valid: ${soalIndex+1}. Harus antara 1 dan ${systemData.jumlahSoal}`);
+                    return;
+                }
+                
+                // Simpan data soal
+                systemData.answerKeys[soalIndex] = {
+                    pertanyaan: pertanyaan,
+                    kunciJawaban: kunciJawaban,
+                    kataKunci: kataKunciText.split(',').map(k => k.trim()).filter(k => k !== '')
+                };
+            });
+            
+            // Update analyzer
+            analyzer.answerKeys = systemData.answerKeys;
+            
+            // Update UI
+            generateSoalButtons();
+            
+            alert(`Data soal berhasil diimpor! (${systemData.jumlahSoal} soal)`);
+        }
+
+        // Fungsi untuk memproses data siswa dari Excel
+        function processStudentData() {
+            const fileInput = document.getElementById('fileInputSiswa');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Pilih file Excel data siswa terlebih dahulu!');
+                return;
+            }
+            
+            // Validasi konfigurasi
+            let semuaKunciAda = true;
+            for (let i = 0; i < systemData.jumlahSoal; i++) {
+                if (!systemData.answerKeys[i] || systemData.answerKeys[i].kunciJawaban.trim() === '') {
+                    semuaKunciAda = false;
+                    break;
+                }
+            }
+            
+            if (!semuaKunciAda) {
+                alert('Harap masukkan semua kunci jawaban terlebih dahulu!');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, {type: 'array'});
+                
+                // Ambil data dari sheet pertama
+                const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+                const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
+                
+                // Hapus header
+                const headers = jsonData.shift();
+                
+                parseStudentData(jsonData, headers);
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        // Parse data siswa
+        function parseStudentData(data, headers) {
+            systemData.students = [];
+            
+            data.forEach((row, index) => {
+                // Skip baris kosong
+                if (row.length === 0 || (!row[0] && !row[2])) return;
+                
+                // Ambil jawaban untuk semua soal
+                const jawaban = [];
+                for (let i = 0; i < systemData.jumlahSoal; i++) {
+                    jawaban.push(row[2 + i] || ''); // Kolom 2 adalah JAWABAN1, 3 adalah JAWABAN2, dst.
+                }
+                
+                const student = {
+                    NAMA: row[0] || `Siswa ${index + 1}`,
+                    KELAS: row[1] || '-',
+                    JAWABAN: jawaban
+                };
+                
+                // Grade all essays
+                const gradingResult = analyzer.gradeAllEssays(student.JAWABAN);
+                student.scores = gradingResult.scores;
+                student.average = gradingResult.average;
+                
+                // Tentukan status
+                if (student.average >= systemData.batasPengayaan) {
+                    student.status = 'pengayaan';
+                } else if (student.average >= systemData.kkm) {
+                    student.status = 'cukup';
+                } else {
+                    student.status = 'remedial';
+                }
+                
+                systemData.students.push(student);
+            });
+            
+            displayResults();
+            generateResume();
+            generateRemedialProgram();
+            generatePengayaanProgram();
+        }
+
+        // Tampilkan hasil
+        function displayResults() {
+            const noDataMessage = document.getElementById('noDataMessage');
+            const resultsTable = document.getElementById('resultsTable');
+            
+            if (systemData.students.length === 0) {
+                noDataMessage.style.display = 'block';
+                resultsTable.style.display = 'none';
+                return;
+            }
+            
+            noDataMessage.style.display = 'none';
+            resultsTable.style.display = 'block';
+            
+            let html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama</th>
+                            <th>Kelas</th>
+            `;
+            
+            // Header untuk setiap soal
+            for (let i = 0; i < systemData.jumlahSoal; i++) {
+                html += `<th>Soal ${i+1}</th>`;
+            }
+            
+            html += `
+                            <th>Rata-rata</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            systemData.students.forEach((student, index) => {
+                // Tentukan badge status
+                let statusBadge = '';
+                if (student.status === 'pengayaan') {
+                    statusBadge = '<span class="status-badge status-pengayaan">Pengayaan</span>';
+                } else if (student.status === 'remedial') {
+                    statusBadge = '<span class="status-badge status-remedial">Remedial</span>';
+                } else {
+                    statusBadge = '<span class="status-badge status-cukup">Cukup</span>';
+                }
+                
+                html += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${student.NAMA || '-'}</td>
+                        <td>${student.KELAS || '-'}</td>
+                `;
+                
+                // Nilai untuk setiap soal
+                for (let i = 0; i < systemData.jumlahSoal; i++) {
+                    const score = student.scores[i] ? student.scores[i].overall.toFixed(1) : '-';
+                    html += `<td class="score-cell">${score}</td>`;
+                }
+                
+                // Rata-rata
+                html += `<td class="score-cell">${student.average ? student.average.toFixed(1) : '-'}</td>`;
+                html += `<td>${statusBadge}</td>`;
+                html += `<td><button class="btn" onclick="showStudentDetail(${index})">Detail</button></td>`;
+                html += `</tr>`;
+            });
+            
+            html += `</tbody></table>`;
+            resultsTable.innerHTML = html;
+        }
+
+        // Generate resume penilaian
+        function generateResume() {
+            const noResumeMessage = document.getElementById('noResumeMessage');
+            const resumeContent = document.getElementById('resumeContent');
+            
+            if (systemData.students.length === 0) {
+                noResumeMessage.style.display = 'block';
+                resumeContent.style.display = 'none';
+                return;
+            }
+            
+            noResumeMessage.style.display = 'none';
+            resumeContent.style.display = 'block';
+            
+            let html = '';
+            
+            systemData.students.forEach((student, index) => {
+                // Tentukan badge status
+                let statusBadge = '';
+                if (student.status === 'pengayaan') {
+                    statusBadge = '<span class="status-badge status-pengayaan">Pengayaan</span>';
+                } else if (student.status === 'remedial') {
+                    statusBadge = '<span class="status-badge status-remedial">Remedial</span>';
+                } else {
+                    statusBadge = '<span class="status-badge status-cukup">Cukup</span>';
+                }
+                
+                html += `
+                    <div class="resume-item">
+                        <div class="resume-header">
+                            <span class="resume-title">${student.NAMA} - ${student.KELAS}</span>
+                            <span class="resume-score">Nilai Rata-rata: ${student.average.toFixed(1)} ${statusBadge}</span>
+                        </div>
+                `;
+                
+                // Resume per soal
+                for (let i = 0; i < systemData.jumlahSoal; i++) {
+                    const score = student.scores[i];
+                    const answerKey = systemData.answerKeys[i];
+                    
+                    // Generate deskripsi berdasarkan skor
+                    const depthDesc = generateDepthDescription(score.depth);
+                    const relevanceDesc = generateRelevanceDescription(score.relevance);
+                    const logicDesc = generateLogicDescription(score.logic);
+                    
+                    html += `
+                        <div class="soal-container">
+                            <div class="soal-header">
+                                <span class="soal-title">Soal ${i+1}</span>
+                                <span class="resume-score">${score.overall.toFixed(1)}</span>
+                            </div>
+                            <div class="resume-desc">
+                                <p><strong>Kedalaman:</strong> ${depthDesc}</p>
+                                <p><strong>Relevansi:</strong> ${relevanceDesc}</p>
+                                <p><strong>Logika:</strong> ${logicDesc}</p>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                html += `</div>`;
+            });
+            
+            resumeContent.innerHTML = html;
+        }
+
+        // Generate deskripsi kedalaman
+        function generateDepthDescription(score) {
+            if (score >= 85) {
+                return "Jawaban sangat mendalam, lengkap, dan menunjukkan pemahaman konsep yang komprehensif. Siswa mampu mengembangkan ide dengan baik dan menggunakan kosakata yang variatif.";
+            } else if (score >= 70) {
+                return "Jawaban cukup mendalam namun masih dapat dikembangkan lebih lanjut. Pemahaman konsep sudah baik tetapi kurang detail dalam penjabaran.";
+            } else if (score >= 55) {
+                return "Jawaban kurang mendalam, hanya memberikan penjelasan dasar tanpa pengembangan yang memadai. Perlu peningkatan dalam menguraikan konsep.";
+            } else {
+                return "Jawaban sangat dangkal, hanya berisi poin-poin singkat tanpa penjelasan yang memadai. Diperlukan perbaikan signifikan dalam kedalaman analisis.";
+            }
+        }
+
+        // Generate deskripsi relevansi
+        function generateRelevanceDescription(score) {
+            if (score >= 85) {
+                return "Jawaban sangat relevan dengan pertanyaan, mencakup semua aspek penting dan menggunakan kata kunci dengan tepat.";
+            } else if (score >= 70) {
+                return "Jawaban cukup relevan namun ada beberapa aspek penting yang kurang tercakup atau kata kunci yang terlewat.";
+            } else if (score >= 55) {
+                return "Jawaban kurang relevan, banyak aspek penting yang tidak tercakup dan penggunaan kata kunci yang terbatas.";
+            } else {
+                return "Jawaban tidak relevan dengan pertanyaan, tidak mencakup aspek penting yang ditanyakan dan penggunaan kata kunci sangat minim.";
+            }
+        }
+
+        // Generate deskripsi logika
+        function generateLogicDescription(score) {
+            if (score >= 85) {
+                return "Jawaban sangat logis dan sistematis, alur pikir mudah diikuti, dan menggunakan kata penghubung yang tepat untuk menghubungkan ide.";
+            } else if (score >= 70) {
+                return "Jawaban cukup logis namun alur pikir kurang sistematis atau penggunaan kata penghubung masih terbatas.";
+            } else if (score >= 55) {
+                return "Jawaban kurang logis, alur pikir sulit diikuti dan penggunaan kata penghubung sangat minimal.";
+            } else {
+                return "Jawaban tidak logis, tidak ada alur pikir yang jelas dan tidak menggunakan kata penghubung yang tepat.";
+            }
+        }
+
+        // Generate program remedial
+        function generateRemedialProgram() {
+            const noRemedialMessage = document.getElementById('noRemedialMessage');
+            const remedialContent = document.getElementById('remedialContent');
+            
+            const remedialStudents = systemData.students.filter(student => student.status === 'remedial');
+            
+            if (remedialStudents.length === 0) {
+                noRemedialMessage.style.display = 'block';
+                remedialContent.style.display = 'none';
+                return;
+            }
+            
+            noRemedialMessage.style.display = 'none';
+            remedialContent.style.display = 'block';
+            
+            let html = `<h3>Program Remedial (${remedialStudents.length} Siswa)</h3>`;
+            
+            remedialStudents.forEach((student, index) => {
+                // Identifikasi kelemahan
+                const weaknesses = identifyWeaknesses(student);
+                
+                html += `
+                    <div class="resume-item">
+                        <div class="resume-header">
+                            <span class="resume-title">${student.NAMA} - ${student.KELAS}</span>
+                            <span class="resume-score">Nilai: ${student.average.toFixed(1)}</span>
+                        </div>
+                        <div class="remedial-plan">
+                            <h4>Analisis Kelemahan:</h4>
+                            <ul>
+                                ${weaknesses.map(w => `<li>${w}</li>`).join('')}
+                            </ul>
+                            
+                            <h4>Rencana Remedial:</h4>
+                            <div class="rekomendasi-item">
+                                <strong>1. Pembelajaran Ulang:</strong> Fokus pada konsep dasar yang belum dikuasai
+                            </div>
+                            <div class="rekomendasi-item">
+                                <strong>2. Latihan Terstruktur:</strong> Memberikan soal dengan panduan langkah demi langkah
+                            </div>
+                            <div class="rekomendasi-item">
+                                <strong>3. Pendampingan Individu:</strong> Memberikan bantuan khusus sesuai kebutuhan
+                            </div>
+                            <div class="rekomendasi-item">
+                                <strong>4. Penilaian Formatif:</strong> Tes kecil untuk memantau perkembangan
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            remedialContent.innerHTML = html;
+        }
+
+        // Generate program pengayaan
+        function generatePengayaanProgram() {
+            const noPengayaanMessage = document.getElementById('noPengayaanMessage');
+            const pengayaanContent = document.getElementById('pengayaanContent');
+            
+            const pengayaanStudents = systemData.students.filter(student => student.status === 'pengayaan');
+            
+            if (pengayaanStudents.length === 0) {
+                noPengayaanMessage.style.display = 'block';
+                pengayaanContent.style.display = 'none';
+                return;
+            }
+            
+            noPengayaanMessage.style.display = 'none';
+            pengayaanContent.style.display = 'block';
+            
+            let html = `<h3>Program Pengayaan (${pengayaanStudents.length} Siswa)</h3>`;
+            
+            pengayaanStudents.forEach((student, index) => {
+                // Identifikasi kekuatan
+                const strengths = identifyStrengths(student);
+                
+                html += `
+                    <div class="resume-item">
+                        <div class="resume-header">
+                            <span class="resume-title">${student.NAMA} - ${student.KELAS}</span>
+                            <span class="resume-score">Nilai: ${student.average.toFixed(1)}</span>
+                        </div>
+                        <div class="pengayaan-plan">
+                            <h4>Analisis Keunggulan:</h4>
+                            <ul>
+                                ${strengths.map(s => `<li>${s}</li>`).join('')}
+                            </ul>
+                            
+                            <h4>Rencana Pengayaan:</h4>
+                            <div class="rekomendasi-item">
+                                <strong>1. Eksplorasi Lanjutan:</strong> Materi tambahan yang lebih kompleks dan mendalam
+                            </div>
+                            <div class="rekomendasi-item">
+                                <strong>2. Projek Mandiri:</strong> Tugas penelitian atau proyek berdasarkan minat siswa
+                            </div>
+                            <div class="rekomendasi-item">
+                                <strong>3. Diskusi Kelompok:</strong> Memimpin diskusi kelompok dengan teman sekelas
+                            </div>
+                            <div class="rekomendasi-item">
+                                <strong>4. Pengayaan Kreatif:</strong> Mengembangkan materi presentasi atau media pembelajaran
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            pengayaanContent.innerHTML = html;
+        }
+
+        // Identifikasi kelemahan siswa untuk remedial
+        function identifyWeaknesses(student) {
+            const weaknesses = [];
+            
+            // Analisis per aspek
+            let totalDepth = 0;
+            let totalRelevance = 0;
+            let totalLogic = 0;
+            
+            student.scores.forEach(score => {
+                totalDepth += score.depth;
+                totalRelevance += score.relevance;
+                totalLogic += score.logic;
+            });
+            
+            const avgDepth = totalDepth / student.scores.length;
+            const avgRelevance = totalRelevance / student.scores.length;
+            const avgLogic = totalLogic / student.scores.length;
+            
+            if (avgDepth < 70) {
+                weaknesses.push("Kedalaman jawaban kurang memadai - perlu pengembangan ide lebih lanjut");
+            }
+            
+            if (avgRelevance < 70) {
+                weaknesses.push("Relevansi jawaban terhadap pertanyaan perlu ditingkatkan");
+            }
+            
+            if (avgLogic < 70) {
+                weaknesses.push("Struktur logika dan alur pikir perlu diperbaiki");
+            }
+            
+            // Analisis per soal
+            student.scores.forEach((score, index) => {
+                if (score.overall < 60) {
+                    weaknesses.push(`Kesulitan khusus pada Soal ${index+1} (nilai: ${score.overall.toFixed(1)})`);
+                }
+            });
+            
+            if (weaknesses.length === 0) {
+                weaknesses.push("Perlu peningkatan umum pada semua aspek penilaian");
+            }
+            
+            return weaknesses;
+        }
+
+        // Identifikasi kekuatan siswa untuk pengayaan
+        function identifyStrengths(student) {
+            const strengths = [];
+            
+            // Analisis per aspek
+            let totalDepth = 0;
+            let totalRelevance = 0;
+            let totalLogic = 0;
+            
+            student.scores.forEach(score => {
+                totalDepth += score.depth;
+                totalRelevance += score.relevance;
+                totalLogic += score.logic;
+            });
+            
+            const avgDepth = totalDepth / student.scores.length;
+            const avgRelevance = totalRelevance / student.scores.length;
+            const avgLogic = totalLogic / student.scores.length;
+            
+            if (avgDepth >= 85) {
+                strengths.push("Kemampuan mengembangkan jawaban dengan kedalaman yang sangat baik");
+            }
+            
+            if (avgRelevance >= 85) {
+                strengths.push("Kemampuan menjawab dengan relevansi tinggi terhadap pertanyaan");
+            }
+            
+            if (avgLogic >= 85) {
+                strengths.push("Kemampuan menyusun jawaban dengan logika dan struktur yang sangat baik");
+            }
+            
+            // Analisis per soal
+            student.scores.forEach((score, index) => {
+                if (score.overall >= 90) {
+                    strengths.push(`Penguasaan sangat baik pada Soal ${index+1} (nilai: ${score.overall.toFixed(1)})`);
+                }
+            });
+            
+            if (strengths.length === 0) {
+                strengths.push("Kemampuan umum yang baik di semua aspek penilaian");
+            }
+            
+            return strengths;
+        }
+
+        // Tampilkan detail siswa
+        function showStudentDetail(index) {
+            const student = systemData.students[index];
+            if (!student) return;
+            
+            systemData.currentDetailIndex = index;
+            
+            const studentDetail = document.getElementById('studentDetail');
+            const detailTitle = document.getElementById('detailTitle');
+            const soalTabs = document.getElementById('soalTabs');
+            const soalTabContent = document.getElementById('soalTabContent');
+            
+            // Set judul
+            detailTitle.textContent = `Detail Jawaban - ${student.NAMA || 'Siswa'} (${student.KELAS || 'Kelas'})`;
+            
+            // Generate tab untuk setiap soal
+            soalTabs.innerHTML = '';
+            soalTabContent.innerHTML = '';
+            
+            for (let i = 0; i < systemData.jumlahSoal; i++) {
+                // Tab button
+                const tabButton = document.createElement('button');
+                tabButton.className = `tab-button ${i === 0 ? 'active' : ''}`;
+                tabButton.textContent = `Soal ${i+1}`;
+                tabButton.onclick = () => switchSoalTab(i);
+                soalTabs.appendChild(tabButton);
+                
+                // Tab content
+                const tabPane = document.createElement('div');
+                tabPane.className = `tab-pane ${i === 0 ? 'active' : ''}`;
+                tabPane.id = `tab-pane-${i}`;
+                
+                const score = student.scores[i] || {};
+                const answerKey = systemData.answerKeys[i] || {};
+                
+                tabPane.innerHTML = `
+                    <div class="score-display">
+                        <div class="score-box">
+                            <div class="score-value">${score.depth ? score.depth.toFixed(1) : '0'}</div>
+                            <div class="score-label">Kedalaman</div>
+                        </div>
+                        <div class="score-box">
+                            <div class="score-value">${score.relevance ? score.relevance.toFixed(1) : '0'}</div>
+                            <div class="score-label">Relevansi</div>
+                        </div>
+                        <div class="score-box">
+                            <div class="score-value">${score.logic ? score.logic.toFixed(1) : '0'}</div>
+                            <div class="score-label">Logika</div>
+                        </div>
+                        <div class="score-box">
+                            <div class="score-value">${score.overall ? score.overall.toFixed(1) : '0'}</div>
+                            <div class="score-label">Nilai Soal</div>
+                        </div>
+                    </div>
+                    
+                    ${answerKey.pertanyaan ? `<h3>Pertanyaan</h3><div class="key-answer">${answerKey.pertanyaan}</div>` : ''}
+                    
+                    <h3>Kata Kunci yang Ditemukan</h3>
+                    <div class="keywords" id="keywords-${i}"></div>
+                    
+                    <h3>Jawaban Siswa</h3>
+                    <div class="student-answer">${student.JAWABAN[i] || '-'}</div>
+                    
+                    <h3>Kunci Jawaban</h3>
+                    <div class="key-answer">${answerKey.kunciJawaban || '-'}</div>
+                `;
+                
+                soalTabContent.appendChild(tabPane);
+                
+                // Isi kata kunci
+                const keywordsContainer = document.getElementById(`keywords-${i}`);
+                if (score.keywordMatches) {
+                    score.keywordMatches.forEach(match => {
+                        const keywordElement = document.createElement('div');
+                        keywordElement.className = `keyword ${match.found ? 'found' : 'missing'}`;
+                        keywordElement.textContent = match.keyword;
+                        keywordsContainer.appendChild(keywordElement);
+                    });
+                }
+            }
+            
+            studentDetail.style.display = 'block';
+            
+            // Scroll ke detail
+            studentDetail.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Fungsi untuk mengganti tab utama
+        function switchTab(tabName) {
+            // Nonaktifkan semua tab
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-pane').forEach(pane => {
+                pane.classList.remove('active');
+            });
+            
+            // Aktifkan tab yang dipilih
+            document.querySelector(`button[onclick="switchTab('${tabName}')"]`).classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        // Fungsi untuk mengganti tab soal
+        function switchSoalTab(tabIndex) {
+            // Nonaktifkan semua tab
+            document.querySelectorAll('#soalTabs .tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.querySelectorAll('#soalTabContent .tab-pane').forEach(pane => {
+                pane.classList.remove('active');
+            });
+            
+            // Aktifkan tab yang dipilih
+            document.querySelectorAll('#soalTabs .tab-button')[tabIndex].classList.add('active');
+            document.getElementById(`tab-pane-${tabIndex}`).classList.add('active');
+        }
+
+        // Sembunyikan detail siswa
+        function hideStudentDetail() {
+            document.getElementById('studentDetail').style.display = 'none';
+        }
+
+        // Load data contoh untuk demonstrasi
+        function loadSampleData() {
+            // Set kunci jawaban contoh
+            systemData.answerKeys = [
+                {
+                    pertanyaan: "Jelaskan mengapa Revolusi Industri dimulai di Inggris?",
+                    kunciJawaban: "Revolusi Industri dimulai di Inggris karena beberapa faktor penting. Pertama, Inggris memiliki sumber daya alam yang melimpah seperti batu bara dan bijih besi yang diperlukan untuk industri. Kedua, adanya penemuan mesin uap oleh James Watt yang merevolusi proses produksi. Ketiga, sistem politik yang stabil mendorong investasi dalam industri. Keempat, Inggris memiliki koloni yang menyediakan bahan baku dan pasar untuk produk industri. Kelima, adanya tenaga kerja yang cukup karena revolusi pertanian.",
+                    kataKunci: ["revolusi industri", "inggris", "mesin uap", "batu bara", "bijih besi", "james watt", "koloni", "tenaga kerja"]
+                },
+                {
+                    pertanyaan: "Apa dampak sosial dari Revolusi Industri?",
+                    kunciJawaban: "Revolusi Industri membawa dampak sosial yang signifikan. Pertama, terjadinya urbanisasi besar-besaran di mana masyarakat pedesaan pindah ke kota untuk bekerja di pabrik. Kedua, munculnya kelas buruh (proletariat) dan kelas pemilik modal (borjuis). Ketiga, kondisi kerja yang buruk dengan jam kerja panjang dan upah rendah. Keempat, munculnya gerakan buruh dan serikat pekerja. Kelima, perubahan struktur keluarga di mana semua anggota keluarga termasuk anak-anak ikut bekerja.",
+                    kataKunci: ["dampak sosial", "urbanisasi", "kelas buruh", "kondisi kerja", "gerakan buruh", "struktur keluarga"]
+                },
+                {
+                    pertanyaan: "Bagaimana Revolusi Industri mempengaruhi perekonomian dunia?",
+                    kunciJawaban: "Revolusi Industri mengubah perekonomian dunia secara drastis. Pertama, terjadi peningkatan produksi barang secara massal yang menurunkan harga. Kedua, munculnya sistem kapitalisme modern dengan akumulasi modal. Ketiga, perkembangan transportasi dan komunikasi memperlancar perdagangan internasional. Keempat, negara industri menjadi pusat ekonomi dunia sementara negara koloni menjadi pemasok bahan baku. Kelima, terciptanya ekonomi global yang saling terhubung.",
+                    kataKunci: ["perekonomian dunia", "produksi massal", "kapitalisme", "transportasi", "perdagangan internasional", "ekonomi global"]
+                },
+                {
+                    pertanyaan: "Apa peran penemuan teknologi dalam Revolusi Industri?",
+                    kunciJawaban: "Penemuan teknologi memainkan peran kunci dalam Revolusi Industri. Penemuan mesin uap oleh James Watt merevolusi tenaga penggerak industri. Mesin pemintal dan tenun meningkatkan produksi tekstil. Perkembangan transportasi dengan kereta api dan kapal uap mempercepat distribusi barang. Inovasi dalam metalurgi meningkatkan kualitas besi dan baja. Semua penemuan ini bersama-sama menciptakan efisiensi produksi yang belum pernah terjadi sebelumnya.",
+                    kataKunci: ["teknologi", "mesin uap", "mesin pemintal", "kereta api", "metalurgi", "efisiensi produksi"]
+                },
+                {
+                    pertanyaan: "Mengapa Revolusi Industri dianggap sebagai titik balik dalam sejarah manusia?",
+                    kunciJawaban: "Revolusi Industri dianggap sebagai titik balik karena mengubah hampir semua aspek kehidupan manusia. Dari masyarakat agraris menjadi industri, dari produksi manual menjadi mekanis, dari kehidupan pedesaan menjadi perkotaan. Revolusi ini tidak hanya mengubah cara produksi tetapi juga struktur sosial, politik, dan budaya. Dampaknya masih terasa hingga sekarang dalam bentuk masyarakat modern yang berbasis teknologi dan industri.",
+                    kataKunci: ["titik balik", "sejarah manusia", "masyarakat agraris", "produksi mekanis", "kehidupan perkotaan", "masyarakat modern"]
+                }
+            ];
+            
+            // Update UI dengan kunci jawaban contoh
+            generateSoalButtons();
+            
+            // Buat data siswa contoh
+            systemData.students = [
+                {
+                    NAMA: "Budi Santoso",
+                    KELAS: "10A",
+                    JAWABAN: [
+                        "Revolusi Industri dimulai di Inggris karena penemuan mesin uap oleh James Watt dan adanya sumber daya alam seperti batu bara dan bijih besi. Selain itu, Inggris memiliki koloni yang menyediakan bahan baku dan pasar untuk produk industri. Sistem politik yang stabil juga mendorong investasi dalam industri.",
+                        "Revolusi Industri menyebabkan urbanisasi dimana orang pindah ke kota untuk kerja di pabrik. Muncul kelas buruh dan kondisi kerja yang buruk dengan upah rendah.",
+                        "Revolusi Industri mengubah ekonomi dengan produksi massal yang menurunkan harga. Transportasi berkembang dan perdagangan internasional lancar.",
+                        "Penemuan teknologi seperti mesin uap sangat penting. Mesin pemintal meningkatkan produksi tekstil. Kereta api mempercepat distribusi.",
+                        "Revolusi Industri adalah titik balik karena mengubah masyarakat agraris jadi industri, dari manual ke mekanis, dan dampaknya masih terasa sekarang."
+                    ]
+                },
+                {
+                    NAMA: "Siti Rahayu",
+                    KELAS: "10A", 
+                    JAWABAN: [
+                        "Revolusi Industri terjadi di Inggris karena ada mesin uap dan batu bara. Inggris juga punya banyak tenaga kerja. Selain itu ada koloni yang memberikan bahan baku.",
+                        "Dampak sosialnya adalah orang pindah ke kota. Ada kelas buruh dan kondisi kerja buruk.",
+                        "Ekonomi berubah karena produksi massal. Harga barang turun.",
+                        "Teknologi mesin uap penting.",
+                        "Revolusi Industri penting dalam sejarah."
+                    ]
+                },
+                {
+                    NAMA: "Ahmad Wijaya",
+                    KELAS: "10B",
+                    JAWABAN: [
+                        "Revolusi Industri bermula di Inggris disebabkan oleh beberapa faktor. Pertama, penemuan mesin uap yang meningkatkan efisiensi produksi. Kedua, ketersediaan sumber daya alam seperti batu bara dan bijih besi. Ketiga, adanya koloni yang menyediakan bahan mentah dan pasar. Keempat, sistem perbankan yang berkembang mendukung investasi industri. Kelima, revolusi pertanian menyediakan tenaga kerja untuk pabrik. Keenam, kondisi politik yang stabil mendorong inovasi teknologi.",
+                        "Revolusi Industri membawa dampak sosial yang sangat signifikan. Terjadi urbanisasi besar-besaran di mana masyarakat pedesaan berbondong-bondong pindah ke kota untuk bekerja di pabrik-pabrik. Muncul dua kelas sosial baru yaitu kelas buruh (proletariat) yang bekerja di pabrik dengan upah rendah dan kondisi kerja yang buruk, serta kelas pemilik modal (borjuis) yang menguasai industri. Kondisi ini memicu munculnya gerakan buruh dan serikat pekerja yang memperjuangkan hak-hak pekerja. Struktur keluarga juga berubah dimana semua anggota keluarga termasuk anak-anak ikut bekerja untuk memenuhi kebutuhan hidup.",
+                        "Revolusi Industri mengubah landscape perekonomian dunia secara fundamental. Sistem produksi massal yang diterapkan di pabrik-pabrik menghasilkan barang dalam jumlah besar dengan harga yang lebih terjangkau. Ini mendorong terbentuknya sistem kapitalisme modern dengan akumulasi modal sebagai penggerak utamanya. Perkembangan transportasi seperti kereta api dan kapal uap serta kemajuan komunikasi memperlancar arus perdagangan internasional. Negara-negara industri menjadi pusat ekonomi global sementara negara koloni berperan sebagai pemasok bahan baku dan pasar bagi produk industri. Terciptalah ekonomi global yang saling terhubung satu sama lain.",
+                        "Penemuan teknologi menjadi tulang punggung Revolusi Industri. Penemuan mesin uap oleh James Watt tidak hanya merevolusi tenaga penggerak industri tetapi juga transportasi. Mesin pemintal dan mesin tenun meningkatkan produksi tekstil secara signifikan. Perkembangan transportasi dengan kereta api dan kapal uap mempercepat distribusi barang ke berbagai wilayah. Inovasi dalam bidang metalurgi meningkatkan kualitas besi dan baja yang menjadi bahan baku penting industri. Semua penemuan teknologi ini bersama-sama menciptakan efisiensi produksi yang belum pernah terjadi sebelumnya dalam sejarah manusia.",
+                        "Revolusi Industri dianggap sebagai titik balik dalam sejarah manusia karena mengubah hampir semua aspek kehidupan. Transformasi dari masyarakat agraris menjadi masyarakat industri mengubah cara hidup manusia secara fundamental. Peralihan dari produksi manual ke produksi mekanis meningkatkan produktivitas secara drastis. Migrasi dari pedesaan ke perkotaan menciptakan pola kehidupan baru yang lebih kompleks. Revolusi ini tidak hanya mengubah cara produksi tetapi juga struktur sosial, politik, dan budaya masyarakat. Dampak revolusi ini masih sangat terasa hingga sekarang dalam bentuk masyarakat modern yang sepenuhnya berbasis teknologi dan industri."
+                    ]
+                }
+            ];
+            
+            // Proses penilaian untuk setiap siswa
+            systemData.students.forEach(student => {
+                const gradingResult = analyzer.gradeAllEssays(student.JAWABAN);
+                student.scores = gradingResult.scores;
+                student.average = gradingResult.average;
+                
+                // Tentukan status
+                if (student.average >= systemData.batasPengayaan) {
+                    student.status = 'pengayaan';
+                } else if (student.average >= systemData.kkm) {
+                    student.status = 'cukup';
+                } else {
+                    student.status = 'remedial';
+                }
+            });
+            
+            // Tampilkan hasil
+            displayResults();
+            generateResume();
+            generateRemedialProgram();
+            generatePengayaanProgram();
+            
+            alert('Data contoh berhasil dimuat!');
+        }
+
+        // Inisialisasi saat halaman dimuat
+        window.onload = function() {
+            generateSoalButtons();
+        };
+    </script>
+</body>
+</html>
