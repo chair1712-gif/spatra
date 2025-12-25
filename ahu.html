@@ -1,0 +1,2099 @@
+    <!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisis Hasil Ulangan - Dengan Import Excel</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .section {
+            margin-bottom: 2rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        tr:hover {
+            background-color: #e9ecef;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .badge-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .badge-warning {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .badge-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-small {
+            padding: 5px 10px;
+            font-size: 0.9rem;
+        }
+        
+        .input-group {
+            margin-bottom: 1rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .chart-container {
+            height: 300px;
+            margin: 1rem 0;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: 10px;
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-card.primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+        
+        .stat-card.success {
+            background: linear-gradient(135deg, #4cc9f0, #4361ee);
+        }
+        
+        .stat-card.warning {
+            background: linear-gradient(135deg, #f72585, #b5179e);
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: var(--primary);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 1rem 0;
+            color: var(--gray);
+            border-top: 1px solid #eee;
+        }
+        
+        .info-box {
+            background-color: #e7f3ff;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .input-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        .input-table th, .input-table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+        
+        .input-table th {
+            background-color: #f0f0f0;
+            color: var(--dark);
+        }
+        
+        .input-table input {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        
+        .tab-container {
+            margin-bottom: 1rem;
+        }
+        
+        .tab-buttons {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 1rem;
+        }
+        
+        .tab-button {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab-button.active {
+            border-bottom: 3px solid var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .file-upload-area {
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            margin: 1rem 0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .file-upload-area:hover {
+            border-color: var(--primary);
+            background-color: #f8f9ff;
+        }
+        
+        .file-upload-area.dragover {
+            border-color: var(--primary);
+            background-color: #e7f3ff;
+        }
+        
+        .file-upload-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .template-download {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .import-preview {
+            max-height: 400px;
+            overflow-y: auto;
+            margin: 1rem 0;
+        }
+        
+        /* Gaya untuk lembar pengayaan dan remedial */
+        .lembar-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            background-color: white;
+        }
+        
+        .lembar-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .lembar-title {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            text-decoration: underline;
+        }
+        
+        .lembar-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+        
+        .lembar-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .lembar-info-item {
+            flex: 1;
+        }
+        
+        .lembar-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        .lembar-table th, .lembar-table td {
+            border: 1px solid #000;
+            padding: 8px;
+        }
+        
+        .lembar-table th {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .lembar-signature {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+        }
+        
+        .lembar-signature-item {
+            text-align: center;
+            width: 45%;
+        }
+        
+        .lembar-signature-line {
+            width: 100%;
+            border-bottom: 1px solid #000;
+            margin: 5px 0 10px;
+        }
+        
+        .lembar-tanggal {
+            text-align: right;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .lembar-signature-spacing {
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .tab-buttons {
+                flex-direction: column;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .lembar-info {
+                flex-direction: column;
+            }
+            
+            .lembar-signature {
+                flex-direction: column;
+            }
+            
+            .lembar-signature-item {
+                width: 100%;
+                margin-bottom: 30px;
+            }
+        }
+.spasi 
+  { height: 6rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Analisis Hasil Ulangan</h1>
+            <p class="subtitle">Aplikasi analisis hasil evaluasi siswa dengan import dari Excel</p>
+        </header>
+        
+        <div class="tab-container">
+            <div class="tab-buttons">
+                <button class="tab-button active" data-tab="input-data">Input Data</button>
+                <button class="tab-button" data-tab="analysis-results">Hasil Analisis</button>
+                <button class="tab-button" data-tab="remedial-pengayaan">Remedial & Pengayaan</button>
+            </div>
+            
+            <div id="input-data" class="tab-content active">
+                <section class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Konfigurasi Ulangan</h2>
+                    </div>
+                    <div class="grid">
+                        <div class="input-group">
+                            <label for="nama-sekolah">Nama Sekolah</label>
+                            <input type="text" id="nama-sekolah" value="SMA …………...">
+                        </div>
+                        <div class="input-group">
+                            <label for="kelas">Kelas</label>
+                            <input type="text" id="kelas" value="X.1">
+                        </div>
+                        <div class="input-group">
+                            <label for="semester">Semester</label>
+                            <input type="text" id="semester" value="1">
+                        </div>
+                        <div class="input-group">
+                            <label for="tahun-pelajaran">Tahun Pelajaran</label>
+                            <input type="text" id="tahun-pelajaran" value="2025/2026">
+                        </div>
+                        <div class="input-group">
+                            <label for="tanggal-ulangan">Tanggal Pelaksanaan Ulangan</label>
+                            <input type="date" id="tanggal-ulangan" value="">
+                        </div>
+                        <div class="input-group">
+                            <label for="mata-pelajaran">Mata Pelajaran</label>
+                            <input type="text" id="mata-pelajaran" value="Pend. Agama Islam & Budi Pekerti">
+                        </div>
+                        <div class="input-group">
+                            <label for="materi-pelajaran">Materi Pelajaran</label>
+                            <textarea id="materi-pelajaran" rows="2">Menghindari Prilaku Ghadab, memumbuhkan Mujahadah An Nafs dan Saja’ah</textarea>
+                        </div>
+                        <div class="input-group">
+                            <label for="nama-guru">Nama Guru</label>
+                            <input type="text" id="nama-guru" value="………………….., S.Pd">
+                        </div>
+                        <div class="input-group">
+                            <label for="nip-guru">NIP Guru</label>
+                            <input type="text" id="nip-guru" value="1999999001">
+                        </div>
+                        <div class="input-group">
+                            <label for="nama-kepsek">Nama Kepala Sekolah</label>
+                            <input type="text" id="nama-kepsek" value="Drs. …………">
+                        </div>
+                        <div class="input-group">
+                            <label for="nip-kepsek">NIP Kepala Sekolah</label>
+                            <input type="text" id="nip-kepsek" value="1966666666666">
+                        </div>
+                        <div class="input-group">
+                            <label for="soal-remedial">Soal Remedial/Perbaikan</label>
+                            <textarea id="soal-remedial" rows="3">1. Carilah Literasi terkait materi Mawaris.
+2. Tuliskan permasalahan yang terkait Mawaris di Indonesia
+3. Bagaimana islam mengatur permasalahan itu.</textarea>
+                        </div>
+                        <div class="input-group">
+                            <label for="materi-pengayaan">Materi Pengayaan</label>
+                            <textarea id="materi-pengayaan" rows="2">Materi pengayaan lanjutan untuk siswa yang telah tuntas</textarea>
+                        </div>
+                        <div class="input-group">
+                            <label for="kkm">KKM (Kriteria Ketuntasan Minimal)</label>
+                            <input type="number" id="kkm" value="70" min="0" max="100">
+                        </div>
+                        <div class="input-group">
+                            <label for="bobot-soal">Bobot Nilai per Soal</label>
+                            <input type="number" id="bobot-soal" value="10" min="1" max="100">
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Kunci Jawaban</h2>
+                    </div>
+                    <div class="info-box">
+                        <p>Masukkan kunci jawaban untuk setiap soal. Gunakan huruf A, B, C, D, atau E.</p>
+                    </div>
+                    <table class="input-table" id="kunci-jawaban-table">
+                        <thead>
+                            <tr>
+                                <th>Soal 1</th>
+                                <th>Soal 2</th>
+                                <th>Soal 3</th>
+                                <th>Soal 4</th>
+                                <th>Soal 5</th>
+                                <th>Soal 6</th>
+                                <th>Soal 7</th>
+                                <th>Soal 8</th>
+                                <th>Soal 9</th>
+                                <th>Soal 10</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" maxlength="1" class="kunci-jawaban" data-soal="1" placeholder="A"></td>
+                                <td><input type="text" maxlength="1" class="kunci-jawaban" data-soal="2" placeholder="B"></td>
+                                <td><input type="text" maxlength="1" class="kunci-jawaban" data-soal="3" placeholder="C"></td>
+                                <td><input type="text" maxlength="1" class="kunci-jawaban" data-soal="4" placeholder="D"></td>
+                                <td><input type="text" maxlength="1" class="kunci-jawaban" data-soal="5" placeholder="E"></td>
+                                <td><input type="text" maxlength="1" class="kunci-jawaban" data-soal="6" placeholder="A"></td>
+                                <td><input type="text" maxlength="1" class="kunci-jawaban" data-soal="7" placeholder="B"></td>
+                                <td><input type="text" maxlength="1" class="kunci-jawaban" data-soal="8" placeholder="C"></td>
+                                <td><input type="text" maxlength="1" class="kunci-jawaban" data-soal="9" placeholder="D"></td>
+                                <td><input type="text" maxlength="1" class="kunci-jawaban" data-soal="10" placeholder="E"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+                
+                <section class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Import Data dari Excel</h2>
+                    </div>
+                    <div class="info-box">
+                        <p>Upload file Excel yang berisi data siswa dan jawaban mereka. Format file harus sesuai dengan template.</p>
+                    </div>
+                    
+                    <div class="file-upload-area" id="file-upload-area">
+                        <div class="file-upload-icon">📁</div>
+                        <h3>Klik atau tarik file Excel ke sini</h3>
+                        <p>Format yang didukung: .xlsx, .xls</p>
+                        <input type="file" id="file-input" accept=".xlsx,.xls" style="display: none;">
+                        <button id="browse-file-btn" class="btn" style="margin-top: 1rem;">Pilih File</button>
+                    </div>
+                    
+                    <div class="template-download">
+                        <h4>Template Excel</h4>
+                        <p>Download template untuk memastikan format file Anda benar:</p>
+                        <button id="download-template-btn" class="btn btn-outline btn-small">Download Template</button>
+                    </div>
+                    
+                    <div id="import-preview" class="import-preview hidden">
+                        <h4>Pratinjau Data yang Diimpor</h4>
+                        <table id="preview-table">
+                            <thead>
+                                <tr>
+                                    <th>Nama Siswa</th>
+                                    <th>Soal 1</th>
+                                    <th>Soal 2</th>
+                                    <th>Soal 3</th>
+                                    <th>Soal 4</th>
+                                    <th>Soal 5</th>
+                                    <th>Soal 6</th>
+                                    <th>Soal 7</th>
+                                    <th>Soal 8</th>
+                                    <th>Soal 9</th>
+                                    <th>Soal 10</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Data preview akan ditampilkan di sini -->
+                            </tbody>
+                        </table>
+                        <div class="action-buttons">
+                            <button id="confirm-import-btn" class="btn">Konfirmasi Import</button>
+                            <button id="cancel-import-btn" class="btn btn-outline">Batal</button>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Data Siswa dan Jawaban</h2>
+                    </div>
+                    <div class="info-box">
+                        <p>Data siswa dan jawaban mereka. Anda dapat mengedit secara manual atau mengimpor dari Excel.</p>
+                    </div>
+                    <div class="action-buttons">
+                        <button id="tambah-siswa" class="btn btn-small">Tambah Siswa</button>
+                        <button id="hapus-semua" class="btn btn-small btn-outline">Hapus Semua</button>
+                    </div>
+                    <table class="input-table" id="data-siswa-table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Siswa</th>
+                                <th>Soal 1</th>
+                                <th>Soal 2</th>
+                                <th>Soal 3</th>
+                                <th>Soal 4</th>
+                                <th>Soal 5</th>
+                                <th>Soal 6</th>
+                                <th>Soal 7</th>
+                                <th>Soal 8</th>
+                                <th>Soal 9</th>
+                                <th>Soal 10</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="siswa-tbody">
+                            <!-- Data siswa akan ditambahkan di sini -->
+                        </tbody>
+                    </table>
+                    <div class="action-buttons">
+                        <button id="generateBtn" class="btn">Generate Analisis</button>
+                    </div>
+                </section>
+            </div>
+            
+            <div id="analysis-results" class="tab-content">
+                <section class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Ringkasan Hasil Analisis</h2>
+                        <button id="exportBtn" class="btn btn-outline">Ekspor ke Excel</button>
+                    </div>
+                    
+                    <div class="grid">
+                        <div class="stat-card primary">
+                            <div class="stat-value" id="rataRata">0</div>
+                            <div class="stat-label">Rata-rata Kelas</div>
+                        </div>
+                        <div class="stat-card success">
+                            <div class="stat-value" id="persentaseTuntas">0%</div>
+                            <div class="stat-label">Ketuntasan Klasikal</div>
+                        </div>
+                        <div class="stat-card warning">
+                            <div class="stat-value" id="nilaiTertinggi">0</div>
+                            <div class="stat-label">Nilai Tertinggi</div>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <h3>Distribusi Nilai</h3>
+                        <div class="chart-container">
+                            <canvas id="distribusiChart"></canvas>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Analisis Butir Soal</h2>
+                    </div>
+                    
+                    <div class="info-box">
+                        <strong>Keterangan Daya Pembeda:</strong>
+                        <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                            <li><strong>DP ≥ 0.40:</strong> Sangat Baik (soal dapat membedakan dengan baik antara siswa berkemampuan tinggi dan rendah)</li>
+                            <li><strong>DP 0.30 - 0.39:</strong> Baik</li>
+                            <li><strong>DP 0.20 - 0.29:</strong> Cukup</li>
+                            <li><strong>DP 0.00 - 0.19:</strong> Jelek (soal tidak dapat membedakan kemampuan siswa)</li>
+                            <li><strong>DP < 0.00:</strong> Sangat Jelek (soal bermasalah, siswa berkemampuan rendah lebih banyak menjawab benar)</li>
+                        </ul>
+                    </div>
+                    
+                    <table id="analisisSoalTable">
+                        <thead>
+                            <tr>
+                                <th>No Soal</th>
+                                <th>Jumlah Benar</th>
+                                <th>Tingkat Kesukaran</th>
+                                <th>Kategori TK</th>
+                                <th>Daya Pembeda</th>
+                                <th>Kategori DP</th>
+                                <th>Kualitas Soal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data akan diisi oleh JavaScript -->
+                        </tbody>
+                    </table>
+                    
+                    <div class="section">
+                        <h3>Kualitas Soal Berdasarkan Tingkat Kesukaran</h3>
+                        <div class="chart-container">
+                            <canvas id="kualitasSoalChart"></canvas>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Rekomendasi Tindak Lanjut</h2>
+                    </div>
+                    
+                    <div class="section">
+                        <h3>Perbaikan Pembelajaran</h3>
+                        <ul id="rekomendasiList">
+                            <!-- Data akan diisi oleh JavaScript -->
+                        </ul>
+                    </div>
+                    
+                    <div class="section">
+                        <h3>Intervensi untuk Siswa</h3>
+                        <table id="intervensiTable">
+                            <thead>
+                                <tr>
+                                    <th>Nama Siswa</th>
+                                    <th>Nilai</th>
+                                    <th>Kategori</th>
+                                    <th>Rekomendasi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Data akan diisi oleh JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                
+                <section class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Detail Nilai Siswa</h2>
+                    </div>
+                    
+                    <table id="detailNilaiTable">
+                        <thead>
+                            <tr>
+                                <th>Nama Siswa</th>
+                                <th>Soal 1</th>
+                                <th>Soal 2</th>
+                                <th>Soal 3</th>
+                                <th>Soal 4</th>
+                                <th>Soal 5</th>
+                                <th>Soal 6</th>
+                                <th>Soal 7</th>
+                                <th>Soal 8</th>
+                                <th>Soal 9</th>
+                                <th>Soal 10</th>
+                                <th>Total Nilai</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data akan diisi oleh JavaScript -->
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+            
+            <!-- TAB BARU: Remedial & Pengayaan -->
+            <div id="remedial-pengayaan" class="tab-content">
+                <section class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Lembar Pengayaan</h2>
+                        <button id="cetak-pengayaan" class="btn btn-outline">Cetak Lembar Pengayaan</button>
+                    </div>
+                    
+                    <div id="lembar-pengayaan" class="lembar-container">
+                        <div class="lembar-header">
+                            <h2 class="lembar-title">PROGRAM PENGAYAAN</h2>
+                        </div>
+                        
+                        <div class="lembar-info">
+                            <div class="lembar-info-item">
+                                <p><strong>Satuan Pendidikan</strong> : <span id="peng-sekolah">SMA Negeri 1 Wiradesa</span></p>
+                                <p><strong>Mata Pelajaran</strong> : <span id="peng-mapel">Pendidikan Agama Islam & Budi Pekerti</span></p>
+                            </div>
+                            <div class="lembar-info-item">
+                                <p><strong>Kelas / Program</strong> : <span id="peng-kelas">X.1</span></p>
+                                <p><strong>Semester/Tapel</strong> : <span id="peng-semester">1 / 2023/2024</span></p>
+                            </div>
+                        </div>
+                        
+                        <div class="lembar-info">
+                            <div class="lembar-info-item">
+                                <p><strong>Materi/Pokok Bahasan</strong> : <span id="peng-materi">Menghindari Prilaku Ghadab, memumbuhkan Mujahadah AN Nafa dan Sajash</span></p>
+                            </div>
+                        </div>
+                        
+                        <div class="lembar-info">
+                            <div class="lembar-info-item">
+                                <p><strong>Nama Siswa yang TUNTAS</strong></p>
+                            </div>
+                        </div>
+                        
+                        <table class="lembar-table" id="tabel-siswa-pengayaan">
+                            <tbody>
+                                <!-- Data siswa tuntas akan ditampilkan di sini -->
+                            </tbody>
+                        </table>
+                        
+                        <table class="lembar-table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Materi Pembelajaran</th>
+                                    <th>Pokok-pokok Pengayaan</th>
+                                    <th>Ket</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td id="peng-materi-pembelajaran">Menghindari Prilaku Ghadab, memumbuhkan Mujahadah AN Nafa dan Sajash</td>
+                                    <td id="peng-pokok-pengayaan">Materi pengayaan lanjutan untuk siswa yang telah tuntas</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <div class="lembar-tanggal">
+                            <p>_________________ <span id="peng-tanggal-ulangan">...</span></p>
+                        </div>
+                        
+                        <div class="lembar-signature-spacing"></div>
+                        
+                        <div class="lembar-signature">
+                            <div class="lembar-signature-item">
+                                <p>Guru Mata Pelajaran</p>
+                                <div class="spasi"></div>
+                                <p id="peng-nama-guru">Chairul Umar Ma'arif, S.Pd.I</p>
+                                <div class="lembar-signature-line"></div>
+                                <p id="peng-nip-guru">NIP: 197512172023211001</p>
+                            </div>
+                            <div class="lembar-signature-item">
+                                <p>Kepala Sekolah</p>
+                                <div class="spasi"></div>
+                                <p id="peng-nama-kepsek">Drs. Heti Puryanti</p>
+                                <div class="lembar-signature-line"></div>
+                                <p id="peng-nip-kepsek">NIP: 19660219765006</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Lembar Remedial/Perbaikan</h2>
+                        <button id="cetak-remedial" class="btn btn-outline">Cetak Lembar Remedial</button>
+                    </div>
+                    
+                    <div id="lembar-remedial" class="lembar-container">
+                        <div class="lembar-header">
+                            <h2 class="lembar-title">PROGRAM PERBAIKAN</h2>
+                        </div>
+                        
+                        <table class="lembar-table">
+                            <tbody>
+                                <tr>
+                                    <td><strong>Satuan Pendidikan</strong> : <span id="rem-sekolah">SMA Negeri 1 Wiradesa</span></td>
+                                    <td><strong>Mata Pelajaran</strong> : <span id="rem-mapel">Pendidikan Agama Islam & Budi Pekerti</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Kelas / Semester</strong> : <span id="rem-kelas">X.1</span></td>
+                                    <td><strong>Semester/Tapel</strong> : <span id="rem-semester">1 / 2023/2024</span></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><strong>Materi/Pokok Bahasan</strong> : <span id="rem-materi">Menghindari Prilaku Ghadab, memumbuhkan Mujahadah An Nafs dan Saja’ah</span></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <strong>Nama Siswa</strong> : 
+                                        <span id="rem-nama-siswa">………………………………………………</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <table class="lembar-table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Butir Soal</th>
+                                    <th>Materi Pembelajaran</th>
+                                    <th>Pokok-pokok Perbaikan</th>
+                                    <th>Ket</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td id="rem-butir-soal">1 - 10</td>
+                                    <td id="rem-materi-pembelajaran">Mawaris dan kearifan lokal</td>
+                                    <td id="rem-pokok-perbaikan">
+                                        1. Carilah Literasi terkait materi Mawaris.<br>
+                                        2. Tuliskan permasalahan yang terkait Mawaris di Indonesia<br>
+                                        3. Bagaimana islam mengatur permasalahan itu.
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <div class="lembar-tanggal">
+                            <p>________________ <span id="rem-tanggal-ulangan">...</span></p>
+                        </div>
+                        
+                        <div class="lembar-signature-spacing"></div>
+                        
+                        <div class="lembar-signature">
+                            <div class="lembar-signature-item">
+                                <p>Guru Mata Pelajaran</p>
+                                <div class="spasi"></div>
+                                <p id="rem-nama-guru">Chairul Umar Ma'arif, S.Pd.I</p>
+                                <div class="lembar-signature-line"></div>
+                                <p id="rem-nip-guru">NIP: 197512172023211001</p>
+                            </div>
+                            <div class="lembar-signature-item">
+                                <p>Kepala Sekolah</p>
+                                <div class="spasi"></div>
+                                <p id="rem-nama-kepsek">Drs. Heti Puryanti</p>
+                                <div class="lembar-signature-line"></div>
+                                <p id="rem-nip-kepsek">NIP: 19660219765006</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Aplikasi Analisis Hasil Ulangan &copy; 2023 - Dibuat untuk memudahkan evaluasi pembelajaran</p>
+        </footer>
+    </div>
+
+    <!-- Library Chart.js untuk visualisasi data -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Library untuk ekspor ke Excel -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    
+    <script>
+        // Data aplikasi
+        const appData = {
+            kunciJawaban: {},
+            dataSiswa: [],
+            hasilKoreksi: [],
+            analisisSoal: []
+        };
+
+        // Elemen DOM
+        const generateBtn = document.getElementById('generateBtn');
+        const exportBtn = document.getElementById('exportBtn');
+        const tambahSiswaBtn = document.getElementById('tambah-siswa');
+        const hapusSemuaBtn = document.getElementById('hapus-semua');
+        const siswaTbody = document.getElementById('siswa-tbody');
+        const analisisSoalTable = document.getElementById('analisisSoalTable').getElementsByTagName('tbody')[0];
+        const rekomendasiList = document.getElementById('rekomendasiList');
+        const intervensiTable = document.getElementById('intervensiTable').getElementsByTagName('tbody')[0];
+        const detailNilaiTable = document.getElementById('detailNilaiTable').getElementsByTagName('tbody')[0];
+        const tabButtons = document.querySelectorAll('.tab-button');
+        
+        // Elemen untuk import Excel
+        const fileUploadArea = document.getElementById('file-upload-area');
+        const fileInput = document.getElementById('file-input');
+        const browseFileBtn = document.getElementById('browse-file-btn');
+        const downloadTemplateBtn = document.getElementById('download-template-btn');
+        const importPreview = document.getElementById('import-preview');
+        const previewTable = document.getElementById('preview-table').getElementsByTagName('tbody')[0];
+        const confirmImportBtn = document.getElementById('confirm-import-btn');
+        const cancelImportBtn = document.getElementById('cancel-import-btn');
+
+        // Elemen untuk lembar pengayaan dan remedial
+        const cetakPengayaanBtn = document.getElementById('cetak-pengayaan');
+        const cetakRemedialBtn = document.getElementById('cetak-remedial');
+        const tabelSiswaPengayaan = document.getElementById('tabel-siswa-pengayaan').getElementsByTagName('tbody')[0];
+
+        // Inisialisasi chart
+        let distribusiChart, kualitasSoalChart;
+
+        // Fungsi untuk menambah baris siswa baru
+        function tambahBarisSiswa(nama = '', jawaban = {}) {
+            const baris = document.createElement('tr');
+            const no = siswaTbody.children.length + 1;
+            
+            baris.innerHTML = `
+                <td>${no}</td>
+                <td><input type="text" class="nama-siswa" placeholder="Nama Siswa" value="${nama}"></td>
+                <td><input type="text" maxlength="1" class="jawaban" data-soal="1" placeholder="A" value="${jawaban[1] || ''}"></td>
+                <td><input type="text" maxlength="1" class="jawaban" data-soal="2" placeholder="B" value="${jawaban[2] || ''}"></td>
+                <td><input type="text" maxlength="1" class="jawaban" data-soal="3" placeholder="C" value="${jawaban[3] || ''}"></td>
+                <td><input type="text" maxlength="1" class="jawaban" data-soal="4" placeholder="D" value="${jawaban[4] || ''}"></td>
+                <td><input type="text" maxlength="1" class="jawaban" data-soal="5" placeholder="E" value="${jawaban[5] || ''}"></td>
+                <td><input type="text" maxlength="1" class="jawaban" data-soal="6" placeholder="A" value="${jawaban[6] || ''}"></td>
+                <td><input type="text" maxlength="1" class="jawaban" data-soal="7" placeholder="B" value="${jawaban[7] || ''}"></td>
+                <td><input type="text" maxlength="1" class="jawaban" data-soal="8" placeholder="C" value="${jawaban[8] || ''}"></td>
+                <td><input type="text" maxlength="1" class="jawaban" data-soal="9" placeholder="D" value="${jawaban[9] || ''}"></td>
+                <td><input type="text" maxlength="1" class="jawaban" data-soal="10" placeholder="E" value="${jawaban[10] || ''}"></td>
+                <td><button class="btn btn-small hapus-siswa">Hapus</button></td>
+            `;
+            
+            siswaTbody.appendChild(baris);
+            
+            // Tambahkan event listener untuk tombol hapus
+            baris.querySelector('.hapus-siswa').addEventListener('click', function() {
+                baris.remove();
+                updateNomorUrut();
+            });
+        }
+
+        // Fungsi untuk mengupdate nomor urut
+        function updateNomorUrut() {
+            const rows = siswaTbody.querySelectorAll('tr');
+            rows.forEach((row, index) => {
+                row.cells[0].textContent = index + 1;
+            });
+        }
+
+        // Fungsi untuk menghapus semua data siswa
+        function hapusSemuaSiswa() {
+            if (confirm('Apakah Anda yakin ingin menghapus semua data siswa?')) {
+                siswaTbody.innerHTML = '';
+            }
+        }
+
+        // Fungsi untuk mengumpulkan kunci jawaban
+        function kumpulkanKunciJawaban() {
+            const inputs = document.querySelectorAll('.kunci-jawaban');
+            appData.kunciJawaban = {};
+            
+            inputs.forEach(input => {
+                const soal = input.dataset.soal;
+                const jawaban = input.value.toUpperCase().trim();
+                appData.kunciJawaban[soal] = jawaban;
+            });
+        }
+
+        // Fungsi untuk mengumpulkan data siswa
+        function kumpulkanDataSiswa() {
+            appData.dataSiswa = [];
+            const rows = siswaTbody.querySelectorAll('tr');
+            
+            rows.forEach(row => {
+                const nama = row.querySelector('.nama-siswa').value.trim();
+                if (!nama) return; // Skip jika nama kosong
+                
+                const jawaban = {};
+                const inputs = row.querySelectorAll('.jawaban');
+                
+                inputs.forEach(input => {
+                    const soal = input.dataset.soal;
+                    jawaban[soal] = input.value.toUpperCase().trim();
+                });
+                
+                appData.dataSiswa.push({ nama, jawaban });
+            });
+        }
+
+        // Fungsi untuk melakukan koreksi
+        function lakukanKoreksi() {
+            appData.hasilKoreksi = [];
+            const bobot = parseInt(document.getElementById('bobot-soal').value) || 10;
+            
+            appData.dataSiswa.forEach(siswa => {
+                const hasil = {
+                    nama: siswa.nama,
+                    nilaiPerSoal: {},
+                    totalNilai: 0
+                };
+                
+                // Koreksi setiap soal
+                for (let i = 1; i <= 10; i++) {
+                    const kunci = appData.kunciJawaban[i];
+                    const jawabanSiswa = siswa.jawaban[i];
+                    
+                    if (jawabanSiswa === kunci) {
+                        hasil.nilaiPerSoal[i] = bobot;
+                        hasil.totalNilai += bobot;
+                    } else {
+                        hasil.nilaiPerSoal[i] = 0;
+                    }
+                }
+                
+                appData.hasilKoreksi.push(hasil);
+            });
+        }
+
+        // Fungsi untuk menghitung statistik
+        function hitungStatistik() {
+            const kkm = parseInt(document.getElementById('kkm').value) || 70;
+            const jumlahSiswa = appData.hasilKoreksi.length;
+            
+            if (jumlahSiswa === 0) {
+                return {
+                    jumlahSiswa: 0,
+                    siswaTuntas: 0,
+                    persentaseTuntas: 0,
+                    rataRata: 0,
+                    nilaiTertinggi: 0,
+                    nilaiTerendah: 0
+                };
+            }
+            
+            // Hitung jumlah siswa tuntas
+            const siswaTuntas = appData.hasilKoreksi.filter(siswa => siswa.totalNilai >= kkm).length;
+            const persentaseTuntas = ((siswaTuntas / jumlahSiswa) * 100).toFixed(1);
+            
+            // Hitung rata-rata
+            const totalNilai = appData.hasilKoreksi.reduce((sum, siswa) => sum + siswa.totalNilai, 0);
+            const rataRata = (totalNilai / jumlahSiswa).toFixed(1);
+            
+            // Nilai tertinggi dan terendah
+            const nilaiTertinggi = Math.max(...appData.hasilKoreksi.map(siswa => siswa.totalNilai));
+            const nilaiTerendah = Math.min(...appData.hasilKoreksi.map(siswa => siswa.totalNilai));
+            
+            return {
+                jumlahSiswa,
+                siswaTuntas,
+                persentaseTuntas,
+                rataRata,
+                nilaiTertinggi,
+                nilaiTerendah
+            };
+        }
+
+        // Fungsi untuk menganalisis butir soal
+        function analisisButirSoal() {
+            appData.analisisSoal = [];
+            const jumlahSiswa = appData.hasilKoreksi.length;
+            
+            if (jumlahSiswa === 0) return;
+            
+            // Hitung untuk setiap soal
+            for (let i = 1; i <= 10; i++) {
+                const jumlahBenar = appData.hasilKoreksi.filter(siswa => siswa.nilaiPerSoal[i] > 0).length;
+                const tingkatKesukaran = jumlahBenar / jumlahSiswa;
+                
+                // Tentukan kategori tingkat kesukaran
+                let kategoriTK = "";
+                if (tingkatKesukaran >= 0.7) kategoriTK = "Sangat Mudah";
+                else if (tingkatKesukaran >= 0.4) kategoriTK = "Sedang";
+                else kategoriTK = "Sangat Sulit";
+                
+                // Hitung daya pembeda
+                const dayaPembeda = hitungDayaPembeda(i, jumlahSiswa);
+                
+                // Tentukan kualitas soal
+                const kualitas = (dayaPembeda >= 0.3 && tingkatKesukaran >= 0.3 && tingkatKesukaran <= 0.7) ? "Baik" : "Perlu Revisi";
+                
+                appData.analisisSoal.push({
+                    no: i,
+                    benar: jumlahBenar,
+                    tingkatKesukaran,
+                    kategori: kategoriTK,
+                    dayaPembeda,
+                    kualitas
+                });
+            }
+        }
+
+        // Fungsi untuk menghitung daya pembeda
+        function hitungDayaPembeda(soal, jumlahSiswa) {
+            if (jumlahSiswa < 2) return 0;
+            
+            // Urutkan siswa berdasarkan total nilai
+            const siswaUrut = [...appData.hasilKoreksi].sort((a, b) => b.totalNilai - a.totalNilai);
+            
+            // Tentukan jumlah kelompok atas dan bawah (27% terbaik dan terburuk)
+            const jumlahKelompok = Math.round(jumlahSiswa * 0.27);
+            const kelompokAtas = siswaUrut.slice(0, jumlahKelompok);
+            const kelompokBawah = siswaUrut.slice(-jumlahKelompok);
+            
+            // Hitung jumlah benar di setiap kelompok
+            const benarAtas = kelompokAtas.filter(siswa => siswa.nilaiPerSoal[soal] > 0).length;
+            const benarBawah = kelompokBawah.filter(siswa => siswa.nilaiPerSoal[soal] > 0).length;
+            
+            // Hitung daya pembeda
+            return (benarAtas - benarBawah) / jumlahKelompok;
+        }
+
+        // Fungsi untuk menentukan kategori Daya Pembeda
+        function tentukanKategoriDP(dp) {
+            if (dp >= 0.40) return "Sangat Baik";
+            if (dp >= 0.30) return "Baik";
+            if (dp >= 0.20) return "Cukup";
+            if (dp >= 0.00) return "Jelek";
+            return "Sangat Jelek";
+        }
+
+        // Fungsi untuk menentukan badge Daya Pembeda
+        function tentukanBadgeDP(kategoriDP) {
+            switch(kategoriDP) {
+                case "Sangat Baik":
+                    return "badge badge-success";
+                case "Baik":
+                    return "badge badge-success";
+                case "Cukup":
+                    return "badge badge-warning";
+                case "Jelek":
+                    return "badge badge-danger";
+                case "Sangat Jelek":
+                    return "badge badge-danger";
+                default:
+                    return "badge badge-warning";
+            }
+        }
+
+        // Fungsi untuk mengisi tabel analisis soal
+        function isiTabelAnalisisSoal() {
+            analisisSoalTable.innerHTML = '';
+            
+            appData.analisisSoal.forEach(soal => {
+                const row = analisisSoalTable.insertRow();
+                
+                // Tambahkan kelas berdasarkan kualitas soal
+                if (soal.kualitas === "Baik") {
+                    row.classList.add('success-row');
+                } else {
+                    row.classList.add('warning-row');
+                }
+                
+                row.insertCell(0).textContent = soal.no;
+                row.insertCell(1).textContent = `${soal.benar}/${appData.hasilKoreksi.length}`;
+                row.insertCell(2).textContent = soal.tingkatKesukaran.toFixed(2);
+                
+                const kategoriCell = row.insertCell(3);
+                kategoriCell.textContent = soal.kategori;
+                
+                // Tambahkan badge berdasarkan kategori tingkat kesukaran
+                if (soal.kategori === "Sangat Mudah") {
+                    kategoriCell.innerHTML = `<span class="badge badge-success">${soal.kategori}</span>`;
+                } else if (soal.kategori === "Sedang") {
+                    kategoriCell.innerHTML = `<span class="badge badge-warning">${soal.kategori}</span>`;
+                } else {
+                    kategoriCell.innerHTML = `<span class="badge badge-danger">${soal.kategori}</span>`;
+                }
+                
+                // Kolom Daya Pembeda
+                const dpCell = row.insertCell(4);
+                dpCell.textContent = soal.dayaPembeda.toFixed(2);
+                
+                // Kolom Kategori Daya Pembeda
+                const kategoriDP = tentukanKategoriDP(soal.dayaPembeda);
+                const kategoriDPCell = row.insertCell(5);
+                kategoriDPCell.innerHTML = `<span class="${tentukanBadgeDP(kategoriDP)}">${kategoriDP}</span>`;
+                
+                const kualitasCell = row.insertCell(6);
+                kualitasCell.textContent = soal.kualitas;
+                
+                // Tambahkan badge berdasarkan kualitas
+                if (soal.kualitas === "Baik") {
+                    kualitasCell.innerHTML = `<span class="badge badge-success">${soal.kualitas}</span>`;
+                } else {
+                    kualitasCell.innerHTML = `<span class="badge badge-warning">${soal.kualitas}</span>`;
+                }
+            });
+        }
+
+        // Fungsi untuk membuat chart distribusi nilai
+        function buatChartDistribusi() {
+            const ctx = document.getElementById('distribusiChart').getContext('2d');
+            
+            // Hitung distribusi nilai
+            const kategori = {
+                'Sangat Baik (90-100)': 0,
+                'Baik (80-89)': 0,
+                'Cukup (70-79)': 0,
+                'Kurang (<70)': 0
+            };
+            
+            appData.hasilKoreksi.forEach(siswa => {
+                if (siswa.totalNilai >= 90) kategori['Sangat Baik (90-100)']++;
+                else if (siswa.totalNilai >= 80) kategori['Baik (80-89)']++;
+                else if (siswa.totalNilai >= 70) kategori['Cukup (70-79)']++;
+                else kategori['Kurang (<70)']++;
+            });
+            
+            if (distribusiChart) {
+                distribusiChart.destroy();
+            }
+            
+            distribusiChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(kategori),
+                    datasets: [{
+                        label: 'Jumlah Siswa',
+                        data: Object.values(kategori),
+                        backgroundColor: [
+                            'rgba(76, 201, 240, 0.7)',
+                            'rgba(67, 97, 238, 0.7)',
+                            'rgba(247, 37, 133, 0.7)',
+                            'rgba(179, 23, 158, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgb(76, 201, 240)',
+                            'rgb(67, 97, 238)',
+                            'rgb(247, 37, 133)',
+                            'rgb(179, 23, 158)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Fungsi untuk membuat chart kualitas soal
+        function buatChartKualitasSoal() {
+            const ctx = document.getElementById('kualitasSoalChart').getContext('2d');
+            
+            // Hitung jumlah soal per kategori kesukaran
+            const kategoriKesukaran = {
+                'Sangat Mudah': 0,
+                'Sedang': 0,
+                'Sangat Sulit': 0
+            };
+            
+            appData.analisisSoal.forEach(soal => {
+                kategoriKesukaran[soal.kategori]++;
+            });
+            
+            if (kualitasSoalChart) {
+                kualitasSoalChart.destroy();
+            }
+            
+            kualitasSoalChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(kategoriKesukaran),
+                    datasets: [{
+                        data: Object.values(kategoriKesukaran),
+                        backgroundColor: [
+                            'rgba(76, 201, 240, 0.7)',
+                            'rgba(67, 97, 238, 0.7)',
+                            'rgba(247, 37, 133, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgb(76, 201, 240)',
+                            'rgb(67, 97, 238)',
+                            'rgb(247, 37, 133)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value} soal (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Fungsi untuk mengisi rekomendasi
+        function isiRekomendasi() {
+            rekomendasiList.innerHTML = '';
+            
+            const kkm = parseInt(document.getElementById('kkm').value) || 70;
+            const siswaBelumTuntas = appData.hasilKoreksi.filter(siswa => siswa.totalNilai < kkm).length;
+            
+            const rekomendasi = [
+                `Lakukan remedial untuk ${siswaBelumTuntas} siswa yang belum tuntas`,
+                "Berikan bimbingan khusus untuk siswa dengan nilai di bawah KKM",
+                "Pertahankan kualitas soal yang memiliki daya pembeda baik",
+                "Revisi soal yang memiliki daya pembeda rendah",
+                "Lakukan pembelajaran diferensiasi berdasarkan level pemahaman siswa"
+            ];
+            
+            // Tambahkan rekomendasi spesifik untuk soal dengan daya pembeda rendah
+            const soalDayaPembedaRendah = appData.analisisSoal.filter(soal => soal.dayaPembeda < 0.3);
+            if (soalDayaPembedaRendah.length > 0) {
+                const nomorSoal = soalDayaPembedaRendah.map(soal => soal.no).join(', ');
+                rekomendasi.push(`Perhatikan soal nomor ${nomorSoal} yang memiliki daya pembeda rendah`);
+            }
+            
+            rekomendasi.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                li.style.marginBottom = '10px';
+                li.style.paddingLeft = '10px';
+                rekomendasiList.appendChild(li);
+            });
+        }
+
+        // Fungsi untuk mengisi tabel intervensi siswa
+        function isiTabelIntervensi() {
+            intervensiTable.innerHTML = '';
+            
+            // Urutkan siswa berdasarkan nilai (dari terendah)
+            const siswaUrut = [...appData.hasilKoreksi].sort((a, b) => a.totalNilai - b.totalNilai);
+            const kkm = parseInt(document.getElementById('kkm').value) || 70;
+            
+            siswaUrut.forEach(siswa => {
+                const row = intervensiTable.insertRow();
+                
+                row.insertCell(0).textContent = siswa.nama;
+                row.insertCell(1).textContent = siswa.totalNilai;
+                
+                const kategoriCell = row.insertCell(2);
+                let kategori = '';
+                let rekomendasi = '';
+                
+                if (siswa.totalNilai >= 90) {
+                    kategori = 'Sangat Baik';
+                    kategoriCell.innerHTML = '<span class="badge badge-success">Sangat Baik</span>';
+                    rekomendasi = 'Program pengayaan';
+                } else if (siswa.totalNilai >= 80) {
+                    kategori = 'Baik';
+                    kategoriCell.innerHTML = '<span class="badge badge-success">Baik</span>';
+                    rekomendasi = 'Tetap pertahankan';
+                } else if (siswa.totalNilai >= kkm) {
+                    kategori = 'Cukup';
+                    kategoriCell.innerHTML = '<span class="badge badge-warning">Cukup</span>';
+                    rekomendasi = 'Latihan tambahan';
+                } else {
+                    kategori = 'Perlu Perhatian';
+                    kategoriCell.innerHTML = '<span class="badge badge-danger">Perlu Perhatian</span>';
+                    rekomendasi = 'Remedial intensif';
+                }
+                
+                row.insertCell(3).textContent = rekomendasi;
+            });
+        }
+
+        // Fungsi untuk mengisi tabel detail nilai
+        function isiTabelDetailNilai() {
+            detailNilaiTable.innerHTML = '';
+            
+            appData.hasilKoreksi.forEach(siswa => {
+                const row = detailNilaiTable.insertRow();
+                
+                row.insertCell(0).textContent = siswa.nama;
+                
+                for (let i = 1; i <= 10; i++) {
+                    const cell = row.insertCell(i);
+                    cell.textContent = siswa.nilaiPerSoal[i];
+                    
+                    // Warna hijau untuk jawaban benar, merah untuk salah
+                    if (siswa.nilaiPerSoal[i] > 0) {
+                        cell.style.backgroundColor = '#d4edda';
+                    } else {
+                        cell.style.backgroundColor = '#f8d7da';
+                    }
+                }
+                
+                row.insertCell(11).textContent = siswa.totalNilai;
+            });
+        }
+
+        // ==================== FUNGSI LEMBAR PENGAYAAN DAN REMEDIAL ====================
+
+        // Fungsi untuk mengisi lembar pengayaan
+        function isiLembarPengayaan() {
+            // Update informasi sekolah
+            document.getElementById('peng-sekolah').textContent = document.getElementById('nama-sekolah').value;
+            document.getElementById('peng-mapel').textContent = document.getElementById('mata-pelajaran').value;
+            document.getElementById('peng-kelas').textContent = document.getElementById('kelas').value;
+            document.getElementById('peng-semester').textContent = `${document.getElementById('semester').value} / ${document.getElementById('tahun-pelajaran').value}`;
+            document.getElementById('peng-materi').textContent = document.getElementById('materi-pelajaran').value;
+            document.getElementById('peng-materi-pembelajaran').textContent = document.getElementById('materi-pelajaran').value;
+            document.getElementById('peng-pokok-pengayaan').textContent = document.getElementById('materi-pengayaan').value;
+            document.getElementById('peng-nama-guru').textContent = document.getElementById('nama-guru').value;
+            document.getElementById('peng-nip-guru').textContent = `NIP: ${document.getElementById('nip-guru').value}`;
+            document.getElementById('peng-nama-kepsek').textContent = document.getElementById('nama-kepsek').value;
+            document.getElementById('peng-nip-kepsek').textContent = `NIP: ${document.getElementById('nip-kepsek').value}`;
+const inputTanggal = document.getElementById('tanggal-ulangan').value;
+const dateObj = new Date(inputTanggal);
+
+// Array nama bulan
+const bulan = [
+  "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+  "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+];
+
+// Format tanggal
+const tgl2 = dateObj.getDate();
+const bln2 = bulan[dateObj.getMonth()];
+const thn2 = dateObj.getFullYear();
+
+const tanggalFormat = `${tgl2}-${bln2}-${thn2}`;
+
+            document.getElementById('peng-tanggal-ulangan').textContent = tanggalFormat;
+            
+            // Isi daftar siswa yang tuntas
+            const kkm = parseInt(document.getElementById('kkm').value) || 70;
+            const siswaTuntas = appData.hasilKoreksi.filter(siswa => siswa.totalNilai >= kkm);
+            
+            tabelSiswaPengayaan.innerHTML = '';
+            
+            // Format daftar siswa dalam 2 kolom
+            const barisPerKolom = Math.ceil(siswaTuntas.length / 2);
+            
+            for (let i = 0; i < barisPerKolom; i++) {
+                const baris = tabelSiswaPengayaan.insertRow();
+                
+                // Kolom kiri
+                const kolomKiri = baris.insertCell(0);
+                if (i < siswaTuntas.length) {
+                    kolomKiri.textContent = `${i + 1}. ${siswaTuntas[i].nama}`;
+                }
+                
+                // Kolom kanan
+                const kolomKanan = baris.insertCell(1);
+                if (i + barisPerKolom < siswaTuntas.length) {
+                    kolomKanan.textContent = `${i + barisPerKolom + 1}. ${siswaTuntas[i + barisPerKolom].nama}`;
+                }
+            }
+        }
+
+        // Fungsi untuk mengisi lembar remedial
+        function isiLembarRemedial() {
+            // Update informasi sekolah
+            document.getElementById('rem-sekolah').textContent = document.getElementById('nama-sekolah').value;
+            document.getElementById('rem-mapel').textContent = document.getElementById('mata-pelajaran').value;
+            document.getElementById('rem-kelas').textContent = document.getElementById('kelas').value;
+            document.getElementById('rem-semester').textContent = `${document.getElementById('semester').value} / ${document.getElementById('tahun-pelajaran').value}`;
+            document.getElementById('rem-materi').textContent = document.getElementById('materi-pelajaran').value;
+            document.getElementById('rem-materi-pembelajaran').textContent = "Mawaris dan kearifan lokal";
+            document.getElementById('rem-pokok-perbaikan').innerHTML = document.getElementById('soal-remedial').value.replace(/\n/g, '<br>');
+            document.getElementById('rem-nama-guru').textContent = document.getElementById('nama-guru').value;
+            document.getElementById('rem-nip-guru').textContent = `NIP: ${document.getElementById('nip-guru').value}`;
+            document.getElementById('rem-nama-kepsek').textContent = document.getElementById('nama-kepsek').value;
+            document.getElementById('rem-nip-kepsek').textContent = `NIP: ${document.getElementById('nip-kepsek').value}`;
+
+const inputTanggal = document.getElementById('tanggal-ulangan').value;
+const dateObj = new Date(inputTanggal);
+
+// Array nama bulan
+const bulan = [
+  "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+  "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+];
+
+// Format tanggal
+const tgl2 = dateObj.getDate();
+const bln2 = bulan[dateObj.getMonth()];
+const thn2 = dateObj.getFullYear();
+
+const tanggalFormat = `${tgl2}-${bln2}-${thn2}`;
+document.getElementById('rem-tanggal-ulangan').textContent = tanggalFormat;
+            
+            // Isi daftar siswa yang belum tuntas
+            const kkm = parseInt(document.getElementById('kkm').value) || 70;
+            const siswaBelumTuntas = appData.hasilKoreksi.filter(siswa => siswa.totalNilai < kkm);
+            
+            let namaSiswaText = '';
+            siswaBelumTuntas.forEach((siswa, index) => {
+                namaSiswaText += `${index + 1}. ${siswa.nama}`;
+                if (index < siswaBelumTuntas.length - 1) {
+                    namaSiswaText += ', ';
+                }
+            });
+            
+            document.getElementById('rem-nama-siswa').textContent = namaSiswaText || '  ';
+        }
+
+        // Fungsi untuk mencetak lembar pengayaan
+        function cetakLembarPengayaan() {
+            const printContent = document.getElementById('lembar-pengayaan').innerHTML;
+            const originalContent = document.body.innerHTML;
+            
+            document.body.innerHTML = printContent;
+            window.print();
+            document.body.innerHTML = originalContent;
+            location.reload(); // Untuk mengembalikan fungsi JavaScript
+        }
+
+        // Fungsi untuk mencetak lembar remedial
+        function cetakLembarRemedial() {
+            const printContent = document.getElementById('lembar-remedial').innerHTML;
+            const originalContent = document.body.innerHTML;
+            
+            document.body.innerHTML = printContent;
+            window.print();
+            document.body.innerHTML = originalContent;
+            location.reload(); // Untuk mengembalikan fungsi JavaScript
+        }
+
+        // Fungsi untuk mengekspor ke Excel
+        function eksporKeExcel() {
+            // Buat workbook baru
+            const wb = XLSX.utils.book_new();
+            
+            // Sheet 1: Ringkasan
+            const ringkasanData = [
+                ["LAPORAN ANALISIS HASIL ULANGAN"],
+                [""],
+                ["Nama Sekolah", document.getElementById('nama-sekolah').value],
+                ["Kelas", document.getElementById('kelas').value],
+                ["Semester", document.getElementById('semester').value],
+                ["Tahun Pelajaran", document.getElementById('tahun-pelajaran').value],
+                ["Tanggal Ulangan", document.getElementById('tanggal-ulangan').value],
+                ["Mata Pelajaran", document.getElementById('mata-pelajaran').value],
+                ["Materi Pelajaran", document.getElementById('materi-pelajaran').value],
+                ["Guru", document.getElementById('nama-guru').value],
+                ["NIP Guru", document.getElementById('nip-guru').value],
+                ["Kepala Sekolah", document.getElementById('nama-kepsek').value],
+                ["NIP Kepala Sekolah", document.getElementById('nip-kepsek').value],
+                [""],
+                ["STATISTIK HASIL ULANGAN"],
+                ["Jumlah Siswa", appData.hasilKoreksi.length],
+                ["Rata-rata Kelas", document.getElementById('rataRata').textContent],
+                ["Ketuntasan Klasikal", document.getElementById('persentaseTuntas').textContent],
+                ["Nilai Tertinggi", document.getElementById('nilaiTertinggi').textContent],
+                [""]
+            ];
+            
+            const ws_ringkasan = XLSX.utils.aoa_to_sheet(ringkasanData);
+            XLSX.utils.book_append_sheet(wb, ws_ringkasan, "Ringkasan");
+            
+            // Sheet 2: Analisis Butir Soal
+            const headerSoal = ["No Soal", "Jumlah Benar", "Tingkat Kesukaran", "Kategori TK", "Daya Pembeda", "Kategori DP", "Kualitas"];
+            const dataSoal = appData.analisisSoal.map(soal => [
+                soal.no,
+                `${soal.benar}/${appData.hasilKoreksi.length}`,
+                soal.tingkatKesukaran.toFixed(2),
+                soal.kategori,
+                soal.dayaPembeda.toFixed(2),
+                tentukanKategoriDP(soal.dayaPembeda),
+                soal.kualitas
+            ]);
+            
+            const ws_soal = XLSX.utils.aoa_to_sheet([headerSoal, ...dataSoal]);
+            XLSX.utils.book_append_sheet(wb, ws_soal, "Analisis Soal");
+            
+            // Sheet 3: Detail Nilai Siswa
+            const headerDetail = ["Nama Siswa", "Soal 1", "Soal 2", "Soal 3", "Soal 4", "Soal 5", "Soal 6", "Soal 7", "Soal 8", "Soal 9", "Soal 10", "Total Nilai"];
+            const dataDetail = appData.hasilKoreksi.map(siswa => [
+                siswa.nama,
+                siswa.nilaiPerSoal[1],
+                siswa.nilaiPerSoal[2],
+                siswa.nilaiPerSoal[3],
+                siswa.nilaiPerSoal[4],
+                siswa.nilaiPerSoal[5],
+                siswa.nilaiPerSoal[6],
+                siswa.nilaiPerSoal[7],
+                siswa.nilaiPerSoal[8],
+                siswa.nilaiPerSoal[9],
+                siswa.nilaiPerSoal[10],
+                siswa.totalNilai
+            ]);
+            
+            const ws_detail = XLSX.utils.aoa_to_sheet([headerDetail, ...dataDetail]);
+            XLSX.utils.book_append_sheet(wb, ws_detail, "Detail Nilai");
+            
+            // Sheet 4: Program Pengayaan
+            const kkm = parseInt(document.getElementById('kkm').value) || 70;
+            const siswaTuntas = appData.hasilKoreksi.filter(siswa => siswa.totalNilai >= kkm);
+            
+            const headerPengayaan = ["PROGRAM PENGAYAAN"];
+            const infoPengayaan = [
+                ["Satuan Pendidikan", document.getElementById('nama-sekolah').value],
+                ["Mata Pelajaran", document.getElementById('mata-pelajaran').value],
+                ["Kelas / Program", document.getElementById('kelas').value],
+                ["Semester/Tapel", `${document.getElementById('semester').value} / ${document.getElementById('tahun-pelajaran').value}`],
+                ["Materi/Pokok Bahasan", document.getElementById('materi-pelajaran').value],
+                [""],
+                ["Nama Siswa yang TUNTAS"]
+            ];
+            
+            const siswaPengayaan = siswaTuntas.map((siswa, index) => [`${index + 1}. ${siswa.nama}`]);
+            
+            const ws_pengayaan = XLSX.utils.aoa_to_sheet([headerPengayaan, ...infoPengayaan, ...siswaPengayaan]);
+            XLSX.utils.book_append_sheet(wb, ws_pengayaan, "Program Pengayaan");
+            
+            // Sheet 5: Program Remedial
+            const siswaBelumTuntas = appData.hasilKoreksi.filter(siswa => siswa.totalNilai < kkm);
+            
+            const headerRemedial = ["PROGRAM PERBAIKAN"];
+            const infoRemedial = [
+                ["Satuan Pendidikan", document.getElementById('nama-sekolah').value],
+                ["Mata Pelajaran", document.getElementById('mata-pelajaran').value],
+                ["Kelas / Semester", document.getElementById('kelas').value],
+                ["Semester/Tapel", `${document.getElementById('semester').value} / ${document.getElementById('tahun-pelajaran').value}`],
+                ["Materi/Pokok Bahasan", document.getElementById('materi-pelajaran').value],
+                [""],
+                ["Nama Siswa"]
+            ];
+            
+            const siswaRemedial = siswaBelumTuntas.map((siswa, index) => [`${index + 1}. ${siswa.nama}`]);
+            
+            const ws_remedial = XLSX.utils.aoa_to_sheet([headerRemedial, ...infoRemedial, ...siswaRemedial]);
+            XLSX.utils.book_append_sheet(wb, ws_remedial, "Program Remedial");
+            
+            // Simpan file
+            XLSX.writeFile(wb, "Laporan_Analisis_Hasil_Ulangan.xlsx");
+        }
+
+        // Fungsi untuk beralih tab
+        function switchTab(tabName) {
+            // Sembunyikan semua tab content
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Tampilkan tab yang dipilih
+            document.getElementById(tabName).classList.add('active');
+            
+            // Update tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+        }
+
+        // ==================== FUNGSI IMPORT EXCEL ====================
+
+        // Fungsi untuk membuat template Excel
+        function buatTemplateExcel() {
+            // Buat workbook baru
+            const wb = XLSX.utils.book_new();
+            
+            // Sheet 1: Data Siswa
+            const header = ["Nama Siswa", "Soal 1", "Soal 2", "Soal 3", "Soal 4", "Soal 5", "Soal 6", "Soal 7", "Soal 8", "Soal 9", "Soal 10"];
+            const dataContoh = [
+                ["Adinda Ainun Mahya", "A", "B", "C", "D", "E", "A", "B", "C", "D", "E"],
+                ["Ahmad Faesol Al Mursyidi", "A", "B", "C", "D", "E", "A", "B", "C", "D", "E"],
+                ["Andika Elvan Zani", "A", "B", "C", "D", "E", "A", "B", "C", "D", "E"]
+            ];
+            
+            const ws_data = XLSX.utils.aoa_to_sheet([header, ...dataContoh]);
+            XLSX.utils.book_append_sheet(wb, ws_data, "Data Siswa");
+            
+            // Sheet 2: Petunjuk
+            const petunjuk = [
+                ["PETUNJUK PENGGUNAAN TEMPLATE"],
+                [""],
+                ["1. Isi kolom 'Nama Siswa' dengan nama siswa"],
+                ["2. Isi kolom 'Soal 1' sampai 'Soal 10' dengan jawaban siswa (A, B, C, D, atau E)"],
+                ["3. Jangan mengubah urutan kolom"],
+                ["4. Simpan file dan upload ke aplikasi"],
+                [""],
+                ["Contoh format:"],
+                ["Nama Siswa", "Soal 1", "Soal 2", "Soal 3", "Soal 4", "Soal 5", "Soal 6", "Soal 7", "Soal 8", "Soal 9", "Soal 10"],
+                ["Adinda Ainun Mahya", "A", "B", "C", "D", "E", "A", "B", "C", "D", "E"]
+            ];
+            
+            const ws_petunjuk = XLSX.utils.aoa_to_sheet(petunjuk);
+            XLSX.utils.book_append_sheet(wb, ws_petunjuk, "Petunjuk");
+            
+            // Simpan file
+            XLSX.writeFile(wb, "Template_Data_Siswa.xlsx");
+        }
+
+        // Fungsi untuk memproses file Excel yang diupload
+        function prosesFileExcel(file) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                
+                // Ambil sheet pertama
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
+                
+                // Konversi ke JSON
+                const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                
+                // Validasi data
+                if (jsonData.length < 2) {
+                    alert('File Excel tidak berisi data yang valid. Pastikan file memiliki header dan setidaknya satu baris data.');
+                    return;
+                }
+                
+                // Ambil header
+                const header = jsonData[0];
+                
+                // Validasi header
+                const expectedHeader = ["Nama Siswa", "Soal 1", "Soal 2", "Soal 3", "Soal 4", "Soal 5", "Soal 6", "Soal 7", "Soal 8", "Soal 9", "Soal 10"];
+                let isValidHeader = true;
+                
+                for (let i = 0; i < expectedHeader.length; i++) {
+                    if (header[i] !== expectedHeader[i]) {
+                        isValidHeader = false;
+                        break;
+                    }
+                }
+                
+                if (!isValidHeader) {
+                    alert('Format header tidak sesuai. Pastikan menggunakan template yang disediakan.');
+                    return;
+                }
+                
+                // Tampilkan preview
+                tampilkanPreview(jsonData);
+            };
+            
+            reader.readAsArrayBuffer(file);
+        }
+
+        // Fungsi untuk menampilkan preview data
+        function tampilkanPreview(data) {
+            // Kosongkan tabel preview
+            previewTable.innerHTML = '';
+            
+            // Tampilkan data (maksimal 10 baris untuk preview)
+            const maxRows = Math.min(data.length, 11); // Header + 10 baris data
+            
+            for (let i = 1; i < maxRows; i++) {
+                const row = previewTable.insertRow();
+                
+                for (let j = 0; j < data[i].length; j++) {
+                    const cell = row.insertCell();
+                    cell.textContent = data[i][j] || '';
+                }
+            }
+            
+            if (data.length > 11) {
+                const row = previewTable.insertRow();
+                const cell = row.insertCell();
+                cell.colSpan = 11;
+                cell.textContent = `... dan ${data.length - 11} baris lainnya`;
+                cell.style.textAlign = 'center';
+                cell.style.fontStyle = 'italic';
+            }
+            
+            // Simpan data untuk digunakan nanti
+            window.importedData = data;
+            
+            // Tampilkan preview
+            importPreview.classList.remove('hidden');
+        }
+
+        // Fungsi untuk mengkonfirmasi import data
+        function konfirmasiImport() {
+            const data = window.importedData;
+            
+            if (!data || data.length < 2) {
+                alert('Tidak ada data yang valid untuk diimpor.');
+                return;
+            }
+            
+            // Hapus semua data siswa yang ada
+            hapusSemuaSiswa();
+            
+            // Impor data baru
+            for (let i = 1; i < data.length; i++) {
+                const row = data[i];
+                if (row.length < 11) continue; // Skip baris yang tidak lengkap
+                
+                const nama = row[0];
+                const jawaban = {};
+                
+                for (let j = 1; j <= 10; j++) {
+                    jawaban[j] = row[j] || '';
+                }
+                
+                tambahBarisSiswa(nama, jawaban);
+            }
+            
+            // Sembunyikan preview
+            importPreview.classList.add('hidden');
+            
+            // Reset file input
+            fileInput.value = '';
+            
+            alert(`Berhasil mengimpor ${data.length - 1} data siswa.`);
+        }
+
+        // Fungsi untuk membatalkan import
+        function batalkanImport() {
+            importPreview.classList.add('hidden');
+            fileInput.value = '';
+        }
+
+        // Event listener untuk tombol generate
+        generateBtn.addEventListener('click', function() {
+            // Kumpulkan data
+            kumpulkanKunciJawaban();
+            kumpulkanDataSiswa();
+            
+            // Validasi
+            if (Object.keys(appData.kunciJawaban).length === 0) {
+                alert('Harap isi kunci jawaban terlebih dahulu!');
+                return;
+            }
+            
+            if (appData.dataSiswa.length === 0) {
+                alert('Harap tambahkan data siswa terlebih dahulu!');
+                return;
+            }
+            
+            // Lakukan koreksi
+            lakukanKoreksi();
+            
+            // Hitung statistik
+            const statistik = hitungStatistik();
+            
+            // Update elemen statistik
+            document.getElementById('rataRata').textContent = statistik.rataRata;
+            document.getElementById('persentaseTuntas').textContent = `${statistik.persentaseTuntas}%`;
+            document.getElementById('nilaiTertinggi').textContent = statistik.nilaiTertinggi;
+            
+            // Analisis butir soal
+            analisisButirSoal();
+            
+            // Isi data
+            isiTabelAnalisisSoal();
+            buatChartDistribusi();
+            buatChartKualitasSoal();
+            isiRekomendasi();
+            isiTabelIntervensi();
+            isiTabelDetailNilai();
+            
+            // Isi lembar pengayaan dan remedial
+            isiLembarPengayaan();
+            isiLembarRemedial();
+            
+            // Beralih ke tab hasil
+            switchTab('analysis-results');
+        });
+
+        // Event listener untuk tombol ekspor
+        exportBtn.addEventListener('click', eksporKeExcel);
+
+        // Event listener untuk tombol tambah siswa
+        tambahSiswaBtn.addEventListener('click', () => tambahBarisSiswa());
+
+        // Event listener untuk tombol hapus semua
+        hapusSemuaBtn.addEventListener('click', hapusSemuaSiswa);
+
+        // Event listener untuk tab buttons
+        tabButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const tabName = this.dataset.tab;
+                switchTab(tabName);
+            });
+        });
+
+        // Event listener untuk tombol cetak pengayaan dan remedial
+        cetakPengayaanBtn.addEventListener('click', cetakLembarPengayaan);
+        cetakRemedialBtn.addEventListener('click', cetakLembarRemedial);
+
+        // ==================== EVENT LISTENER UNTUK IMPORT EXCEL ====================
+
+        // Event listener untuk tombol browse file
+        browseFileBtn.addEventListener('click', () => fileInput.click());
+
+        // Event listener untuk input file
+        fileInput.addEventListener('change', function(e) {
+            if (this.files.length > 0) {
+                prosesFileExcel(this.files[0]);
+            }
+        });
+
+        // Event listener untuk drag and drop
+        fileUploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+
+        fileUploadArea.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+        });
+
+        fileUploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            
+            if (e.dataTransfer.files.length > 0) {
+                fileInput.files = e.dataTransfer.files;
+                prosesFileExcel(e.dataTransfer.files[0]);
+            }
+        });
+
+        // Event listener untuk download template
+        downloadTemplateBtn.addEventListener('click', buatTemplateExcel);
+
+        // Event listener untuk konfirmasi import
+        confirmImportBtn.addEventListener('click', konfirmasiImport);
+
+        // Event listener untuk batal import
+        cancelImportBtn.addEventListener('click', batalkanImport);
+
+        // Inisialisasi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set tanggal hari ini sebagai default
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('tanggal-ulangan').value = today;
+            
+            // Tambahkan 3 baris siswa default
+            for (let i = 0; i < 3; i++) {
+                tambahBarisSiswa();
+            }
+            
+            // Isi kunci jawaban default
+            const kunciInputs = document.querySelectorAll('.kunci-jawaban');
+            kunciInputs.forEach((input, index) => {
+                const huruf = ['A', 'B', 'C', 'D', 'A', 'B', 'C', 'D', 'A', 'B'];
+                input.value = huruf[index];
+            });
+            
+            // Isi data contoh untuk lembar remedial
+            isiLembarRemedial();
+        });
+    </script>
+</body>
+</html>
