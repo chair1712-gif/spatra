@@ -1,0 +1,1511 @@
+  <!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LMS Modern - Learning Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --danger: #e63946;
+            --warning: #fca311;
+            --info: #4895ef;
+            --border-radius: 12px;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fb;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Login & Register Styles */
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 20px;
+        }
+
+        .auth-box {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 450px;
+            overflow: hidden;
+        }
+
+        .auth-header {
+            background: var(--primary);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .auth-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .auth-header p {
+            opacity: 0.9;
+        }
+
+        .auth-body {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+            outline: none;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .btn-sm {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .auth-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            display: none;
+        }
+
+        .dashboard-header {
+            background: white;
+            box-shadow: var(--shadow);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info {
+            margin-right: 15px;
+            text-align: right;
+        }
+
+        .user-name {
+            font-weight: 600;
+        }
+
+        .user-role {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .logout-btn {
+            background: var(--light);
+            color: var(--dark);
+            padding: 8px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .logout-btn:hover {
+            background: #e9ecef;
+        }
+
+        .dashboard-content {
+            display: flex;
+            margin-top: 30px;
+            gap: 30px;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            height: fit-content;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .menu-item {
+            margin-bottom: 10px;
+        }
+
+        .menu-item a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .menu-item a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .menu-item a:hover, .menu-item a.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .main-content {
+            flex: 1;
+        }
+
+        .welcome-card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .welcome-card h2 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .progress-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .progress-card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 10px;
+            text-align: center;
+        }
+
+        .progress-title {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            color: var(--gray);
+        }
+
+        .circle-progress {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 15px;
+        }
+
+        .circle-progress svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .circle-progress-bg {
+            fill: none;
+            stroke: #e9ecef;
+            stroke-width: 8;
+        }
+
+        .circle-progress-fill {
+            fill: none;
+            stroke: var(--primary);
+            stroke-width: 8;
+            stroke-linecap: round;
+            stroke-dasharray: 314;
+            stroke-dashoffset: 314;
+            transition: stroke-dashoffset 1s ease;
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .tab-container {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .tab-header {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 15px 25px;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gray);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--primary);
+        }
+
+        .tab-content {
+            padding: 25px;
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        .exercise-card {
+            border: 1px solid #e9ecef;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .exercise-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .exercise-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .exercise-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .exercise-description {
+            margin-bottom: 15px;
+            color: var(--gray);
+        }
+
+        .answer-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .answer-btn:hover {
+            background: var(--secondary);
+        }
+
+        .submit-btn {
+            margin-top: 15px;
+            width: auto;
+            padding: 10px 20px;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .quiz-option:hover {
+            background: #f8f9fa;
+        }
+
+        .quiz-option input {
+            margin-right: 10px;
+        }
+
+        .scale-container {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+        }
+
+        .scale-point {
+            text-align: center;
+            flex: 1;
+            padding: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            border-radius: 8px;
+        }
+
+        .scale-point:hover {
+            background: #f8f9fa;
+        }
+
+        .scale-point input {
+            display: none;
+        }
+
+        .scale-point label {
+            display: block;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--gray);
+        }
+
+        .scale-point input:checked + label {
+            color: var(--primary);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .answer-area {
+            width: 100%;
+            min-height: 200px;
+            padding: 15px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            resize: vertical;
+            transition: var(--transition);
+        }
+
+        .answer-area:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+            outline: none;
+        }
+
+        /* Evaluasi Styles */
+        .evaluasi-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .soal-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .soal-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+            background: white;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .soal-btn:hover {
+            background: #f8f9fa;
+        }
+
+        .soal-btn.answered {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        .soal-btn.current {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.3);
+        }
+
+        .soal-container {
+            margin-bottom: 30px;
+        }
+
+        .soal-text {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .dashboard-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .progress-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .tab-header {
+                flex-wrap: wrap;
+            }
+            
+            .tab-btn {
+                flex: 1;
+                min-width: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Form -->
+    <div class="auth-container" id="login-container">
+        <div class="auth-box">
+            <div class="auth-header">
+                <h1><i class="fas fa-graduation-cap"></i> LMS Modern</h1>
+                <p>Masuk ke akun Anda</p>
+            </div>
+            <div class="auth-body">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" class="form-control" placeholder="Masukkan username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="Masukkan password">
+                </div>
+                <button class="btn" id="login-btn">Masuk</button>
+                <div class="auth-footer">
+                    <p>Belum punya akun? <a href="#" id="show-register">Daftar di sini</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Form -->
+    <div class="auth-container" id="register-container" style="display: none;">
+        <div class="auth-box">
+            <div class="auth-header">
+                <h1><i class="fas fa-user-plus"></i> Daftar Akun Baru</h1>
+                <p>Buat akun untuk mengakses materi</p>
+            </div>
+            <div class="auth-body">
+                <div class="form-group">
+                    <label for="reg-name">Nama Lengkap</label>
+                    <input type="text" id="reg-name" class="form-control" placeholder="Masukkan nama lengkap">
+                </div>
+                <div class="form-group">
+                    <label for="reg-email">Email</label>
+                    <input type="email" id="reg-email" class="form-control" placeholder="Masukkan email">
+                </div>
+                <div class="form-group">
+                    <label for="reg-username">Username</label>
+                    <input type="text" id="reg-username" class="form-control" placeholder="Buat username">
+                </div>
+                <div class="form-group">
+                    <label for="reg-password">Password</label>
+                    <input type="password" id="reg-password" class="form-control" placeholder="Buat password">
+                </div>
+                <button class="btn" id="register-btn">Daftar</button>
+                <div class="auth-footer">
+                    <p>Sudah punya akun? <a href="#" id="show-login">Masuk di sini</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <header class="dashboard-header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <i class="fas fa-graduation-cap"></i> LMS Modern
+                    </div>
+                    <div class="user-menu">
+                        <div class="user-info">
+                            <div class="user-name" id="dashboard-username">Admin</div>
+                            <div class="user-role">Student</div>
+                        </div>
+                        <a href="#" class="logout-btn" id="logout-btn">
+                            <i class="fas fa-sign-out-alt"></i> Keluar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="dashboard-content">
+                <aside class="sidebar">
+                    <ul class="sidebar-menu">
+                        <li class="menu-item">
+                            <a href="#" class="active" data-tab="dashboard-tab">
+                                <i class="fas fa-home"></i> Dashboard
+                            </a>
+                        </li>
+                        <!-- Menu items will be generated dynamically -->
+                    </ul>
+                </aside>
+
+                <main class="main-content">
+                    <!-- Dashboard Tab -->
+                    <div class="tab-pane active" id="dashboard-tab">
+                        <div class="welcome-card">
+                            <h2>Selamat Datang di LMS Modern!</h2>
+                            <p>Platform pembelajaran online dengan materi lengkap dan latihan interaktif untuk meningkatkan pemahaman Anda.</p>
+                        </div>
+
+                        <div class="progress-section">
+                            <div class="progress-card">
+                                <div class="progress-title">Progress Bab 1</div>
+                                <div class="circle-progress">
+                                    <svg>
+                                        <circle class="circle-progress-bg" cx="60" cy="60" r="50"></circle>
+                                        <circle class="circle-progress-fill" cx="60" cy="60" r="50" data-progress="40"></circle>
+                                    </svg>
+                                    <div class="progress-text">40%</div>
+                                </div>
+                                <p>Literasi Gambar: Selesai</p>
+                            </div>
+
+                            <div class="progress-card">
+                                <div class="progress-title">Progress Bab 2</div>
+                                <div class="circle-progress">
+                                    <svg>
+                                        <circle class="circle-progress-bg" cx="60" cy="60" r="50"></circle>
+                                        <circle class="circle-progress-fill" cx="60" cy="60" r="50" data-progress="20"></circle>
+                                    </svg>
+                                    <div class="progress-text">20%</div>
+                                </div>
+                                <p>Literasi Teks: Dalam Proses</p>
+                            </div>
+
+                            <div class="progress-card">
+                                <div class="progress-title">Progress Bab 3</div>
+                                <div class="circle-progress">
+                                    <svg>
+                                        <circle class="circle-progress-bg" cx="60" cy="60" r="50"></circle>
+                                        <circle class="circle-progress-fill" cx="60" cy="60" r="50" data-progress="0"></circle>
+                                    </svg>
+                                    <div class="progress-text">0%</div>
+                                </div>
+                                <p>Belum Dimulai</p>
+                            </div>
+                            
+                            <div class="progress-card">
+                                <div class="progress-title">Progress Bab 3</div>
+                                <div class="circle-progress">
+                                    <svg>
+                                        <circle class="circle-progress-bg" cx="60" cy="60" r="50"></circle>
+                                        <circle class="circle-progress-fill" cx="60" cy="60" r="50" data-progress="0"></circle>
+                                    </svg>
+                                    <div class="progress-text">0%</div>
+                                </div>
+                                <p>Belum Dimulai</p>
+                            </div>
+                            
+                            <div class="progress-card">
+                                <div class="progress-title">Progress Bab 3</div>
+                                <div class="circle-progress">
+                                    <svg>
+                                        <circle class="circle-progress-bg" cx="60" cy="60" r="50"></circle>
+                                        <circle class="circle-progress-fill" cx="60" cy="60" r="50" data-progress="0"></circle>
+                                    </svg>
+                                    <div class="progress-text">0%</div>
+                                </div>
+                                <p>Belum Dimulai</p>
+                            </div>
+                        </div>
+
+                        <div class="welcome-card">
+                            <h3>Cuplikan Materi & Cara Kerja</h3>
+                            <p><strong>Bab 1 - Pengenalan:</strong> Memahami konsep dasar literasi visual dan tekstual dalam konteks pembelajaran modern.</p>
+                            <p><strong>Cara Kerja:</strong></p>
+                            <ol>
+                                <li>Pilih bab yang ingin dipelajari dari menu sidebar</li>
+                                <li>Kerjakan latihan literasi (gambar, teks, opini) yang tersedia</li>
+                                <li>Ikuti evaluasi dengan soal pilihan ganda</li>
+                                <li>Isi kuis perilaku untuk melatih respon sikap</li>
+                                <li>Lihat progress belajar Anda di dashboard</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Bab Tabs -->
+                    <!-- Content will be generated by JavaScript -->
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Answer Input -->
+    <div class="modal" id="answer-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">Jawab Pertanyaan</h3>
+                <button class="close-modal" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-description"></div>
+                <textarea class="answer-area" id="modal-answer" placeholder="Tulis jawaban Anda di sini..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-sm" id="cancel-modal">Batal</button>
+                <button class="btn btn-sm" id="submit-modal">Kirim Jawaban</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Template for all tabs
+        const tabTemplates = [
+            {
+                "id": "literasi-gambar",
+                "title": "Literasi Gambar",
+                "icon": "fas fa-image",
+                "type": "modal",
+                "content": {
+                    "description": "Perhatikan gambar berikut dan analisislah makna yang terkandung di dalamnya. Jelaskan pendapat Anda mengenai pesan yang ingin disampaikan melalui gambar ini.",
+                    "image": true
+                }
+            },
+            {
+                "id": "literasi-teks",
+                "title": "Literasi Teks",
+                "icon": "fas fa-file-alt",
+                "type": "modal",
+                "content": {
+                    "description": "Bacalah teks berikut dengan saksama: 'Literasi digital menjadi keterampilan penting di era modern. Kemampuan untuk menemukan, mengevaluasi, dan menggunakan informasi digital dengan efektif menentukan kesuksesan dalam banyak aspek kehidupan, termasuk pendidikan dan pekerjaan.' Buatlah rangkuman dari teks tersebut dan jelaskan mengapa literasi digital penting menurut Anda."
+                }
+            },
+            {
+                "id": "opini",
+                "title": "Opini/Pemahaman Awal",
+                "icon": "fas fa-comment",
+                "type": "modal",
+                "content": {
+                    "description": "Perhatikan kasus berikut: Seorang siswa selalu mengerjakan tugas tepat waktu dan membantu teman-temannya yang kesulitan memahami materi. Namun, dia cenderung menghindari kegiatan kelompok dan lebih memilih bekerja sendiri. Berdasarkan kasus di atas, berikan pendapat Anda mengenai kelebihan dan kelemahan perilaku siswa tersebut."
+                }
+            },
+            {
+                "id": "konsep-dasar",
+                "title": "Konsep Dasar",
+                "icon": "fas fa-lightbulb",
+                "type": "modal",
+                "content": {
+                    "description": "Jelaskan konsep dasar yang telah Anda pelajari dalam bab ini dan bagaimana konsep tersebut saling berkaitan."
+                }
+            },
+            {
+                "id": "penerapan-perilaku",
+                "title": "Penerapan Perilaku",
+                "icon": "fas fa-user-check",
+                "type": "modal",
+                "content": {
+                    "description": "Bagaimana Anda akan menerapkan konsep dasar yang telah dipelajari dalam kegiatan belajar sehari-hari?"
+                }
+            },
+            {
+                "id": "evaluasi",
+                "title": "Evaluasi",
+                "icon": "fas fa-clipboard-check",
+                "type": "evaluasi",
+                "content": {
+                    "questions": [
+                        {
+                            "id": 1,
+                            "question": "Apa yang dimaksud dengan konsep dasar?",
+                            "options": [
+                                "Ide utama yang menjadi fondasi pemahaman",
+                                "Informasi tambahan yang tidak penting",
+                                "Ringkasan dari seluruh materi",
+                                "Contoh-contoh penerapan"
+                            ],
+                            "correct": 0
+                        },
+                        {
+                            "id": 2,
+                            "question": "Manakah yang BUKAN termasuk komponen literasi informasi?",
+                            "options": [
+                                "Mengidentifikasi kebutuhan informasi",
+                                "Mengevaluasi kredibilitas sumber",
+                                "Menggunakan informasi secara efektif",
+                                "Memperbaiki kerusakan perangkat"
+                            ],
+                            "correct": 3
+                        },
+                        {
+                            "id": 3,
+                            "question": "Apa manfaat utama dari literasi media?",
+                            "options": [
+                                "Membuat konten media yang menarik",
+                                "Memahami pesan media secara kritis",
+                                "Menggunakan media sosial dengan lancar",
+                                "Memproduksi video berkualitas tinggi"
+                            ],
+                            "correct": 1
+                        },
+                        {
+                            "id": 4,
+                            "question": "Manakah contoh penerapan literasi informasi dalam kehidupan sehari-hari?",
+                            "options": [
+                                "Memilih berita yang kredibel dari berbagai sumber",
+                                "Membeli perangkat teknologi terbaru",
+                                "Mengikuti tren media sosial",
+                                "Memiliki banyak akun media sosial"
+                            ],
+                            "correct": 0
+                        },
+                        {
+                            "id": 5,
+                            "question": "Apa yang dimaksud dengan 'bias konfirmasi' dalam literasi informasi?",
+                            "options": [
+                                "Kecenderungan untuk mencari informasi yang mendukung keyakinan yang sudah ada",
+                                "Kemampuan mengonfirmasi kebenaran informasi",
+                                "Proses verifikasi informasi dari sumber terpercaya",
+                                "Teknik mengevaluasi kredibilitas sumber informasi"
+                            ],
+                            "correct": 0
+                        }
+                    ]
+                }
+            }
+        ];
+
+
+
+
+
+        // Bab data structure
+        const babData = {
+            "bab1": {
+                "title": "BAB 1",
+                "description": "Memahami konsep dasar literasi visual dan tekstual dalam konteks pembelajaran modern.",
+                 "imageId": "1dwlzu56bdBpaJCPn-zamUMUO5xwzkmdV"
+            },
+            "bab2": {
+                "title": "BAB 2",
+                "description": "Menemukan makna dan tujuan dalam kehidupan melalui refleksi dan pengembangan diri.",
+                 "imageId": "1b8YMW53ExdbS9OIOolvgOfJ9gXR7QSO6"
+            },
+            "bab3": {
+                "title": "Munafik tidak Maju",
+                "description": "Menerapkan konsep yang telah dipelajari dalam situasi kehidupan nyata.",
+                 "imageId": "16icmROqGfdHBFkMcidRJgk7EQ3u6Y2ds"
+            },
+            "bab4": {
+                "title": "Mawaris ",
+                "description": "Menganalisis konsep secara mendalam dan mengembangkan kemampuan berpikir kritis.",
+                 "imageId": "1Y8szHO5IxCbEd-_DJ0iKdRRUcZhnYOKh"
+            },
+            "bab5": {
+                "title": "Peradaban Islam",
+                "description": "Mengevaluasi pemahaman dan kemampuan yang telah dikembangkan selama pembelajaran.",
+                 "imageId": "1E0P6H-hT36a3h46S0SoTKucHIsZlvj2i"
+            }
+        };
+
+        // DOM Elements
+        const loginContainer = document.getElementById('login-container');
+        const registerContainer = document.getElementById('register-container');
+        const dashboard = document.getElementById('dashboard');
+        const loginBtn = document.getElementById('login-btn');
+        const registerBtn = document.getElementById('register-btn');
+        const showRegister = document.getElementById('show-register');
+        const showLogin = document.getElementById('show-login');
+        const logoutBtn = document.getElementById('logout-btn');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const dashboardUsername = document.getElementById('dashboard-username');
+        const mainContent = document.querySelector('.main-content');
+        const sidebarMenu = document.querySelector('.sidebar-menu');
+        const answerModal = document.getElementById('answer-modal');
+        const closeModal = document.getElementById('close-modal');
+        const cancelModal = document.getElementById('cancel-modal');
+        const submitModal = document.getElementById('submit-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDescription = document.getElementById('modal-description');
+        const modalAnswer = document.getElementById('modal-answer');
+        
+        // State variables
+        let currentBab = null;
+        let currentTab = null;
+        let currentQuestionIndex = 0;
+        let userAnswers = {};
+        let currentEvaluasiData = null;
+
+        // Show Register Form
+        showRegister.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginContainer.style.display = 'none';
+            registerContainer.style.display = 'flex';
+        });
+        
+        // Show Login Form
+        showLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            registerContainer.style.display = 'none';
+            loginContainer.style.display = 'flex';
+        });
+        
+        // Login Functionality
+        loginBtn.addEventListener('click', () => {
+            const username = usernameInput.value;
+            const password = passwordInput.value;
+            
+            // Simple authentication (in a real app, this would be server-side)
+            if (username === 'Admin' && password === '123') {
+                loginContainer.style.display = 'none';
+                dashboard.style.display = 'block';
+                dashboardUsername.textContent = username;
+                updateProgressCircles();
+                generateSidebarMenu();
+                generateBabTabs();
+            } else {
+                alert('Username atau password salah! Coba lagi.\n\nGunakan:\nUsername: Admin\nPassword: 123');
+            }
+        });
+        
+        // Register Functionality
+        registerBtn.addEventListener('click', () => {
+            const regName = document.getElementById('reg-name').value;
+            const regEmail = document.getElementById('reg-email').value;
+            const regUsername = document.getElementById('reg-username').value;
+            const regPassword = document.getElementById('reg-password').value;
+            
+            if (regName && regEmail && regUsername && regPassword) {
+                alert('Pendaftaran berhasil! Silakan login dengan akun Anda.');
+                registerContainer.style.display = 'none';
+                loginContainer.style.display = 'flex';
+            } else {
+                alert('Harap isi semua field!');
+            }
+        });
+        
+        // Logout Functionality
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            dashboard.style.display = 'none';
+            loginContainer.style.display = 'flex';
+            usernameInput.value = '';
+            passwordInput.value = '';
+        });
+        
+        // Modal functionality
+        closeModal.addEventListener('click', () => {
+            answerModal.style.display = 'none';
+        });
+        
+        cancelModal.addEventListener('click', () => {
+            answerModal.style.display = 'none';
+        });
+        
+        submitModal.addEventListener('click', () => {
+            const answer = modalAnswer.value.trim();
+            if (answer === '') {
+                alert('Harap isi jawaban sebelum mengirim!');
+                return;
+            }
+            
+            // In a real app, this would send data to a server
+            alert('Jawaban berhasil dikirim!');
+            answerModal.style.display = 'none';
+            modalAnswer.value = '';
+        });
+        
+        // Generate sidebar menu dynamically
+        function generateSidebarMenu() {
+            
+            
+            // Add bab menu items
+            for (const babKey in babData) {
+                const bab = babData[babKey];
+                const menuItem = document.createElement('li');
+                menuItem.className = 'menu-item';
+                menuItem.innerHTML = `
+                    <a href="#" data-tab="${babKey}-tab">
+                        <i class="fas fa-book"></i> ${babKey.toUpperCase()} - ${bab.title}
+                    </a>
+                `;
+                sidebarMenu.appendChild(menuItem);
+            }
+            
+            // Add event listeners to sidebar menu
+            sidebarMenu.querySelectorAll('a').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    // Remove active class from all items
+                    sidebarMenu.querySelectorAll('a').forEach(i => i.classList.remove('active'));
+                    
+                    // Add active class to clicked item
+                    item.classList.add('active');
+                    
+                    // Hide all tab panes
+                    document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+                    
+                    // Show the selected tab pane
+                    const tabId = item.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                    
+                    // If it's a bab tab, generate the content
+                    if (tabId.startsWith('bab')) {
+                        currentBab = tabId.replace('-tab', '');
+                        generateBabContent(currentBab);
+                    }
+                });
+            });
+        }
+        
+        // Generate bab tabs dynamically
+        function generateBabTabs() {
+            for (const babKey in babData) {
+                const bab = babData[babKey];
+                const babTab = document.createElement('div');
+                babTab.className = 'tab-pane';
+                babTab.id = `${babKey}-tab`;
+                
+                babTab.innerHTML = `
+                    <div class="welcome-card">
+                        <h2>${babKey.toUpperCase()} - ${bab.title}</h2>
+                        <p>Tujuan Pembelajaran</p>
+                        <p>${bab.description}</p>
+                    </div>
+                    <div class="tab-container">
+                        <div class="tab-header" id="${babKey}-header">
+                            <!-- Tab buttons will be generated here -->
+                        </div>
+                        <div class="tab-content" id="${babKey}-content">
+                            <!-- Tab content will be generated here -->
+                        </div>
+                    </div>
+                `;
+                
+                mainContent.appendChild(babTab);
+            }
+        }
+        
+    
+    // Di bagian generateBabContent(), perbaiki blok kode untuk evaluasi:
+function generateBabContent(babKey) {
+    const bab = babData[babKey];
+    const tabHeader = document.getElementById(`${babKey}-header`);
+    const tabContent = document.getElementById(`${babKey}-content`);
+    
+    // Clear existing content
+    tabHeader.innerHTML = '';
+    tabContent.innerHTML = '';
+    
+    // Generate tab buttons using tabTemplates
+    tabTemplates.forEach((tab, index) => {
+        const tabBtn = document.createElement('button');
+        tabBtn.className = `tab-btn ${index === 0 ? 'active' : ''}`;
+        tabBtn.setAttribute('data-content', `${babKey}-${tab.id}`);
+        tabBtn.innerHTML = `<i class="${tab.icon}"></i> ${tab.title}`;
+        
+        tabBtn.addEventListener('click', () => {
+            // Remove active class from all buttons
+            tabHeader.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button
+            tabBtn.classList.add('active');
+            
+            // Hide all tab panes
+            tabContent.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+            // Show the selected tab pane
+            document.getElementById(`${babKey}-${tab.id}`).classList.add('active');
+            
+            // Jika tab evaluasi diklik, inisialisasi ulang
+            if (tab.id === 'evaluasi') {
+                initializeEvaluasi(babKey);
+            }
+        });
+        
+        tabHeader.appendChild(tabBtn);
+        
+        // Generate tab content
+        const tabPane = document.createElement('div');
+        tabPane.className = `tab-pane ${index === 0 ? 'active' : ''}`;
+        tabPane.id = `${babKey}-${tab.id}`;
+        const currentBab = babKey;
+        const imageId2 = babData[currentBab].imageId;
+        
+        if (tab.type === 'modal') {
+            tabPane.innerHTML = `
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-icon">
+                            <i class="${tab.icon}"></i>
+                        </div>
+                        <div class="exercise-title">${tab.title}</div>
+                    </div>
+                    <div class="exercise-description">
+                        <p>${tab.content.description}</p>
+                        ${tab.content.image ? `
+                        <div style="text-align: center; margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                            <img src="https://drive.google.com/thumbnail?id=${imageId2}&sz=w1000"  
+                                alt="Gambar ilustrasi" 
+                                style="max-width: 100%; height: auto; max-height: 500px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                            <p style="margin-top: 10px; font-style: italic;">Gambar ilustrasi untuk analisis</p>
+                        </div>
+                        ` : ''}
+                    </div>
+                    <button class="answer-btn" data-bab="${babKey}" data-tab="${tab.id}">Jawab Pertanyaan</button>
+                </div>
+            `;
+        } else if (tab.type === 'evaluasi') {
+            tabPane.innerHTML = `
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-icon">
+                            <i class="${tab.icon}"></i>
+                        </div>
+                        <div class="exercise-title">${tab.title}</div>
+                    </div>
+                    <div class="exercise-description">
+                        <p>Kerjakan soal evaluasi berikut ini dengan memilih jawaban yang paling tepat. Terdapat ${tab.content.questions.length} soal pilihan ganda.</p>
+                    </div>
+                    <div id="${babKey}-evaluasi-container"></div>
+                </div>
+            `;
+        }
+        
+        tabContent.appendChild(tabPane);
+    });
+    
+    // Initialize evaluasi untuk tab pertama jika aktif
+    if (tabTemplates[0].type === 'evaluasi') {
+        initializeEvaluasi(babKey);
+    }
+}
+
+// Fungsi untuk inisialisasi evaluasi
+function initializeEvaluasi(babKey) {
+    const tab = tabTemplates.find(t => t.id === 'evaluasi');
+    const container = document.getElementById(`${babKey}-evaluasi-container`);
+    
+    if (!tab || !container) return;
+    
+    currentEvaluasiData = tab.content;
+    currentQuestionIndex = 0;
+    userAnswers = {};
+    
+    // Generate evaluasi UI
+    container.innerHTML = `
+        <div class="evaluasi-nav" style="margin-top: 20px;">
+            <h3>Evaluasi - ${babData[babKey].title}</h3>
+            <div>Soal <span id="${babKey}-current-soal">1</span> dari ${tab.content.questions.length}</div>
+        </div>
+        <div class="soal-nav" id="${babKey}-soal-nav">
+            <!-- Question navigation will be generated here -->
+        </div>
+        <div class="soal-container" id="${babKey}-soal-container">
+            <!-- Current question will be displayed here -->
+        </div>
+        <div class="evaluasi-nav" style="margin-top: 20px;">
+            <button class="btn btn-sm" id="${babKey}-prev-soal">Sebelumnya</button>
+            <button class="btn btn-sm" id="${babKey}-next-soal">Selanjutnya</button>
+            <button class="btn" id="${babKey}-submit-evaluasi">Kirim Jawaban</button>
+        </div>
+    `;
+    
+    // Generate question navigation
+    const soalNav = document.getElementById(`${babKey}-soal-nav`);
+    tab.content.questions.forEach((question, index) => {
+        const soalBtn = document.createElement('button');
+        soalBtn.className = `soal-btn ${index === 0 ? 'current' : ''}`;
+        soalBtn.textContent = index + 1;
+        soalBtn.addEventListener('click', () => {
+            showQuestion(index, babKey);
+        });
+        soalNav.appendChild(soalBtn);
+    });
+    
+    // Show first question
+    showQuestion(0, babKey);
+    
+    // Add event listeners for navigation
+    document.getElementById(`${babKey}-prev-soal`).addEventListener('click', () => {
+        if (currentQuestionIndex > 0) {
+            showQuestion(currentQuestionIndex - 1, babKey);
+        }
+    });
+    
+    document.getElementById(`${babKey}-next-soal`).addEventListener('click', () => {
+        if (currentQuestionIndex < tab.content.questions.length - 1) {
+            showQuestion(currentQuestionIndex + 1, babKey);
+        }
+    });
+    
+    document.getElementById(`${babKey}-submit-evaluasi`).addEventListener('click', () => {
+        // Calculate score
+        let score = 0;
+        let totalQuestions = tab.content.questions.length;
+        let unanswered = 0;
+        
+        tab.content.questions.forEach((question, index) => {
+            if (userAnswers[index] === question.correct) {
+                score++;
+            } else if (userAnswers[index] === undefined) {
+                unanswered++;
+            }
+        });
+        
+        const percentage = Math.round((score / totalQuestions) * 100);
+        let message = `Evaluasi selesai!\n\n`;
+        message += `Nilai Anda: ${score}/${totalQuestions}\n`;
+        message += `Persentase: ${percentage}%\n`;
+        message += `Soal yang belum dijawab: ${unanswered}\n\n`;
+        
+        if (percentage >= 80) {
+            message += `✅ Excellent! Pemahaman Anda sangat baik.`;
+        } else if (percentage >= 60) {
+            message += `👍 Bagus! Pemahaman Anda cukup baik.`;
+        } else {
+            message += `📚 Perlu belajar lagi. Silakan ulangi materi.`;
+        }
+        
+        alert(message);
+        
+        // Update progress circle for this bab
+        updateBabProgress(babKey, percentage);
+    });
+}
+
+// Fungsi untuk menampilkan soal
+function showQuestion(index, babKey) {
+    if (!currentEvaluasiData) return;
+    
+    const question = currentEvaluasiData.questions[index];
+    currentQuestionIndex = index;
+    
+    // Update current question indicator
+    const currentSoalElement = document.getElementById(`${babKey}-current-soal`);
+    if (currentSoalElement) {
+        currentSoalElement.textContent = index + 1;
+    }
+    
+    // Update navigation buttons
+    const soalNav = document.getElementById(`${babKey}-soal-nav`);
+    if (soalNav) {
+        soalNav.querySelectorAll('.soal-btn').forEach((btn, i) => {
+            btn.classList.remove('current');
+            if (i === index) {
+                btn.classList.add('current');
+            }
+            
+            // Mark answered questions
+            if (userAnswers[i] !== undefined) {
+                btn.classList.add('answered');
+            } else {
+                btn.classList.remove('answered');
+            }
+        });
+    }
+    
+    // Update question display
+    const soalContainer = document.getElementById(`${babKey}-soal-container`);
+    if (soalContainer) {
+        soalContainer.innerHTML = `
+            <div class="soal-text">${index + 1}. ${question.question}</div>
+            <div class="quiz-options">
+                ${question.options.map((option, optIndex) => `
+                    <div class="quiz-option">
+                        <input type="radio" id="${babKey}-q${index}-opt${optIndex}" name="${babKey}-q${index}" value="${optIndex}" ${userAnswers[index] === optIndex ? 'checked' : ''}>
+                        <label for="${babKey}-q${index}-opt${optIndex}">${option}</label>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+        
+        // Add event listeners for radio buttons
+        soalContainer.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                userAnswers[index] = parseInt(e.target.value);
+                
+                // Update navigation button
+                const soalBtn = document.querySelector(`#${babKey}-soal-nav .soal-btn:nth-child(${index + 1})`);
+                if (soalBtn) {
+                    soalBtn.classList.add('answered');
+                }
+            });
+        });
+    }
+}
+
+// Fungsi untuk update progress bab
+function updateBabProgress(babKey, percentage) {
+    // Temukan bab yang sesuai dan update progress
+    const babNumber = parseInt(babKey.replace('bab', ''));
+    const progressCard = document.querySelectorAll('.progress-card')[babNumber - 1];
+    
+    if (progressCard) {
+        const progressText = progressCard.querySelector('.progress-text');
+        const progressFill = progressCard.querySelector('.circle-progress-fill');
+        
+        if (progressText) {
+            progressText.textContent = `${percentage}%`;
+        }
+        
+        if (progressFill) {
+            const radius = 50;
+            const circumference = 2 * Math.PI * radius;
+            const offset = circumference - (percentage / 100) * circumference;
+            
+            progressFill.style.strokeDasharray = `${circumference} ${circumference}`;
+            progressFill.style.strokeDashoffset = offset;
+            progressFill.setAttribute('data-progress', percentage);
+        }
+    }
+}
+
+// Di bagian event listener untuk answer buttons, perbaiki juga:
+tabContent.querySelectorAll('.answer-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        const babKey = e.target.getAttribute('data-bab');
+        const tabId = e.target.getAttribute('data-tab');
+        const tab = tabTemplates.find(t => t.id === tabId);
+        
+        modalTitle.textContent = tab.title;
+        const currentBab = babKey;
+        const imageId2 = babData[currentBab].imageId;
+        modalDescription.innerHTML = `<p>${tab.content.description}</p>`;
+        
+        if (tab.content.image) {
+            modalDescription.innerHTML += `
+                <div style="text-align: center; margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                    <img src="https://drive.google.com/thumbnail?id=${imageId2}&sz=w1000"  
+                        alt="Gambar ilustrasi" 
+                        style="max-width: 100%; height: auto; max-height: 300px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                    <p style="margin-top: 10px; font-style: italic;">Gambar ilustrasi untuk analisis</p>
+                </div>
+            `;
+        }
+        
+        answerModal.style.display = 'flex';
+    });
+});
+
+
+
+        
+        // Update Progress Circles
+        function updateProgressCircles() {
+            const progressCircles = document.querySelectorAll('.circle-progress-fill');
+            
+            progressCircles.forEach(circle => {
+                const progress = circle.getAttribute('data-progress');
+                const radius = 50;
+                const circumference = 2 * Math.PI * radius;
+                const offset = circumference - (progress / 100) * circumference;
+                
+                circle.style.strokeDasharray = `${circumference} ${circumference}`;
+                circle.style.strokeDashoffset = offset;
+            });
+        }
+        
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', () => {
+            // Any initialization code can go here
+        });
+    </script>
+</body>
+</html>
