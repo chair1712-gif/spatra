@@ -1,0 +1,611 @@
+ <!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Learning Platform - Materi Pembelajaran</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2rem;
+        }
+
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .bab-selector {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .bab-selector h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        .bab-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .bab-item {
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid #3498db;
+            background: #f8f9fa;
+        }
+
+        .bab-item:hover {
+            background: #e3f2fd;
+            transform: translateX(5px);
+        }
+
+        .bab-item.active {
+            background: #3498db;
+            color: white;
+            border-left: 4px solid #2980b9;
+        }
+
+        .bab-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .bab-desc {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .bab-item.active .bab-desc {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .content-area {
+            flex: 2;
+            min-width: 300px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-header {
+            padding: 20px 25px;
+            background: #2c3e50;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bab-content-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .tab-buttons {
+            display: flex;
+            background: #f1f1f1;
+            border-bottom: 1px solid #ddd;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 15px 25px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #555;
+            transition: all 0.3s ease;
+            position: relative;
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .tab-btn:hover {
+            background: #e0e0e0;
+            color: #3498db;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: #3498db;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .tab-content {
+            padding: 30px;
+            min-height: 500px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .tab-pane {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        .tab-content h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+            font-size: 1.5rem;
+        }
+
+        .tab-content p, .tab-content li {
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+
+        .tab-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-content ol, .tab-content ul {
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .image-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .akti-box {
+            background: #e8f4fc;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+            margin: 20px 0;
+        }
+
+        .akti-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .akti-title i {
+            color: #3498db;
+        }
+
+        .evaluasi-item {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.2rem;
+            color: #7f8c8d;
+        }
+
+        .error {
+            text-align: center;
+            padding: 40px;
+            color: #e74c3c;
+            font-size: 1.2rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .tab-buttons {
+                flex-direction: column;
+            }
+            
+            .tab-btn {
+                min-width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-book-open"></i> Platform E-Learning Interaktif</h1>
+            <p class="subtitle">Tingkatkan literasi visual dan tekstual melalui materi pembelajaran yang menarik</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="bab-selector">
+                <h2><i class="fas fa-list"></i> Daftar Materi</h2>
+                <div class="bab-list" id="babList">
+                    <div class="loading">
+                        <i class="fas fa-spinner fa-spin"></i> Memuat data...
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-area">
+                <div class="content-header">
+                    <div class="bab-content-title" id="babContentTitle">Pilih Materi</div>
+                    <div id="currentTab" style="font-weight: 500; color: #ecf0f1;">Literasi Gambar</div>
+                </div>
+                
+                <div class="tab-buttons">
+                    <button class="tab-btn active" data-tab="literasi-gambar">
+                        <i class="fas fa-image"></i> Literasi Gambar
+                    </button>
+                    <button class="tab-btn" data-tab="literasi-teks">
+                        <i class="fas fa-font"></i> Literasi Teks
+                    </button>
+                    <button class="tab-btn" data-tab="opini">
+                        <i class="fas fa-lightbulb"></i> Opini/Pemahaman Awal
+                    </button>
+                    <button class="tab-btn" data-tab="konsep">
+                        <i class="fas fa-brain"></i> Konsep Dasar
+                    </button>
+                    <button class="tab-btn" data-tab="prilaku">
+                        <i class="fas fa-hands-helping"></i> Penerapan Perilaku
+                    </button>
+                    <button class="tab-btn" data-tab="evaluasi">
+                        <i class="fas fa-clipboard-check"></i> Evaluasi
+                    </button>
+                </div>
+                
+                <div class="tab-content">
+                    <!-- Literasi Gambar Tab -->
+                    <div class="tab-pane active" id="literasi-gambar">
+                        <h3><i class="fas fa-image"></i> Literasi Gambar</h3>
+                        <div id="literasi-gambar-content">
+                            <div class="loading">
+                                <i class="fas fa-spinner fa-spin"></i> Memuat konten...
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Literasi Teks Tab -->
+                    <div class="tab-pane" id="literasi-teks">
+                        <h3><i class="fas fa-font"></i> Literasi Teks</h3>
+                        <div id="literasi-teks-content">
+                            <div class="loading">
+                                <i class="fas fa-spinner fa-spin"></i> Memuat konten...
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Opini Tab -->
+                    <div class="tab-pane" id="opini">
+                        <h3><i class="fas fa-lightbulb"></i> Opini/Pemahaman Awal</h3>
+                        <div id="opini-content">
+                            <div class="loading">
+                                <i class="fas fa-spinner fa-spin"></i> Memuat konten...
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Konsep Tab -->
+                    <div class="tab-pane" id="konsep">
+                        <h3><i class="fas fa-brain"></i> Konsep Dasar</h3>
+                        <div id="konsep-content">
+                            <div class="loading">
+                                <i class="fas fa-spinner fa-spin"></i> Memuat konten...
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Prilaku Tab -->
+                    <div class="tab-pane" id="prilaku">
+                        <h3><i class="fas fa-hands-helping"></i> Penerapan Perilaku</h3>
+                        <div id="prilaku-content">
+                            <div class="loading">
+                                <i class="fas fa-spinner fa-spin"></i> Memuat konten...
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Evaluasi Tab -->
+                    <div class="tab-pane" id="evaluasi">
+                        <h3><i class="fas fa-clipboard-check"></i> Evaluasi</h3>
+                        <div id="evaluasi-content">
+                            <div class="loading">
+                                <i class="fas fa-spinner fa-spin"></i> Memuat konten...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>&copy; 2023 Platform E-Learning Interaktif. Semua hak dilindungi.</p>
+            <p>Dikembangkan untuk meningkatkan literasi visual dan tekstual peserta didik.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Global variables
+        let babData = {};
+        let activeBab = "bab1";
+
+        // Initialize the application
+        async function initApp() {
+            try {
+                // Load data from JSON file
+                await loadBabData();
+                
+                // Initialize UI
+                renderBabList();
+                renderBabContent(activeBab);
+                setupTabSwitching();
+            } catch (error) {
+                console.error('Error initializing app:', error);
+                showError();
+            }
+        }
+
+        // Load data from JSON file
+        async function loadBabData() {
+            try {
+                const response = await fetch('menu.json');
+                if (!response.ok) {
+                    throw new Error('Failed to load data');
+                }
+                babData = await response.json();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                
+                // Fallback to inline data if fetch fails
+                babData = {
+                    "bab1": {
+                        "title": "Pengenalan",
+                        "description": "Memahami konsep dasar literasi visual dan tekstual dalam konteks pengenalan",
+                        "imageId": "idwlzu56bdBpaJCPn-zamUMU05xwzkmdv",
+                        "akti": "Dengan menggunakan pendekatan literasi teks, ambil makna dari teks tentang 'SABAR terhadap Ujian'",
+                        "opini": "Amati gambar di bawah ini, kemudian jelaskan makna yang tersirat dalam gambar tersebut! <br> <div class=\"image-container\"><img src=\"https://drive.google.com/thumbnail?id=1dwlzu56bdBpaJCPn-zamUMUO5xwzkmdV&sz=w1000\" alt=\"Ilustrasi\" loading=\"lazy\" style=\"max-width: 100%; height: auto;\"></div><p><strong>KUNSI JAWABAN:</strong> Gambar ini menggambarkan pentingnya kesabaran dalam menghadapi ujian hidup. Terlihat seorang individu yang sedang menghadapi tantangan namun tetap tenang dan berusaha mencari solusi.</p>",
+                        "konsep": "<div class=\"akti-box\"><div class=\"akti-title\"><i class=\"fas fa-graduation-cap\"></i> Konsep Dasar Literasi</div><p>Literasi visual dan tekstual adalah kemampuan untuk memahami, menafsirkan, dan mengevaluasi informasi yang disajikan dalam bentuk visual (gambar, grafik, diagram) dan teks (tulisan).</p></div><p><strong>LKPD Deep Learning - Materi: Cinta Tanah Air & Moderasi Beragama</strong></p><ol><li>Literasi visual membantu memahami simbol-simbol nasional seperti bendera, lambang negara, dan peta.</li><li>Literasi tekstual membantu memahami teks-teks sejarah, konstitusi, dan nilai-nilai kebangsaan.</li><li>Kedua literasi ini saling melengkapi dalam membentuk pemahaman yang holistik tentang cinta tanah air.</li></ol>",
+                        "prilaku": "<h4>Refleksikan Pemahamanmu terkait materi</h4><ol><li>Setelah mempelajari materi Q.S. al-Qasas/28: 85 tentang cinta tanah air dan Q.S. al-Baqarah/2: 143 tentang moderasi beragama, coba kalian analisis penerapannya dalam kehidupan sehari-hari!</li><li>Tuliskan penerapan cinta tanah air dalam bentuk konkret di lingkungan sekolah dan keluarga!</li><li>Bagaimana cara kamu menunjukkan sikap moderasi beragama dalam pergaulan dengan teman yang berbeda keyakinan?</li></ol><div class=\"akti-box\"><div class=\"akti-title\"><i class=\"fas fa-tasks\"></i> Aktivitas Praktik</div><p>Lakukan observasi di lingkungan sekitar tentang praktik cinta tanah air dan moderasi beragama. Catat hasil observasi dan presentasikan di depan kelas!</p></div>",
+                        "evaluasi": "<div class=\"evaluasi-item\"><p><strong>Soal 1:</strong> Budiono yang berdomisili di lingkungan perumahan setiap kali ada perintah untuk mengibarkan bendera merah putih pada saat peringatan hari besar nasional, beliau selalu taat dan patuh melaksanakan dengan penuh kesadaran.</p><p><strong>Aspek yang dinilai:</strong> Kebhinekaan Global, Mandiri</p></div><div class=\"evaluasi-item\"><p><strong>Soal 2:</strong> Awaludin setelah pulang dari merantau selalu mengajak pemuda di kampungnya untuk ikut serta dalam kegiatan kemasyarakatan dan menjaga keamanan lingkungan.</p><p><strong>Aspek yang dinilai:</strong> Gotong Royong, Kreatif</p></div><div class=\"evaluasi-item\"><p><strong>Soal 3:</strong> Siti selalu menghormati tetangganya yang berbeda agama dengan tidak memaksakan keyakinannya dan ikut menjaga kerukunan di lingkungan tempat tinggal.</p><p><strong>Aspek yang dinilai:</strong> Moderasi Beragama, Toleransi</p></div>"
+                    }
+                };
+            }
+        }
+
+        // Show error message
+        function showError() {
+            const babList = document.getElementById('babList');
+            babList.innerHTML = '<div class="error"><i class="fas fa-exclamation-triangle"></i> Gagal memuat data. Silakan refresh halaman.</div>';
+            
+            const contentAreas = ['literasi-gambar', 'literasi-teks', 'opini', 'konsep', 'prilaku', 'evaluasi'];
+            contentAreas.forEach(area => {
+                const element = document.getElementById(`${area}-content`);
+                if (element) {
+                    element.innerHTML = '<div class="error"><i class="fas fa-exclamation-triangle"></i> Gagal memuat konten.</div>';
+                }
+            });
+        }
+
+        // Render bab list
+        function renderBabList() {
+            const babList = document.getElementById('babList');
+            
+            // Clear loading message
+            babList.innerHTML = '';
+            
+            // Check if data is loaded
+            if (Object.keys(babData).length === 0) {
+                babList.innerHTML = '<div class="error">Tidak ada data yang tersedia</div>';
+                return;
+            }
+            
+            // Create bab items
+            for (const [key, bab] of Object.entries(babData)) {
+                const babItem = document.createElement('div');
+                babItem.className = `bab-item ${key === activeBab ? 'active' : ''}`;
+                babItem.dataset.bab = key;
+                
+                babItem.innerHTML = `
+                    <div class="bab-title">${bab.title || 'Judul tidak tersedia'}</div>
+                    <div class="bab-desc">${bab.description || 'Deskripsi tidak tersedia'}</div>
+                `;
+                
+                babItem.addEventListener('click', () => {
+                    document.querySelectorAll('.bab-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    babItem.classList.add('active');
+                    activeBab = key;
+                    renderBabContent(key);
+                });
+                
+                babList.appendChild(babItem);
+            }
+        }
+
+        // Render bab content based on selected bab
+        function renderBabContent(babKey) {
+            const bab = babData[babKey];
+            
+            if (!bab) {
+                console.error(`Bab ${babKey} tidak ditemukan`);
+                return;
+            }
+            
+            // Update title
+            document.getElementById('babContentTitle').textContent = bab.title || 'Judul tidak tersedia';
+            
+            // Update literasi gambar content
+            const imageId = bab.imageId || '';
+            const imageUrl = imageId ? `https://drive.google.com/thumbnail?id=${imageId}&sz=w1000` : '';
+            document.getElementById('literasi-gambar-content').innerHTML = `
+                <h4>${bab.title || 'Judul tidak tersedia'}</h4>
+                <p>${bab.description || 'Deskripsi tidak tersedia'}</p>
+                ${imageUrl ? `
+                <div class="image-container">
+                    <img src="${imageUrl}" alt="${bab.title || 'Ilustrasi'}" loading="lazy" style="max-width: 100%; height: auto;">
+                </div>
+                ` : ''}
+                <p><strong>Petunjuk:</strong> Perhatikan gambar di atas dengan seksama. Analisis unsur-unsur visual yang ada dan tafsirkan makna yang terkandung dalam gambar tersebut!</p>
+            `;
+            
+            // Update literasi teks content
+            document.getElementById('literasi-teks-content').innerHTML = `
+                <h4>${bab.title || 'Judul tidak tersedia'}</h4>
+                <div class="akti-box">
+                    <div class="akti-title"><i class="fas fa-book-reader"></i> Aktivitas Literasi Teks</div>
+                    <p>${bab.akti || 'Aktivitas tidak tersedia'}</p>
+                </div>
+                <p><strong>Langkah-langkah:</strong></p>
+                <ol>
+                    <li>Baca teks dengan seksama untuk memahami makna harfiah</li>
+                    <li>Identifikasi kata kunci dan konsep penting dalam teks</li>
+                    <li>Analisis konteks dan tujuan penulisan teks</li>
+                    <li>Tafsirkan makna yang terkandung dalam teks</li>
+                    <li>Kaitkan dengan pengalaman atau pengetahuan yang sudah dimiliki</li>
+                </ol>
+            `;
+            
+            // Update opini content
+            document.getElementById('opini-content').innerHTML = `
+                <h4>${bab.title || 'Judul tidak tersedia'} - Opini/Pemahaman Awal</h4>
+                ${bab.opini || '<p>Konten opini tidak tersedia</p>'}
+            `;
+            
+            // Update konsep content
+            document.getElementById('konsep-content').innerHTML = `
+                <h4>${bab.title || 'Judul tidak tersedia'} - Konsep Dasar</h4>
+                ${bab.konsep || '<p>Konten konsep tidak tersedia</p>'}
+            `;
+            
+            // Update prilaku content
+            document.getElementById('prilaku-content').innerHTML = `
+                <h4>${bab.title || 'Judul tidak tersedia'} - Penerapan Perilaku</h4>
+                ${bab.prilaku || '<p>Konten perilaku tidak tersedia</p>'}
+            `;
+            
+            // Update evaluasi content
+            document.getElementById('evaluasi-content').innerHTML = `
+                <h4>${bab.title || 'Judul tidak tersedia'} - Evaluasi</h4>
+                ${bab.evaluasi || '<p>Konten evaluasi tidak tersedia</p>'}
+            `;
+        }
+
+        // Setup tab switching functionality
+        function setupTabSwitching() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+            const currentTabElement = document.getElementById('currentTab');
+            
+            // Map tab IDs to display names
+            const tabNames = {
+                'literasi-gambar': 'Literasi Gambar',
+                'literasi-teks': 'Literasi Teks',
+                'opini': 'Opini/Pemahaman Awal',
+                'konsep': 'Konsep Dasar',
+                'prilaku': 'Penerapan Perilaku',
+                'evaluasi': 'Evaluasi'
+            };
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const tabId = btn.dataset.tab;
+                    
+                    // Update active tab button
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    // Update active tab pane
+                    tabPanes.forEach(pane => pane.classList.remove('active'));
+                    document.getElementById(tabId).classList.add('active');
+                    
+                    // Update current tab display
+                    currentTabElement.textContent = tabNames[tabId];
+                });
+            });
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
