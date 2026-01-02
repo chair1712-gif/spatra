@@ -1,32 +1,54 @@
-<form id="form">
-  <input name="nama">
-  <input type="file" id="file">
+ <form id="form">
+  <input name="nama" placeholder="Nama" required>
+  <input type="file" id="file" accept="image/*" required>
   <button type="submit">Upload</button>
 </form>
 
+<p id="status"></p>
+
 <script>
-document.getElementById("form").onsubmit = async e => {
+document.getElementById("form").addEventListener("submit", async function(e) {
   e.preventDefault();
 
   const file = document.getElementById("file").files[0];
+  if (!file || !file.type.startsWith("image/")) {
+    document.getElementById("status").innerText = "File harus gambar";
+    return;
+  }
+
   const base64 = await fileToBase64(file);
+
+  document.getElementById("status").innerText = "Mengupload...";
 
   fetch("https://script.google.com/macros/s/AKfycbwnp51ZDzwnNNjl1OdOqfB0lvUEThdFJlJxyWzUVGYKVV3ZEsm7NXiha6HEMBg9RJjK/exec", {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
     body: JSON.stringify({
       nama: e.target.nama.value,
       file: base64,
       filename: file.name,
       type: file.type
     })
+  })
+  .then(res => res.text())
+  .then(res => {
+    document.getElementById("status").innerText = res;
+    e.target.reset();
+  })
+  .catch(err => {
+    document.getElementById("status").innerText = "Gagal upload";
+    console.error(err);
   });
-};
+});
 
 function fileToBase64(file) {
-  return new Promise(r => {
+  return new Promise(resolve => {
     const reader = new FileReader();
-    reader.onload = () => r(reader.result.split(",")[1]);
+    reader.onload = () => resolve(reader.result.split(",")[1]);
     reader.readAsDataURL(file);
   });
 }
 </script>
+
