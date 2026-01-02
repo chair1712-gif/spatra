@@ -1,163 +1,53 @@
- <!DOCTYPE html>
-<html>
-<head>
-  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-  <title>Upload File Mudah</title>
-</head>
-<body style='font-family: Arial; padding: 20px; max-width: 400px; margin: auto;'>
-  
-  <h2 style='color: #1976d2;'>📁 Upload File Mudah</h2>
-  <p>File akan disimpan di folder <strong>FILE_UPLOAD</strong> di Google Drive</p>
-  
-  <div style='background: #f5f5f5; padding: 20px; border-radius: 10px;'>
-    <div>
-      <label style='display: block; margin-bottom: 5px;'>Nama Anda:</label>
-      <input type='text' id='nama' placeholder='Contoh: Andi' 
-             style='width: 100%; padding: 10px; margin-bottom: 15px; box-sizing: border-box;'>
-    </div>
-    
-    <div>
-      <label style='display: block; margin-bottom: 5px;'>Pilih File:</label>
-      <input type='file' id='fileInput' 
-             style='width: 100%; padding: 10px; margin-bottom: 15px; box-sizing: border-box;'>
-    </div>
-    
-    <button onclick='uploadFile()' 
-            style='width: 100%; padding: 12px; background: #1976d2; color: white; border: none; border-radius: 5px; cursor: pointer;'>
-      📤 UPLOAD FILE
-    </button>
-  </div>
-  
-  <div id='status' style='margin-top: 20px; padding: 15px; border-radius: 5px; display: none;'></div>
-  
-  <div id='result' style='margin-top: 20px; padding: 15px; background: #e8f5e8; border-radius: 5px; display: none;'>
-    <h3 style='color: #2e7d32;'>✅ Upload Berhasil!</h3>
-    <p>File tersimpan di Google Drive</p>
-    <p><a href='#' id='fileLink' target='_blank' style='color: #1976d2;'>🔗 Buka File</a></p>
-  </div>
+<form id="form">
+  <input name="nama" placeholder="Nama" required>
+  <input type="file" id="file" accept="image/*" required>
+  <button type="submit">Upload</button>
+</form>
+
+<p id="status"></p>
 
 <script>
-// URL Apps Script Anda (ganti dengan URL deployment Anda)
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx5m2daJGktEbDP2Fl_Np2ZSoCbQY6mqFKyHyPfpzW10I74Mswv7F_O8-7Nyh5o9C2k/exec';
+document.getElementById("form").addEventListener("submit", async function(e) {
+  e.preventDefault();
 
-async function uploadFile() {
-  const nama = document.getElementById('nama').value.trim();
-  const fileInput = document.getElementById('fileInput');
-  const file = fileInput.files[0];
-  const status = document.getElementById('status');
-  const result = document.getElementById('result');
-  
-  // Reset display
-  status.style.display = 'block';
-  result.style.display = 'none';
-  
-  // Validasi
-  if (!nama) {
-    status.innerHTML = '❌ Masukkan nama Anda';
-    status.style.background = '#ffebee';
-    status.style.color = '#c62828';
+  const file = document.getElementById("file").files[0];
+  if (!file || !file.type.startsWith("image/")) {
+    document.getElementById("status").innerText = "File harus gambar";
     return;
   }
-  
-  if (!file) {
-    status.innerHTML = '❌ Pilih file terlebih dahulu';
-    status.style.background = '#ffebee';
-    status.style.color = '#c62828';
-    return;
-  }
-  
-  // Tampilkan loading
-  status.innerHTML = '⏳ Sedang mengupload...';
-  status.style.background = '#e3f2fd';
-  status.style.color = '#1565c0';
-  
-  try {
-    // Convert file ke base64
-    const base64 = await toBase64(file);
-    
-    // Data yang akan dikirim
-    const data = {
-      nama: nama,
+
+  const base64 = await fileToBase64(file);
+
+  document.getElementById("status").innerText = "Mengupload...";
+
+  fetch("https://script.google.com/macros/s/AKfycbyOB7eiy3cx0SBYEj0dCZtWzRvU59IwLY_N7nfMy5AI5KZs84YaMiQXR7Ce6sBKq0cc/exec", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      nama: e.target.nama.value,
       file: base64,
       filename: file.name,
       type: file.type
-    };
-    
-    // Kirim ke server
-    const response = await fetch(SCRIPT_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
-    
-    const resultData = await response.json();
-    
-    if (resultData.success) {
-      // Tampilkan sukses
-      status.innerHTML = '✅ ' + resultData.message;
-      status.style.background = '#e8f5e8';
-      status.style.color = '#2e7d32';
-      
-      // Tampilkan link file
-      document.getElementById('fileLink').href = resultData.fileUrl;
-      result.style.display = 'block';
-      
-      // Reset form
-      document.getElementById('nama').value = '';
-      fileInput.value = '';
-      
-    } else {
-      // Tampilkan error
-      status.innerHTML = '❌ Error: ' + resultData.error;
-      status.style.background = '#ffebee';
-      status.style.color = '#c62828';
-    }
-    
-  } catch (error) {
-    // Tampilkan error network
-    status.innerHTML = '❌ Gagal terhubung ke server';
-    status.style.background = '#ffebee';
-    status.style.color = '#c62828';
-    console.error('Error:', error);
-  }
-}
+    })
+  })
+  .then(res => res.text())
+  .then(res => {
+    document.getElementById("status").innerText = res;
+    e.target.reset();
+  })
+  .catch(err => {
+    document.getElementById("status").innerText = "Gagal upload";
+    console.error(err);
+  });
+});
 
-// Convert file ke base64
-function toBase64(file) {
-  return new Promise((resolve, reject) => {
+function fileToBase64(file) {
+  return new Promise(resolve => {
     const reader = new FileReader();
-    reader.onload = () => {
-      // Hapus "data:image/jpeg;base64," bagian depan
-      const base64 = reader.result.split(',')[1];
-      resolve(base64);
-    };
-    reader.onerror = reject;
+    reader.onload = () => resolve(reader.result.split(",")[1]);
     reader.readAsDataURL(file);
   });
 }
-
-// Alternatif: Gunakan XMLHttpRequest jika fetch error
-function uploadWithXHR(data) {
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', SCRIPT_URL);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    
-    xhr.onload = () => {
-      try {
-        resolve(JSON.parse(xhr.responseText));
-      } catch (e) {
-        reject(e);
-      }
-    };
-    
-    xhr.onerror = reject;
-    xhr.send(JSON.stringify(data));
-  });
-}
 </script>
-
-</body>
-</html>
