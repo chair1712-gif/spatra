@@ -2,164 +2,88 @@
 <html>
 <head>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-  <title>📤 Upload File ke Folder x</title>
-  <style>
-    body { font-family: Arial, sans-serif; max-width: 500px; margin: 20px auto; padding: 20px; }
-    .card { background: #f8f9fa; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-    input, select, button { width: 100%; padding: 12px; margin: 8px 0; box-sizing: border-box; }
-    button { background: #1976d2; color: white; border: none; cursor: pointer; border-radius: 5px; }
-    button:hover { background: #1565c0; }
-    .status { margin-top: 15px; padding: 10px; border-radius: 5px; }
-    .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-    .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-    .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
-    .file-info { background: #fff3cd; padding: 10px; margin: 10px 0; border-radius: 5px; }
-  </style>
+  <title>Upload File Mudah</title>
 </head>
-<body>
-
-<div class='card'>
-  <h2 style='text-align: center; color: #1976d2;'>📤 Upload File ke Folder</h2>
+<body style='font-family: Arial; padding: 20px; max-width: 400px; margin: auto;'>
   
-  <form id='uploadForm'>
-    <input type='text' id='nama' name='nama' placeholder='Nama Lengkap' required>
-    
-    <select id='kelas' name='kelas'>
-      <option value=''>-- Pilih Kelas --</option>
-      <option value='10A'>Kelas 10A</option>
-      <option value='10B'>Kelas 10B</option>
-      <option value='11A'>Kelas 11A</option>
-      <option value='11B'>Kelas 11B</option>
-      <option value='12A'>Kelas 12A</option>
-      <option value='12B'>Kelas 12B</option>
-    </select>
-    
-    <input type='text' id='keterangan' name='keterangan' placeholder='Keterangan (opsional)'>
-    
-    <input type='file' id='fileInput' accept='image/*,.pdf,.doc,.docx,.xls,.xlsx' required>
-    
-    <div class='file-info' id='filePreview' style='display: none;'>
-      <strong>File yang dipilih:</strong>
-      <span id='fileName'></span>
-      <br>
-      <small>Size: <span id='fileSize'></span></small>
-      <button type='button' onclick='clearFile()' style='width: auto; padding: 5px 10px; background: #dc3545; margin-top: 5px;'>Hapus</button>
+  <h2 style='color: #1976d2;'>📁 Upload File Mudah</h2>
+  <p>File akan disimpan di folder <strong>FILE_UPLOAD</strong> di Google Drive</p>
+  
+  <div style='background: #f5f5f5; padding: 20px; border-radius: 10px;'>
+    <div>
+      <label style='display: block; margin-bottom: 5px;'>Nama Anda:</label>
+      <input type='text' id='nama' placeholder='Contoh: Andi' 
+             style='width: 100%; padding: 10px; margin-bottom: 15px; box-sizing: border-box;'>
     </div>
     
-    <button type='submit'>📁 Upload ke Folder</button>
-  </form>
-  
-  <div id='status' class='status'></div>
-  
-  <div id='result' style='display: none; margin-top: 20px; padding: 15px; background: #e7f3fe; border-radius: 5px;'>
-    <h3>✅ Upload Berhasil!</h3>
-    <p><strong>File:</strong> <span id='resultFileName'></span></p>
-    <p><strong>Folder:</strong> <span id='resultFolder'></span></p>
-    <p><strong>Link File:</strong> <a href='#' id='resultLink' target='_blank'>Buka File</a></p>
-    <p><strong>Link Folder:</strong> <a href='#' id='resultFolderLink' target='_blank'>Buka Folder</a></p>
+    <div>
+      <label style='display: block; margin-bottom: 5px;'>Pilih File:</label>
+      <input type='file' id='fileInput' 
+             style='width: 100%; padding: 10px; margin-bottom: 15px; box-sizing: border-box;'>
+    </div>
+    
+    <button onclick='uploadFile()' 
+            style='width: 100%; padding: 12px; background: #1976d2; color: white; border: none; border-radius: 5px; cursor: pointer;'>
+      📤 UPLOAD FILE
+    </button>
   </div>
-</div>
+  
+  <div id='status' style='margin-top: 20px; padding: 15px; border-radius: 5px; display: none;'></div>
+  
+  <div id='result' style='margin-top: 20px; padding: 15px; background: #e8f5e8; border-radius: 5px; display: none;'>
+    <h3 style='color: #2e7d32;'>✅ Upload Berhasil!</h3>
+    <p>File tersimpan di Google Drive</p>
+    <p><a href='#' id='fileLink' target='_blank' style='color: #1976d2;'>🔗 Buka File</a></p>
+  </div>
 
 <script>
-// GANTI URL INI DENGAN URL DEPLOYMENT ANDA
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwp1CBj9ncba_aLYKmMsto7K3dk8fZo7W3m88VyYciP47WWhsiMZDpIIGN01jfZXq3U/exec';
+// URL Apps Script Anda (ganti dengan URL deployment Anda)
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx5m2daJGktEbDP2Fl_Np2ZSoCbQY6mqFKyHyPfpzW10I74Mswv7F_O8-7Nyh5o9C2k/exec';
 
-let selectedFile = null;
-
-// Event listener untuk form
-document.getElementById('uploadForm').addEventListener('submit', async function(e) {
-  e.preventDefault();
+async function uploadFile() {
+  const nama = document.getElementById('nama').value.trim();
+  const fileInput = document.getElementById('fileInput');
+  const file = fileInput.files[0];
+  const status = document.getElementById('status');
+  const result = document.getElementById('result');
   
-  const statusDiv = document.getElementById('status');
-  const resultDiv = document.getElementById('result');
-  
-  // Reset tampilan
-  statusDiv.className = 'status info';
-  statusDiv.innerHTML = '⏳ Memproses...';
-  resultDiv.style.display = 'none';
+  // Reset display
+  status.style.display = 'block';
+  result.style.display = 'none';
   
   // Validasi
-  const nama = document.getElementById('nama').value.trim();
   if (!nama) {
-    statusDiv.className = 'status error';
-    statusDiv.innerHTML = '❌ Nama harus diisi';
+    status.innerHTML = '❌ Masukkan nama Anda';
+    status.style.background = '#ffebee';
+    status.style.color = '#c62828';
     return;
   }
   
-  if (!selectedFile) {
-    statusDiv.className = 'status error';
-    statusDiv.innerHTML = '❌ Pilih file terlebih dahulu';
+  if (!file) {
+    status.innerHTML = '❌ Pilih file terlebih dahulu';
+    status.style.background = '#ffebee';
+    status.style.color = '#c62828';
     return;
   }
   
-  // Konversi file ke Base64
-  statusDiv.innerHTML = '⏳ Mengkonversi file...';
+  // Tampilkan loading
+  status.innerHTML = '⏳ Sedang mengupload...';
+  status.style.background = '#e3f2fd';
+  status.style.color = '#1565c0';
   
   try {
-    const base64Data = await fileToBase64(selectedFile);
+    // Convert file ke base64
+    const base64 = await toBase64(file);
     
-    // Siapkan data untuk dikirim
-    const uploadData = {
+    // Data yang akan dikirim
+    const data = {
       nama: nama,
-      kelas: document.getElementById('kelas').value,
-      keterangan: document.getElementById('keterangan').value,
-      file: base64Data,
-      filename: selectedFile.name,
-      type: selectedFile.type,
-      size: selectedFile.size,
-      timestamp: new Date().toISOString()
+      file: base64,
+      filename: file.name,
+      type: file.type
     };
     
-    // Kirim ke Google Apps Script
-    statusDiv.innerHTML = '⏳ Mengupload ke Google Drive...';
-    
-    const response = await uploadFile(uploadData);
-    
-    if (response.success) {
-      // Tampilkan hasil
-      statusDiv.className = 'status success';
-      statusDiv.innerHTML = '✅ ' + response.message;
-      
-      document.getElementById('resultFileName').textContent = response.details.fileName;
-      document.getElementById('resultFolder').textContent = response.details.folderName;
-      document.getElementById('resultLink').href = response.details.viewUrl;
-      document.getElementById('resultFolderLink').href = response.details.folderUrl;
-      
-      resultDiv.style.display = 'block';
-      
-      // Reset form
-      document.getElementById('uploadForm').reset();
-      document.getElementById('filePreview').style.display = 'none';
-      selectedFile = null;
-      
-    } else {
-      statusDiv.className = 'status error';
-      statusDiv.innerHTML = '❌ ' + response.error;
-    }
-    
-  } catch (error) {
-    console.error('Upload error:', error);
-    statusDiv.className = 'status error';
-    statusDiv.innerHTML = '❌ Error: ' + error.message;
-  }
-});
-
-// File input change handler
-document.getElementById('fileInput').addEventListener('change', function(e) {
-  const file = e.target.files[0];
-  if (file) {
-    selectedFile = file;
-    
-    // Tampilkan preview
-    document.getElementById('filePreview').style.display = 'block';
-    document.getElementById('fileName').textContent = file.name;
-    document.getElementById('fileSize').textContent = formatFileSize(file.size);
-  }
-});
-
-// Fungsi untuk upload file
-async function uploadFile(data) {
-  try {
+    // Kirim ke server
     const response = await fetch(SCRIPT_URL, {
       method: 'POST',
       headers: {
@@ -168,77 +92,71 @@ async function uploadFile(data) {
       body: JSON.stringify(data)
     });
     
-    return await response.json();
+    const resultData = await response.json();
+    
+    if (resultData.success) {
+      // Tampilkan sukses
+      status.innerHTML = '✅ ' + resultData.message;
+      status.style.background = '#e8f5e8';
+      status.style.color = '#2e7d32';
+      
+      // Tampilkan link file
+      document.getElementById('fileLink').href = resultData.fileUrl;
+      result.style.display = 'block';
+      
+      // Reset form
+      document.getElementById('nama').value = '';
+      fileInput.value = '';
+      
+    } else {
+      // Tampilkan error
+      status.innerHTML = '❌ Error: ' + resultData.error;
+      status.style.background = '#ffebee';
+      status.style.color = '#c62828';
+    }
     
   } catch (error) {
-    // Fallback: coba dengan XMLHttpRequest jika fetch gagal
-    return new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      xhr.open('POST', SCRIPT_URL);
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      
-      xhr.onload = function() {
-        try {
-          resolve(JSON.parse(xhr.responseText));
-        } catch (e) {
-          resolve({ success: false, error: 'Invalid server response' });
-        }
-      };
-      
-      xhr.onerror = function() {
-        reject(new Error('Network error'));
-      };
-      
-      xhr.send(JSON.stringify(data));
-    });
+    // Tampilkan error network
+    status.innerHTML = '❌ Gagal terhubung ke server';
+    status.style.background = '#ffebee';
+    status.style.color = '#c62828';
+    console.error('Error:', error);
   }
 }
 
-// Konversi file ke Base64
-function fileToBase64(file) {
+// Convert file ke base64
+function toBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = function(e) {
-      const base64 = e.target.result.split(',')[1];
-      if (base64) {
-        resolve(base64);
-      } else {
-        reject(new Error('Gagal mengkonversi file'));
-      }
+    reader.onload = () => {
+      // Hapus "data:image/jpeg;base64," bagian depan
+      const base64 = reader.result.split(',')[1];
+      resolve(base64);
     };
-    reader.onerror = function() {
-      reject(new Error('Gagal membaca file'));
-    };
+    reader.onerror = reject;
     reader.readAsDataURL(file);
   });
 }
 
-// Format ukuran file
-function formatFileSize(bytes) {
-  if (bytes === 0) return '0 Bytes';
-  const k = 1024;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+// Alternatif: Gunakan XMLHttpRequest jika fetch error
+function uploadWithXHR(data) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', SCRIPT_URL);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    
+    xhr.onload = () => {
+      try {
+        resolve(JSON.parse(xhr.responseText));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    
+    xhr.onerror = reject;
+    xhr.send(JSON.stringify(data));
+  });
 }
-
-// Clear file selection
-function clearFile() {
-  document.getElementById('fileInput').value = '';
-  document.getElementById('filePreview').style.display = 'none';
-  selectedFile = null;
-}
-
-// Cek koneksi saat load
-window.addEventListener('load', function() {
-  fetch(SCRIPT_URL)
-    .then(response => {
-      console.log('Server connected:', response.status);
-    })
-    .catch(error => {
-      console.warn('Server connection check failed:', error);
-    });
-});
 </script>
 
 </body>
