@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title><?= title ?></title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #eef2f5;
+      padding: 10px;
+    }
+    .card {
+      max-width: 420px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,.15);
+    }
+    h2 {
+      text-align: center;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+    button {
+      background: #1976d2;
+      color: white;
+      border: none;
+      border-radius: 6px;
+    }
+    .status {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h2>Upload Gambar Tugas</h2>
+
+    <form id="form">
+      <input name="nama" placeholder="Nama Siswa" required>
+      <input name="kelas" placeholder="Kelas" required>
+      <input name="keterangan" placeholder="Keterangan Tugas" required>
+
+      <input type="file" name="file" accept="image/*" required>
+
+      <button type="button" onclick="kirim()">UPLOAD</button>
+    </form>
+
+    <div class="status" id="status"></div>
+  </div>
+
+  <script>
+    function kirim() {
+      document.getElementById("status").innerText = "⏳ Mengupload...";
+
+      google.script.run
+        .withSuccessHandler(msg => {
+          document.getElementById("status").innerText = msg;
+          document.getElementById("form").reset();
+        })
+        .uploadData(document.getElementById("form"));
+    }
+  </script>
+</body>
+</html>
