@@ -1,263 +1,421 @@
-  <!DOCTYPE html>
+ 
+ <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portal Siswa - Unggah Portofolio</title>
+<title>Portal Siswa - Update Terakhir</title>
 <style>
-  /* --- RESET & DASAR --- */
-  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f6f8; margin: 0; padding: 0; color: #333; }
-  
-  /* HEADER */
-  header { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto 10px auto; padding: 20px 20px 10px 20px; border-bottom: 2px solid #e0e0e0; background: white; position: sticky; top: 0; z-index: 900; }
-  h1 { margin: 0; font-size: 24px; color: #333; }
-  
-  /* AUTH & NAV */
-  #auth-section { display: flex; align-items: center; gap: 15px; }
-  .btn-primary { background-color: #4f46e5; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: background 0.3s; }
-  .btn-primary:hover { background-color: #4338ca; }
-  .btn-logout { background-color: #ef4444; padding: 6px 15px; font-size: 13px; }
-  .btn-logout:hover { background-color: #dc2626; }
-  
-  .main-nav { max-width: 1200px; margin: 0 auto; display: flex; gap: 10px; padding: 10px 20px; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-  .nav-btn { padding: 10px 25px; font-weight: 600; color: #666; background: transparent; border: none; border-bottom: 3px solid transparent; cursor: pointer; font-size: 16px; }
-  .nav-btn.active { color: #4f46e5; border-bottom: 3px solid #4f46e5; }
+  /* --- 1. CSS VARIABLES (THEMING) --- */
+  :root {
+    --bg-body: #f3f4f6;
+    --bg-card: #ffffff;
+    --bg-header: rgba(255, 255, 255, 0.9);
+    --text-main: #1f2937;
+    --text-muted: #6b7280;
+    --border-color: #e5e7eb;
+    --primary: #4f46e5; --primary-hover: #4338ca; --primary-light: #e0e7ff;
+    --danger: #ef4444;
+    --success: #10b981;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --radius: 12px;
+    --transition: all 0.3s ease;
+  }
 
-  /* USER PROFILE */
-  .user-profile { display: flex; align-items: center; gap: 12px; animation: fadeIn 0.5s; }
-  .user-avatar { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #4f46e5; background: #eee; }
-  .user-info { text-align: right; line-height: 1.2; }
-  .user-name { font-weight: 700; font-size: 15px; color: #111; }
-  .user-class { font-size: 12px; color: #666; }
+  [data-theme="dark"] {
+    --bg-body: #0f172a;
+    --bg-card: #1e293b;
+    --bg-header: rgba(15, 23, 42, 0.9);
+    --text-main: #f1f5f9;
+    --text-muted: #94a3b8;
+    --border-color: #334155;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+  }
 
-  /* LAYOUT */
-  .main-container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-  .view-section { display: none; animation: fadeInView 0.4s; }
-  .view-section.active-view { display: block; }
+  /* Color Themes */
+  [data-color="purple"] { --primary: #7c3aed; --primary-hover: #6d28d9; --primary-light: #ede9fe; }
+  [data-color="rose"] { --primary: #e11d48; --primary-hover: #be123c; --primary-light: #ffe4e6; }
+  [data-color="teal"] { --primary: #0d9488; --primary-hover: #0f766e; --primary-light: #ccfbf1; }
+
+  /* --- 2. RESET & BASE --- */
+  * { box-sizing: border-box; outline: none; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    margin: 0; padding: 0; transition: background-color 0.3s, color 0.3s;
+    padding-bottom: 80px;
+  }
+
+  /* --- 3. HEADER & NAV --- */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg-header);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-color);
+    padding: 15px 20px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  h1 { margin: 0; font-size: 20px; font-weight: 700; color: var(--primary); }
   
-  h2.section-title { font-size: 20px; color: #333; margin: 20px 0 15px 0; padding-left: 10px; border-left: 5px solid #4f46e5; }
+  .nav-pills {
+    background: var(--bg-card); border: 1px solid var(--border-color);
+    border-radius: 30px; padding: 4px; display: flex; gap: 5px;
+  }
+  .nav-pill {
+    border: none; background: transparent; color: var(--text-muted);
+    padding: 8px 16px; border-radius: 25px; font-weight: 600; cursor: pointer;
+    transition: var(--transition); font-size: 14px;
+  }
+  .nav-pill.active { background: var(--primary); color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
 
-  /* GALLERY HORIZONTAL */
-  .gallery-wrapper { background: white; border-radius: 12px; padding: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid #eee; }
-  .gallery-row { display: flex; overflow-x: auto; gap: 20px; padding: 10px 5px 25px 5px; scroll-behavior: smooth; }
-  .gallery-row::-webkit-scrollbar { height: 6px; }
-  .gallery-row::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+  .controls { display: flex; align-items: center; gap: 15px; }
+  .btn-icon {
+    background: transparent; border: 1px solid var(--border-color);
+    color: var(--text-main); width: 36px; height: 36px; border-radius: 50%;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: var(--transition);
+  }
+  .btn-icon:hover { background: var(--primary-light); color: var(--primary); border-color: var(--primary); }
+
+  .user-profile { display: flex; align-items: center; gap: 10px; }
+  .user-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
+  .user-info { display: flex; flex-direction: column; line-height: 1.2; }
+  .user-name { font-weight: 700; font-size: 14px; }
+  .user-class { font-size: 11px; color: var(--text-muted); }
+
+  .btn {
+    background: var(--primary); color: white; border: none; padding: 10px 20px;
+    border-radius: 8px; font-weight: 600; cursor: pointer; transition: var(--transition);
+    display: inline-flex; align-items: center; gap: 8px; font-size: 14px;
+  }
+  .btn:hover { background: var(--primary-hover); transform: translateY(-1px); }
+  .btn-logout { background: transparent; color: var(--danger); border: 1px solid var(--danger); }
+  .btn-logout:hover { background: var(--danger); color: white; }
+
+  /* --- 4. COMPONENTS --- */
+  .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+  .section-title {
+    margin: 25px 0 15px 0; font-size: 18px; font-weight: 700; color: var(--text-main);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-title::before { content: ''; width: 4px; height: 18px; background: var(--primary); border-radius: 2px; }
+
+  .chip-container { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
+  .chip-container::-webkit-scrollbar { display: none; }
+  .chip {
+    padding: 6px 16px; border-radius: 20px; background: var(--bg-card);
+    border: 1px solid var(--border-color); color: var(--text-muted);
+    font-size: 13px; font-weight: 600; white-space: nowrap; cursor: pointer;
+    transition: var(--transition);
+  }
+  .chip.active { background: var(--primary); color: white; border-color: var(--primary); }
+  .chip:hover:not(.active) { border-color: var(--primary); color: var(--primary); }
+
+  /* HORIZONTAL SCROLL WRAPPER */
+  .scroll-wrapper {
+    background: var(--bg-card); border-radius: var(--radius);
+    padding: 15px; box-shadow: var(--shadow); border: 1px solid var(--border-color);
+  }
+  .scroll-row {
+    display: flex; gap: 15px; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 10px;
+  }
+  .scroll-row::-webkit-scrollbar { height: 4px; }
+  .scroll-row::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
 
   /* CARD STYLE */
-  .card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.08); flex: 0 0 auto; width: 260px; display: flex; flex-direction: column; border: 1px solid #f0f0f0; }
-  .card img { width: 100%; height: 160px; object-fit: cover; background: #f9f9f9; }
-  .card .content { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; }
-  .card h3 { margin: 0 0 5px 0; font-size: 16px; color: #111; line-height: 1.3; }
-  .card .meta { font-size: 12px; color: #777; margin-bottom: 10px; }
-  .card .badge { display: inline-block; background: #f3f4f6; color: #4b5563; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-bottom: 8px; font-weight: 600; }
-  .card button { margin-top: auto; width: 100%; padding: 8px; border: none; background: #f9fafb; color: #4f46e5; border-radius: 6px; cursor: pointer; border: 1px solid #e5e7eb; }
-  .card button:hover { background: #eef2ff; }
-
-  /* BOOTCAMP & TUTORIAL */
-  .news-item { display: flex; background: white; border-radius: 10px; overflow: hidden; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid #eee; }
-  .news-img { width: 200px; min-width: 200px; height: auto; object-fit: cover; background: #eee; }
-  .news-content { padding: 20px; flex-grow: 1; }
-  .news-title { font-size: 18px; font-weight: 700; margin: 0 0 10px 0; color: #111; }
-  .news-desc { font-size: 14px; color: #555; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-  
-  .yt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-  .yt-card { background: transparent; border-radius: 12px; overflow: hidden; cursor: pointer; }
-  .yt-thumb-container { position: relative; width: 100%; padding-top: 56.25%; background: #eee; border-radius: 12px; overflow: hidden; }
-  .yt-thumb { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
-  .yt-title { font-size: 16px; font-weight: 600; color: #111; margin: 10px 0 5px 0; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .yt-desc { font-size: 13px; color: #666; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-
-  /* MODAL & FORM */
-  .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; }
-  .modal-overlay.open { display: flex; }
-  .modal-box { background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 450px; position: relative; box-shadow: 0 20px 25px rgba(0,0,0,0.2); }
-  .form-group { margin-bottom: 15px; }
-  .form-group label { display: block; margin-bottom: 5px; font-size: 14px; font-weight: 600; }
-  .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-family: inherit; }
-  .form-group input[type="file"] { padding: 6px; }
-  .close-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: #999; position: absolute; top: 15px; right: 15px; }
-
-  /* TOAST */
-  .toast { position: fixed; bottom: 20px; right: 20px; background: #333; color: white; padding: 12px 24px; border-radius: 8px; display: none; z-index: 2000; }
-
-  @media (max-width: 768px) {
-    .news-item { flex-direction: column; }
-    .news-img { width: 100%; height: 200px; }
+  .card {
+    background: var(--bg-body); border-radius: 10px; overflow: hidden;
+    min-width: 220px; max-width: 240px; flex-shrink: 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: var(--transition);
+    border: 1px solid transparent; cursor: pointer;
   }
+  .card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--primary-light); }
+  .card img { width: 100%; height: 140px; object-fit: cover; background: #e5e7eb; }
+  .card-body { padding: 12px; }
+  .card-tag { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--primary); font-weight: 700; margin-bottom: 5px; }
+  .card-title { font-size: 15px; font-weight: 700; margin: 0 0 8px 0; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .card-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; display: flex; align-items: center; gap: 5px; }
+
+  /* NEWS (BOOTCAMP) */
+  .news-card {
+    display: flex; background: var(--bg-card); border-radius: var(--radius);
+    overflow: hidden; box-shadow: var(--shadow); margin-bottom: 15px;
+    border: 1px solid var(--border-color); transition: var(--transition); cursor: pointer;
+  }
+  .news-card:hover { transform: scale(1.01); }
+  .news-img { width: 130px; object-fit: cover; min-width: 130px; background: var(--bg-body); }
+  .news-content { padding: 15px; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .news-date { font-size: 11px; color: var(--primary); font-weight: 600; margin-bottom: 5px; }
+  .news-headline { font-size: 16px; font-weight: 700; margin: 0 0 5px 0; color: var(--text-main); }
+  .news-excerpt { font-size: 13px; color: var(--text-muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  @media (min-width: 768px) { .news-img { width: 250px; min-width: 250px; } .news-excerpt { -webkit-line-clamp: 3; } }
+
+  /* YOUTUBE STYLE */
+  .yt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); gap: 20px; }
+  @media (min-width: 600px) { .yt-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 900px) { .yt-grid { grid-template-columns: repeat(3, 1fr); } }
+  .yt-card { background: transparent; cursor: pointer; transition: var(--transition); }
+  .yt-thumb-box { width: 100%; aspect-ratio: 16/9; border-radius: 12px; overflow: hidden; background: var(--bg-body); position: relative; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .yt-thumb { width: 100%; height: 100%; object-fit: cover; }
+  .yt-title { font-size: 14px; font-weight: 600; color: var(--text-main); margin-bottom: 5px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;}
+  .yt-desc { font-size: 12px; color: var(--text-muted); }
+
+  /* --- 5. MODAL & DETAIL VIEW --- */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(5px); z-index: 1000;
+    display: none; align-items: center; justify-content: center; padding: 20px;
+  }
+  .modal-overlay.open { display: flex; animation: fadeIn 0.3s; }
+  
+  .modal {
+    background: var(--bg-card); width: 100%; max-width: 450px;
+    border-radius: 16px; padding: 25px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+    position: relative; border: 1px solid var(--border-color); animation: slideUp 0.3s;
+  }
+
+  /* DETAIL MODAL */
+  .modal-detail {
+    background: var(--bg-card); width: 100%; max-width: 900px;
+    border-radius: 20px; overflow: hidden; position: relative;
+    display: flex; flex-direction: column;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); animation: zoomIn 0.3s;
+  }
+  @media (min-width: 768px) {
+    .modal-detail { flex-direction: row; height: 80vh; }
+    .detail-image { width: 60%; height: 100%; object-fit: cover; }
+    .detail-content { width: 40%; overflow-y: auto; }
+  }
+  @media (max-width: 767px) {
+    .modal-detail { height: 90vh; }
+    .detail-image { width: 100%; height: 50%; object-fit: cover; }
+  }
+  .detail-image { background: #000; }
+  .detail-content { padding: 30px; position: relative; }
+  .detail-close {
+    position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); color: white;
+    width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; cursor: pointer; z-index: 10; transition: 0.2s;
+  }
+  .detail-close:hover { background: var(--danger); }
+  .detail-badge {
+    display: inline-block; background: var(--primary-light); color: var(--primary);
+    padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;
+    margin-bottom: 10px; text-transform: uppercase;
+  }
+  .detail-title { font-size: 24px; font-weight: 800; margin: 0 0 10px 0; color: var(--text-main); line-height: 1.2; }
+  .detail-meta { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
+  .detail-desc { font-size: 15px; line-height: 1.6; color: var(--text-muted); }
+  
+  .form-group { margin-bottom: 15px; }
+  .form-label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; }
+  .form-input { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-body); color: var(--text-main); }
+  .form-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
+
+  /* Settings */
+  .theme-options { display: flex; gap: 10px; margin-top: 10px; }
+  .color-dot { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
+  .color-dot.active { border-color: var(--text-main); transform: scale(1.1); }
+
+  /* Toast & Loader */
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--text-main); color: var(--bg-body); padding: 12px 24px; border-radius: 30px; font-size: 14px; font-weight: 600; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); z-index: 2000; display: none; }
+  .loader { border: 3px solid var(--bg-card); border-top: 3px solid var(--primary); border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; margin: 0 auto; }
+
+  @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  @keyframes zoomIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .hidden { display: none !important; }
 </style>
 </head>
 <body>
 
 <!-- HEADER -->
 <header>
-  <h1>Portal Siswa</h1>
-  <div id="auth-section">
-    <button id="btnLogin" class="btn-primary" onclick="openModal('loginModal')">Login</button>
-    <div id="userProfile" class="user-profile" style="display: none;">
-      <div class="user-info">
-        <div class="user-name" id="dispName">Nama Siswa</div>
-        <div class="user-class" id="dispClass">Kelas X</div>
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <div style="width:32px; height:32px; background:var(--primary); border-radius:8px; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold;">P</div>
+    <h1>PortalSiswa</h1>
+  </div>
+
+  <nav class="nav-pills">
+    <button class="nav-pill active" onclick="switchView('home')" id="pill-home">Beranda</button>
+    <button class="nav-pill" onclick="switchView('dashboard')" id="pill-dashboard">Dashboard</button>
+  </nav>
+
+  <div class="controls">
+    <button class="btn-icon" onclick="openModal('settingsModal')">⚙️</button>
+    <div id="auth-section">
+      <button class="btn" id="btnLogin" onclick="openModal('loginModal')">Login</button>
+      <div id="userProfile" class="user-profile hidden">
+        <div class="user-info">
+          <span class="user-name" id="dispName">Nama</span>
+          <span class="user-class" id="dispClass">Kelas</span>
+        </div>
+        <img id="dispAvatar" class="user-avatar" src="">
+        <button class="btn btn-logout" style="padding: 6px 12px; font-size: 12px; margin-left:5px;" onclick="logout()">Out</button>
+        <button class="btn" id="btnUpload" style="background: var(--success); padding: 6px 12px;" onclick="openModal('uploadModal')">+ Upload</button>
       </div>
-      <img id="dispAvatar" class="user-avatar" src="" alt="Profile">
-      <button id="btnUpload" class="btn-primary" onclick="openModal('uploadModal')" style="display: none; background-color: #059669;">+ Upload Karya</button>
-      <button id="btnLogout" class="btn-primary btn-logout" onclick="logout()">Logout</button>
     </div>
   </div>
 </header>
 
-<!-- NAVIGASI UTAMA -->
-<nav class="main-nav">
-  <button class="nav-btn active" onclick="switchView('home')">Beranda</button>
-  <button class="nav-btn" onclick="switchView('dashboard')">Dashboard</button>
-</nav>
-
 <!-- MAIN CONTAINER -->
-<div class="main-container">
-
-  <!-- === VIEW 1: BERANDA (Galeri & Briev) === -->
-  <div id="view-home" class="view-section active-view">
-    
-    <!-- SECTION GALERI -->
-    <div class="section-gallery">
-      <div id="tabs-gallery" class="tabs-container">
-        <button class="tab-btn active" onclick="filterData('gallery', 'all')">Semua Galeri</button>
-      </div>
-      <div class="gallery-wrapper">
-        <div id="loading">Memuat Galeri...</div>
-        <div class="gallery-row" id="row-gallery" style="display: none;"></div>
-      </div>
+<div class="container">
+  <!-- VIEW HOME -->
+  <div id="view-home" class="view-section">
+    <div class="section-title">Galeri Karya Siswa</div>
+    <div class="chip-container" id="tabs-gallery">
+      <button class="chip active" onclick="filterData('gallery', 'all')">Semua</button>
+    </div>
+    <div class="scroll-wrapper">
+      <div id="loading-gallery" style="padding:20px;"><div class="loader"></div></div>
+      <div class="scroll-row" id="row-gallery"></div>
     </div>
 
-    <!-- SECTION BRIEV -->
-    <h2 class="section-title">Briev & Briefing</h2>
-    <div class="section-briev">
-      <div id="tabs-briev" class="tabs-container">
-        <button class="tab-btn active" onclick="filterData('briev', 'all')">Semua Briev</button>
-      </div>
-      <div class="gallery-wrapper">
-        <div id="loading-briev">Memuat Briev...</div>
-        <div class="gallery-row" id="row-briev" style="display: none;"></div>
-      </div>
+    <div class="section-title">Info & Briefing</div>
+    <div class="chip-container" id="tabs-briev">
+      <button class="chip active" onclick="filterData('briev', 'all')">Semua</button>
+    </div>
+    <div class="scroll-wrapper">
+      <div id="loading-briev" style="padding:20px;"><div class="loader"></div></div>
+      <div class="scroll-row" id="row-briev"></div>
     </div>
   </div>
 
-  <!-- === VIEW 2: DASHBOARD (Bootcamp & Tutorial) === -->
-  <div id="view-dashboard" class="view-section">
-    
-    <!-- SECTION BOOTCAMP -->
-    <h2 class="section-title">Kegiatan Bootcamp</h2>
-    <div id="loading-bootcamp" style="text-align:center; padding:20px;">Memuat Kegiatan...</div>
+  <!-- VIEW DASHBOARD -->
+  <div id="view-dashboard" class="view-section hidden">
+    <div class="section-title">Kegiatan Bootcamp</div>
+    <div id="loading-bootcamp" style="padding:20px;"><div class="loader"></div></div>
     <div id="container-bootcamp"></div>
 
-    <!-- SECTION TUTORIAL -->
-    <h2 class="section-title">Tutorial Video Online</h2>
-    <div id="loading-tutorial" style="text-align:center; padding:20px;">Memuat Tutorial...</div>
+    <div class="section-title">Tutorial Video</div>
+    <div id="loading-tutorial" style="padding:20px;"><div class="loader"></div></div>
     <div id="container-tutorial" class="yt-grid"></div>
-
   </div>
-
 </div>
 
-<!-- MODAL LOGIN -->
+<!-- === MODALS === -->
+
+<!-- Login Modal -->
 <div id="loginModal" class="modal-overlay">
-  <div class="modal-box">
-    <div class="modal-header" style="margin-bottom:20px;"><h2>Login Siswa</h2></div>
+  <div class="modal">
+    <h2 style="margin-top:0; color:var(--primary);">Masuk Siswa</h2>
     <form onsubmit="handleLogin(event)">
-      <div class="form-group"><label>Username</label><input type="text" id="username" required></div>
-      <div class="form-group"><label>Password</label><input type="password" id="password" required></div>
-      <button type="submit" class="btn-primary" style="width: 100%;" id="btnSubmitLogin">Masuk</button>
+      <div class="form-group"><label class="form-label">Username</label><input type="text" id="username" class="form-input" required></div>
+      <div class="form-group"><label class="form-label">Password</label><input type="password" id="password" class="form-input" required></div>
+      <button type="submit" class="btn" style="width:100%; justify-content:center;">Login</button>
     </form>
-    <button class="close-btn" onclick="closeModal('loginModal')">&times;</button>
+    <button class="btn-icon" style="position:absolute; top:15px; right:15px;" onclick="closeModal('loginModal')">✕</button>
   </div>
 </div>
 
-<!-- MODAL UPLOAD (DISESUAIKAN) -->
+<!-- Settings Modal -->
+<div id="settingsModal" class="modal-overlay">
+  <div class="modal">
+    <h2 style="margin-top:0;">Pengaturan</h2>
+    <div class="form-group">
+      <label class="form-label">Mode</label>
+      <button class="btn" style="width:100%; justify-content:space-between;" onclick="toggleTheme()">
+        <span id="theme-label">Mode Terang</span> <span id="theme-icon">☀️</span>
+      </button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Warna Tema</label>
+      <div class="theme-options">
+        <div class="color-dot active" style="background:#4f46e5;" onclick="setColor('blue', this)"></div>
+        <div class="color-dot" style="background:#7c3aed;" onclick="setColor('purple', this)"></div>
+        <div class="color-dot" style="background:#e11d48;" onclick="setColor('rose', this)"></div>
+        <div class="color-dot" style="background:#0d9488;" onclick="setColor('teal', this)"></div>
+      </div>
+    </div>
+    <button class="btn-icon" style="position:absolute; top:15px; right:15px;" onclick="closeModal('settingsModal')">✕</button>
+  </div>
+</div>
+
+<!-- Upload Modal (Updated with Jenis Karya) -->
 <div id="uploadModal" class="modal-overlay">
-  <div class="modal-box">
-    <div class="modal-header" style="margin-bottom:20px;"><h2>Upload Portofolio</h2></div>
+  <div class="modal">
+    <h2 style="margin-top:0; color:var(--success);">Unggah Portofolio</h2>
     <form onsubmit="handleUpload(event)">
-      <!-- Judul Karya (Kolom E) -->
-      <div class="form-group">
-        <label>Judul Karya</label>
-        <input type="text" id="uJudul" required placeholder="Contoh: Poster Bumi Hijau">
-      </div>
+      <div class="form-group"><label class="form-label">Judul Karya</label><input type="text" id="uJudul" class="form-input" required></div>
       
-      <!-- Deskripsi (Kolom D) -->
+      <!-- INPUT BARU: JENIS KARYA -->
       <div class="form-group">
-        <label>Deskripsi</label>
-        <textarea id="uDeskripsi" rows="3" required placeholder="Ceritakan tentang karya ini..."></textarea>
-      </div>
-      
-      <!-- Unggah File Karya (Kolom C) -->
-      <div class="form-group">
-        <label>File Gambar / Dokumen</label>
-        <input type="file" id="uFile" accept="image/*,.pdf,.doc,.docx" required>
-        <small style="color:#666;">Maksimal 5MB.</small>
+        <label class="form-label">Jenis Karya</label>
+        <select id="uJenisKarya" class="form-input" required>
+          <option value="" disabled selected>Pilih Jenis Karya...</option>
+          <option value="Desain">Desain</option>
+          <option value="Foto">FOTO</option>
+        </select>
       </div>
 
-      <!-- Akun (Hidden - otomatis dari login) -->
-      <input type="hidden" id="uAkun">
-
-      <button type="submit" class="btn-primary" style="width: 100%;" id="btnSubmitUpload">Unggah ke Drive & Sheet</button>
+      <div class="form-group"><label class="form-label">Deskripsi</label><textarea id="uDeskripsi" class="form-input" rows="3" required></textarea></div>
+      <div class="form-group"><label class="form-label">File (Gambar/Dokumen)</label><input type="file" id="uFile" class="form-input" accept="image/*,.pdf,.doc,.docx" required></div>
+      <button type="submit" class="btn" style="width:100%; justify-content:center; background:var(--success);">Kirim Sekarang</button>
     </form>
-    <button class="close-btn" onclick="closeModal('uploadModal')">&times;</button>
+    <button class="btn-icon" style="position:absolute; top:15px; right:15px;" onclick="closeModal('uploadModal')">✕</button>
+  </div>
+</div>
+
+<!-- === DETAIL MODAL === -->
+<div id="detailModal" class="modal-overlay">
+  <div class="modal-detail">
+    <div class="detail-close" onclick="closeModal('detailModal')">✕</div>
+    <img id="detail-img" class="detail-image" src="">
+    <div class="detail-content">
+      <span id="detail-badge" class="detail-badge">KATEGORI</span>
+      <h2 id="detail-title" class="detail-title">Judul</h2>
+      <div id="detail-meta" class="detail-meta">Meta Info</div>
+      <div id="detail-desc" class="detail-desc">Deskripsi lengkap...</div>
+      <button id="detail-action" class="btn" style="margin-top:20px; width:100%; justify-content:center;">Buka File</button>
+    </div>
   </div>
 </div>
 
 <div id="toast" class="toast">Notifikasi</div>
 
 <script>
+  /* --- CONFIGURATION --- */
   const SHEET_ID = '1iOxHNN6Y5idBTF5QH0zzr3FTxK_YcToOx56KN9I2wlY';
   const GID_USERS = '23797909';
+  
+  // URL AUTOSCRIPT (DIUPDATE)
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbysreBIaV8juIO-zF5ol5q7JqCJNUbpJXk0cnc7Y5rKzLhs_u3ZPZGBmhMa2eKg1U81hQ/exec';
 
-  // --- PENTING: MASUKKAN URL WEB APP DARI LANGKAH 1 DI SINI ---
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyrIKrW19dYIkNSkDTZUBDuyJTbIFuG_1xuVcdXcAJ1AurcryN_0NqCLTZj4bBGX6faqw/exec';
-
-  // --- KONFIGURASI SECTION ---
+  // CONFIG DIUPDATE QUERY DAN MAPPING
   const CONFIG = {
     gallery: {
-      gid: '921098100',
-      query: 'SELECT E,F,J,L WHERE H>3',
-      els: { tabs: 'tabs-gallery', row: 'row-gallery', loading: 'loading' },
-      map: (row) => ({
-        judul: row[0]?.v || 'Tanpa Judul',
-        gambar: row[1]?.v || '',
-        meta: row[2]?.v || 'Anonim',
-        filter: row[3]?.v || 'Umum',
-        type: 'Siswa'
-      })
+      gid: '921098100', query: 'SELECT E,F,J,L WHERE E<>""',
+      els: { tabs: 'tabs-gallery', row: 'row-gallery', loading: 'loading-gallery' },
+      map: (row) => ({ judul: row[0]?.v, gambar: row[1]?.v, meta: row[2]?.v, filter: row[3]?.v })
     },
     briev: {
-      gid: '991020926',
-      query: 'SELECT B,D,F,H WHERE B<>""',
+      gid: '991020926', query: 'SELECT B,D,F,H WHERE B<>""',
       els: { tabs: 'tabs-briev', row: 'row-briev', loading: 'loading-briev' },
       map: (row) => {
-        let imgRaw = row[2]?.v || '';
-        let imgUrl = imgRaw;
-        if (imgRaw && !imgRaw.startsWith('http')) { imgUrl = `https://drive.google.com/thumbnail?id=${imgRaw}&sz=w400`; }
-        return { judul: row[0]?.v || '', gambar: imgUrl, meta: row[1]?.v || '', filter: row[3]?.v || '' };
+        let imgRaw = row[2]?.v; let img = (imgRaw && !imgRaw.startsWith('http')) ? `https://drive.google.com/thumbnail?id=${imgRaw}&sz=w400` : imgRaw;
+        return { judul: row[0]?.v, gambar: img, meta: row[1]?.v, filter: row[3]?.v };
       }
     },
     bootcamp: {
-      gid: '1880887156',
-      query: 'SELECT B,C,G,E WHERE B<>""',
+      // QUERY BARU: B,C,G,E (E dianggap keterangan/link ekstra)
+      gid: '1880887156', query: 'SELECT B,C,G,E WHERE B<>""',
       els: { container: 'container-bootcamp', loading: 'loading-bootcamp' },
       map: (row) => {
-        let imgRaw = row[2]?.v || '';
-        let imgUrl = imgRaw;
-        if (imgRaw && !imgRaw.startsWith('http')) { imgUrl = `https://drive.google.com/thumbnail?id=${imgRaw}&sz=w800`; }
-        return { judul: row[0]?.v, waktu: row[1]?.v, gambar: imgUrl, ket: row[3]?.v };
+        let imgRaw = row[2]?.v; // Index 2 adalah G (Gambar)
+        let img = (imgRaw && !imgRaw.startsWith('http')) ? `https://drive.google.com/thumbnail?id=${imgRaw}&sz=w800` : imgRaw;
+        return { judul: row[0]?.v, waktu: row[1]?.v, gambar: img, ket: row[3]?.v }; // Index 3 adalah E
       }
     },
     tutorial: {
-      gid: '1819053111',
-      query: 'SELECT B,C,G WHERE B<>""',
+      // QUERY BARU: B,C,G,E (E adalah Link Youtube)
+      gid: '1819053111', query: 'SELECT B,C,G,E WHERE B<>""',
       els: { container: 'container-tutorial', loading: 'loading-tutorial' },
       map: (row) => {
-        let imgRaw = row[2]?.v || '';
-        let imgUrl = imgRaw;
-        if (imgRaw && !imgRaw.startsWith('http')) { imgUrl = `https://drive.google.com/thumbnail?id=${imgRaw}&sz=w600`; }
-        return { judul: row[0]?.v, deskripsi: row[1]?.v, gambar: imgUrl };
+        let imgRaw = row[2]?.v; // Index 2 adalah G (Gambar)
+        let img = (imgRaw && !imgRaw.startsWith('http')) ? `https://drive.google.com/thumbnail?id=${imgRaw}&sz=w600` : imgRaw;
+        return { judul: row[0]?.v, deskripsi: row[1]?.v, gambar: img, link: row[3]?.v }; // Index 3 adalah E (Link)
       }
     }
   };
@@ -265,248 +423,203 @@
   let dataStore = { gallery: [], briev: [], bootcamp: [], tutorial: [] };
   let currentUser = null;
 
-  // --- 1. NAVIGASI & AUTH ---
-  function switchView(viewName) {
-    document.getElementById('view-home').classList.remove('active-view');
-    document.getElementById('view-dashboard').classList.remove('active-view');
-    document.getElementById(`view-${viewName}`).classList.add('active-view');
-    const btns = document.querySelectorAll('.nav-btn');
-    btns.forEach(btn => btn.classList.remove('active'));
-    if(viewName === 'home') btns[0].classList.add('active'); else btns[1].classList.add('active');
+  /* --- UI FUNCTIONS --- */
+  function initTheme() {
+    const t = localStorage.getItem('theme'); if (t === 'dark') document.body.setAttribute('data-theme', 'dark'); updateThemeUI();
+    const c = localStorage.getItem('color'); if (c) { document.body.setAttribute('data-color', c); document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active')); document.querySelector(`.color-dot[onclick*="${c}"]`)?.classList.add('active'); }
   }
+  function toggleTheme() {
+    const isDark = document.body.getAttribute('data-theme') === 'dark';
+    if (isDark) { document.body.removeAttribute('data-theme'); localStorage.setItem('theme', 'light'); } 
+    else { document.body.setAttribute('data-theme', 'dark'); localStorage.setItem('theme', 'dark'); }
+    updateThemeUI();
+  }
+  function updateThemeUI() {
+    const isDark = document.body.getAttribute('data-theme') === 'dark';
+    document.getElementById('theme-label').textContent = isDark ? 'Mode Gelap' : 'Mode Terang';
+    document.getElementById('theme-icon').textContent = isDark ? '🌙' : '☀️';
+  }
+  function setColor(color, el) {
+    document.body.setAttribute('data-color', color); localStorage.setItem('color', color);
+    document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active')); el.classList.add('active');
+  }
+  function switchView(view) {
+    document.getElementById('view-home').classList.add('hidden');
+    document.getElementById('view-dashboard').classList.add('hidden');
+    document.getElementById(`view-${view}`).classList.remove('hidden');
+    document.getElementById('pill-home').classList.remove('active');
+    document.getElementById('pill-dashboard').classList.remove('active');
+    document.getElementById(`pill-${view}`).classList.add('active');
+  }
+  function openModal(id) { document.getElementById(id).classList.add('open'); }
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+  window.onclick = (e) => { if(e.target.classList.contains('modal-overlay')) closeModal(e.target.id); }
 
+  /* --- AUTH --- */
   async function handleLogin(e) {
     e.preventDefault();
-    const userIn = document.getElementById('username').value;
-    const passIn = document.getElementById('password').value;
-    const credential = `${userIn}__${passIn}`;
-    const btn = document.getElementById('btnSubmitLogin');
-    
-    btn.innerText = "Mengecek..."; btn.disabled = true;
-
+    const cred = `${document.getElementById('username').value}__${document.getElementById('password').value}`;
     try {
-      const query = `SELECT B,C,H WHERE G = '${credential}'`;
-      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${GID_USERS}&tq=${encodeURIComponent(query)}`;
-      const res = await fetch(url);
-      const text = await res.text();
-      const jsonStr = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
-      const data = JSON.parse(jsonStr);
-
-      if (data.table && data.table.rows && data.table.rows.length > 0) {
-        const rowData = data.table.rows[0].c;
-        currentUser = {
-          nama: rowData[0]?.v || 'Siswa',
-          kelas: rowData[1]?.v || '-',
-          gambar: rowData[2]?.v || '',
-          username: userIn // Simpan username asli untuk Kolom B (Akun)
-        };
-        loginSuccessUI(currentUser);
+      const q = `SELECT B,C,H WHERE G = '${cred}'`;
+      const u = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${GID_USERS}&tq=${encodeURIComponent(q)}`;
+      const r = await fetch(u);
+      const txt = await r.text();
+      const j = JSON.parse(txt.substring(txt.indexOf('{'), txt.lastIndexOf('}') + 1));
+      if (j.table && j.table.rows) {
+        const d = j.table.rows[0].c;
+        currentUser = { nama: d[0]?.v, kelas: d[1]?.v, gambar: d[2]?.v, username: document.getElementById('username').value };
+        document.getElementById('btnLogin').classList.add('hidden');
+        document.getElementById('userProfile').classList.remove('hidden');
+        document.getElementById('dispName').textContent = currentUser.nama;
+        document.getElementById('dispClass').textContent = currentUser.kelas;
+        let img = currentUser.gambar;
+        if(img && !img.startsWith('http')) img = `https://drive.google.com/thumbnail?id=${img}&sz=w100`;
+        else if(!img) img = `https://ui-avatars.com/api/?name=${currentUser.nama}&background=random`;
+        document.getElementById('dispAvatar').src = img;
         closeModal('loginModal');
-        showToast(`Selamat datang, ${currentUser.nama}`);
-      } else { alert("Login Gagal!"); }
-    } catch (err) { alert("Gagal terkoneksi."); } 
-    finally { btn.innerText = "Masuk"; btn.disabled = false; }
+        showToast(`Halo, ${currentUser.nama}`);
+      } else showToast("Login Gagal");
+    } catch(e) { showToast("Error"); }
   }
-
-  function loginSuccessUI(user) {
-    document.getElementById('btnLogin').style.display = 'none';
-    const profileDiv = document.getElementById('userProfile');
-    profileDiv.style.display = 'flex';
-    document.getElementById('dispName').textContent = user.nama;
-    document.getElementById('dispClass').textContent = user.kelas;
-    
-    let imgUrl = user.gambar;
-    if (imgUrl && !imgUrl.startsWith('http')) { imgUrl = `https://drive.google.com/thumbnail?id=${imgUrl}&sz=w100`; }
-    if(!imgUrl) imgUrl = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.nama);
-    document.getElementById('dispAvatar').src = imgUrl;
-
-    document.getElementById('btnUpload').style.display = 'block';
-  }
-
   function logout() {
-    currentUser = null;
-    document.getElementById('userProfile').style.display = 'none';
-    document.getElementById('btnLogin').style.display = 'block';
-    document.getElementById('username').value = '';
-    document.getElementById('password').value = '';
-    showToast("Logout.");
+    currentUser = null; document.getElementById('userProfile').classList.add('hidden');
+    document.getElementById('btnLogin').classList.remove('hidden');
+    document.getElementById('username').value=''; document.getElementById('password').value='';
+    showToast("Logout");
   }
 
-  // --- 2. LOGIKA UPLOAD KE GDRIVE (TERBARU) ---
-  function handleUpload(e) {
-    e.preventDefault();
+  /* --- DETAIL VIEW (Updated for Youtube Link) --- */
+  function showDetail(item) {
+    document.getElementById('detail-title').textContent = item.judul;
+    document.getElementById('detail-badge').textContent = item.filter || 'INFO';
+    document.getElementById('detail-meta').textContent = item.meta || item.waktu || '-';
     
-    if (SCRIPT_URL === 'MASUKKAN_URL_WEB_APP_ANDA_DISINI') {
-      alert("Harap masukkan SCRIPT_URL di kode HTML dulu!");
-      return;
+    let imgSrc = item.gambar;
+    if(imgSrc && !imgSrc.startsWith('http')) imgSrc = `https://drive.google.com/uc?export=view&id=${imgSrc}`;
+    document.getElementById('detail-img').src = imgSrc;
+
+    document.getElementById('detail-desc').textContent = item.ket || item.deskripsi || "Karya ini diunggah oleh siswa sebagai bagian dari portofolio kreatif mereka.";
+
+    const btn = document.getElementById('detail-action');
+    
+    // LOGIKA UPDATE JIKA ITEM MEMILIKI LINK (TUTORIAL)
+    if (item.link && item.link.startsWith('http')) {
+      btn.textContent = "Tonton Video";
+      btn.onclick = () => window.open(item.link, '_blank');
+    } else {
+      btn.textContent = "Buka File Asli";
+      btn.onclick = () => window.open(item.gambar, '_blank');
     }
-
-    const fileInput = document.getElementById('uFile');
-    const file = fileInput.files[0];
-    const judul = document.getElementById('uJudul').value;
-    const deskripsi = document.getElementById('uDeskripsi').value;
-    const akun = currentUser ? currentUser.username : 'Guest'; // Kolom B (Akun)
-
-    if (!file) { alert("Pilih file terlebih dahulu!"); return; }
-
-    // Proses membaca file ke Base64
-    const reader = new FileReader();
-    reader.onload = function(event) {
-      const base64Data = event.target.result;
-      // Hapus header "data:image/png;base64," agar clean base64
-      const cleanBase64 = base64Data.substring(base64Data.indexOf(',') + 1);
-
-      const payload = {
-        akun: akun,
-        judul: judul,
-        deskripsi: deskripsi,
-        fileData: cleanBase64,
-        fileName: file.name,
-        mimeType: file.type
-      };
-
-      // Kirim ke Web App
-      const btn = document.getElementById('btnSubmitUpload');
-      btn.innerText = "Mengunggah..."; btn.disabled = true;
-
-      fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors', // Penting untuk Google Apps Script
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      })
-      .then(() => {
-        showToast("Karya berhasil diunggah!");
-        closeModal('uploadModal');
-        e.target.reset();
-        // Refresh Gallery setelah 2 detik agar data baru muncul
-        setTimeout(() => fetchData('gallery'), 2000);
-      })
-      .catch(err => {
-        console.error(err);
-        alert("Gagal mengunggah.");
-      })
-      .finally(() => {
-        btn.innerText = "Unggah ke Drive & Sheet"; btn.disabled = false;
-      });
-    };
-    reader.readAsDataURL(file);
+    
+    openModal('detailModal');
   }
 
-  // --- 3. FETCH & RENDER DATA ---
+  /* --- DATA FETCHING --- */
   async function initAllData() {
     await Promise.all([fetchData('gallery'), fetchData('briev'), fetchData('bootcamp'), fetchData('tutorial')]);
   }
 
-  async function fetchData(sectionKey) {
-    const config = CONFIG[sectionKey];
-    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${config.gid}&tq=${encodeURIComponent(config.query)}`;
+  async function fetchData(key) {
+    const c = CONFIG[key];
+    const u = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${c.gid}&tq=${encodeURIComponent(c.query)}`;
     try {
-      const res = await fetch(url);
-      const text = await res.text();
-      const jsonStr = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
-      const data = JSON.parse(jsonStr);
-      let results = [];
-      if (data.table && data.table.rows) results = data.table.rows.map(r => config.map(r.c));
-      dataStore[sectionKey] = results;
+      const r = await fetch(u);
+      const txt = await r.text();
+      const j = JSON.parse(txt.substring(txt.indexOf('{'), txt.lastIndexOf('}') + 1));
+      dataStore[key] = (j.table && j.table.rows) ? j.table.rows.map(r => c.map(r.c)) : [];
       
-      // Render Logic
-      if(sectionKey === 'gallery' || sectionKey === 'briev') {
-        renderTabs(sectionKey);
-        renderRow(sectionKey);
-        document.getElementById(config.els.loading).style.display = 'none';
-        document.getElementById(config.els.row).style.display = 'flex';
-      } else if (sectionKey === 'bootcamp') { renderBootcamp(); } 
-      else if (sectionKey === 'tutorial') { renderTutorial(); }
-    } catch (e) { console.error(e); if(config.els.loading) document.getElementById(config.els.loading).innerText = "Gagal memuat."; }
+      if(key === 'gallery' || key === 'briev') {
+        renderTabs(key);
+        renderRow(key);
+      } else if(key === 'bootcamp') renderBootcamp();
+      else if(key === 'tutorial') renderTutorial();
+      document.getElementById(c.els.loading).classList.add('hidden');
+    } catch(e) { console.error(e); document.getElementById(c.els.loading).textContent="Gagal"; }
   }
 
-  // Render Functions (Sama seperti sebelumnya)
-  function renderTabs(sectionKey) {
-    const config = CONFIG[sectionKey];
-    const container = document.getElementById(config.els.tabs);
-    const data = dataStore[sectionKey];
-    const uniqueFilters = [...new Set(data.map(item => item.filter))];
-    container.innerHTML = `<button class="tab-btn active" onclick="filterData('${sectionKey}', 'all')">Semua</button>`;
-    uniqueFilters.forEach(filter => {
-      const btn = document.createElement('button');
-      btn.className = 'tab-btn'; btn.innerText = filter;
-      btn.onclick = () => filterData(sectionKey, filter);
-      container.appendChild(btn);
-    });
+  function renderTabs(key) {
+    const c = CONFIG[key];
+    const u = [...new Set(dataStore[key].map(i => i.filter))];
+    document.getElementById(c.els.tabs).innerHTML = `<button class="chip active" onclick="filterData('${key}', 'all')">Semua</button>` +
+    u.map(f => `<button class="chip" onclick="filterData('${key}', '${f}')">${f}</button>`).join('');
   }
 
-  function filterData(sectionKey, filterValue) {
-    const config = CONFIG[sectionKey];
-    const btns = document.getElementById(config.els.tabs).querySelectorAll('.tab-btn');
-    btns.forEach(b => b.classList.toggle('active', b.innerText === filterValue));
-    const filtered = (filterValue === 'all') ? dataStore[sectionKey] : dataStore[sectionKey].filter(i => i.filter === filterValue);
-    renderRow(sectionKey, filtered);
+  function filterData(key, val) {
+    const c = CONFIG[key];
+    document.querySelectorAll(`#${c.els.tabs} .chip`).forEach(b => b.classList.toggle('active', b.textContent===val));
+    const d = val==='all' ? dataStore[key] : dataStore[key].filter(i => i.filter===val);
+    renderRow(key, d);
   }
 
-  function renderRow(sectionKey, data = dataStore[sectionKey]) {
-    const config = CONFIG[sectionKey];
-    const container = document.getElementById(config.els.row);
-    if (data.length === 0) { container.innerHTML = '<div style="padding:20px;">Data kosong.</div>'; return; }
-    
-    // CATATAN: Jika upload Anda menyimpan link di kolom C, tapi galeri membaca kolom F,
-    // maka item baru mungkin tidak muncul di Galeri lama. 
-    // Pastikan struktur Sheet Anda konsisten atau ubah Query Gallery ke kolom C jika perlu.
-    
-    container.innerHTML = data.map(item => `
-      <div class="card">
-        <img src="${item.gambar}" alt="${item.judul}" onerror="this.src='https://via.placeholder.com/260x160?text=No+Image'">
-        <div class="content">
-          <div class="badge">${item.filter}</div>
-          <h3>${item.judul}</h3>
-          <div class="meta">${sectionKey==='gallery' ? `Oleh: ${item.meta}` : `Exp: ${item.meta}`}</div>
-          <button onclick="showToast('${item.judul}')">Detail</button>
+  function renderRow(key, d = dataStore[key]) {
+    const c = CONFIG[key];
+    const el = document.getElementById(c.els.row);
+    el.innerHTML = d.map(i => `
+      <div class="card" onclick='showDetail(${JSON.stringify(i)})'>
+        <img src="${i.gambar}" onerror="this.src='https://via.placeholder.com/260x160?text=No+Image'">
+        <div class="card-body">
+          <div class="card-tag">${i.filter||'-'}</div>
+          <h3 class="card-title">${i.judul}</h3>
+          <div class="card-meta">${key==='gallery'?'👤':'📅'} ${i.meta||'-'}</div>
         </div>
       </div>
-    `).join('');
-    container.scrollLeft = 0;
+    `).join(''); el.scrollLeft = 0;
   }
 
   function renderBootcamp() {
-    const data = dataStore.bootcamp;
-    document.getElementById('loading-bootcamp').style.display = 'none';
-    document.getElementById('container-bootcamp').innerHTML = data.map(item => `
-      <div class="news-item">
-        <img class="news-img" src="${item.gambar}" onerror="this.src='https://via.placeholder.com/200x200?text=News'">
+    const d = dataStore.bootcamp;
+    document.getElementById('container-bootcamp').innerHTML = d.map(i => `
+      <div class="news-card" onclick='showDetail(${JSON.stringify(i)})'>
+        <img class="news-img" src="${i.gambar}" onerror="this.src='https://via.placeholder.com/200'">
         <div class="news-content">
-          <span class="news-date">${item.waktu}</span>
-          <h3 class="news-title">${item.judul}</h3>
-          <p class="news-desc">${item.ket}</p>
+          <div class="news-date">${i.waktu}</div>
+          <div class="news-headline">${i.judul}</div>
+          <div class="news-excerpt">${i.ket}</div>
         </div>
       </div>
     `).join('');
   }
 
   function renderTutorial() {
-    const data = dataStore.tutorial;
-    document.getElementById('loading-tutorial').style.display = 'none';
-    document.getElementById('container-tutorial').innerHTML = data.map(item => `
-      <div class="yt-card" onclick="showToast('Putar: ${item.judul}')">
-        <div class="yt-thumb-container">
-          <img class="yt-thumb" src="${item.gambar}" onerror="this.src='https://via.placeholder.com/320x180?text=Video'">
-        </div>
-        <div class="yt-info">
-          <h3 class="yt-title">${item.judul}</h3>
-          <p class="yt-desc">${item.deskripsi}</p>
-        </div>
+    const d = dataStore.tutorial;
+    document.getElementById('container-tutorial').innerHTML = d.map(i => `
+      <div class="yt-card" onclick='showDetail(${JSON.stringify(i)})'>
+        <div class="yt-thumb-box"><img class="yt-thumb" src="${i.gambar}" onerror="this.src='https://via.placeholder.com/320x180'"></div>
+        <div class="yt-title">${i.judul}</div>
+        <div class="yt-desc">${i.deskripsi}</div>
       </div>
     `).join('');
   }
 
-  // --- UTILITAS ---
-  function openModal(id) { document.getElementById(id).classList.add('open'); }
-  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-  window.onclick = (e) => { if(e.target.classList.contains('modal-overlay')) closeModal(e.target.id); }
-  function showToast(msg) {
-    const t = document.getElementById('toast'); t.innerText = msg; t.style.display = 'block';
+  function handleUpload(e) {
+    e.preventDefault();
+    if (!currentUser) return showToast("Harap login dulu!");
+    const f = document.getElementById('uFile').files[0];
+    if (!f) return showToast("Pilih file!");
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      // Payload Update: Menambahkan jenisKarya
+      const p = { 
+        akun: currentUser.username, 
+        judul: document.getElementById('uJudul').value, 
+        deskripsi: document.getElementById('uDeskripsi').value,
+        jenisKarya: document.getElementById('uJenisKarya').value, // BARU
+        fileData: ev.target.result.substring(ev.target.result.indexOf(',')+1), 
+        fileName: f.name, mimeType: f.type
+      };
+      fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type':'application/json'}, body: JSON.stringify(p) })
+      .then(() => { showToast("Berhasil!"); closeModal('uploadModal'); e.target.reset(); setTimeout(()=>fetchData('gallery'),2000); })
+      .catch(() => showToast("Gagal."));
+    };
+    reader.readAsDataURL(f);
+  }
+
+  function showToast(m) {
+    const t = document.getElementById('toast'); t.textContent = m; t.style.display = 'block';
     setTimeout(() => t.style.display = 'none', 3000);
   }
 
+  initTheme();
   document.addEventListener('DOMContentLoaded', initAllData);
 </script>
 </body>
