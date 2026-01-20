@@ -82,9 +82,9 @@
   .btn-logout { background: transparent; color: var(--danger); border: 1px solid var(--danger); }
   .btn-logout:hover { background: var(--danger); color: white; }
 
-  /* --- 4. RESPONSIVE MEDIA QUERIES --- */
+  /* --- 4. RESPONSIVE MEDIA QUERIES (HP & DESKTOP) --- */
   @media (min-width: 768px) {
-    .brand-text p { display: block; }
+    .brand-text p { display: block; } /* Show school name on Desktop */
     .brand-logo { width: 50px; height: 50px; }
     .brand-text h1 { font-size: 22px; }
     .controls { gap: 15px; }
@@ -92,11 +92,14 @@
     .user-avatar { width: 35px; height: 35px; }
     header { height: 80px; }
   }
+
+  /* Mobile Specifics (< 600px) */
   @media (max-width: 600px) {
-    .controls { gap: 5px; }
-    .user-info { display: none !important; }
-    .btn { padding: 6px 8px; font-size: 12px; }
-    .btn-text-mobile { display: none; }
+    .controls { gap: 5px; } /* Compact */
+    .user-info { display: none !important; } /* Hide Name/Class on Mobile */
+    .btn { padding: 6px 8px; font-size: 12px; } /* Smaller Buttons */
+    .btn-text-mobile { display: none; } /* Hide Button Text */
+    
     .btn-icon { width: 30px; height: 30px; font-size: 14px; }
     .nav-pills { padding: 3px; }
     .nav-pill { padding: 5px 10px; font-size: 12px; }
@@ -112,7 +115,7 @@
   .chip { padding: 6px 16px; border-radius: 20px; background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-muted); font-size: 13px; font-weight: 600; white-space: nowrap; cursor: pointer; transition: var(--transition); }
   .chip.active { background: var(--primary); color: white; border-color: var(--primary); }
 
-  .scroll-wrapper { background: var(--bg-card); border-radius: var(--radius); padding: 15px; box-shadow: var(--shadow); border:1px solid var(--border-color); }
+  .scroll-wrapper { background: var(--bg-card); border-radius: var(--radius); padding: 15px; box-shadow: var(--shadow); border: 1px solid var(--border-color); }
   .scroll-row { display: flex; gap: 15px; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 10px; }
   .scroll-row::-webkit-scrollbar { height: 4px; }
   .scroll-row::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
@@ -143,52 +146,108 @@
   .yt-title { font-size: 14px; font-weight: 600; color: var(--text-main); margin-bottom: 5px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;}
   .yt-desc { font-size: 12px; color: var(--text-muted); }
 
-  /* --- 6. MODAL & FORM --- */
+  /* --- 6. MODAL & FORM (FULL RESPONSIVE) --- */
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
   .modal-overlay.open { display: flex; animation: fadeIn 0.3s; }
+  
+  /* Standard Modals (Login, Settings, Upload) */
   .modal { background: var(--bg-card); width: 100%; max-width: 450px; border-radius: 16px; padding: 25px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); position: relative; border: 1px solid var(--border-color); animation: slideUp 0.3s; }
   
-  /* Upload Status (Loading/Success) */
-  .upload-status { text-align: center; padding: 20px; display: none; }
-  .upload-status.active { display: block; }
-  .success-msg { color: var(--success); font-weight: 700; font-size: 18px; margin-top: 10px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
-  .success-icon { font-size: 40px; }
+  /* DETAIL MODAL (Galeri, Briev, Bootcamp, Tutorial) */
+  .modal-detail { 
+    background: var(--bg-card); 
+    width: 100%; 
+    max-width: 900px; 
+    border-radius: 20px; 
+    overflow: hidden; 
+    position: relative; 
+    display: flex; 
+    flex-direction: column; /* Default Mobile first (Column) */
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); 
+    animation: zoomIn 0.3s; 
+    height: 90vh; /* Hampir Full Screen di HP */
+    max-height: 90vh;
+  }
 
-  .modal-detail { background: var(--bg-card); width: 100%; max-width: 900px; border-radius: 20px; overflow: hidden; position: relative; display: flex; flex-direction: column; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); animation: zoomIn 0.3s; }
   @media (min-width: 768px) {
-    .modal-detail { flex-direction: row; height: 80vh; }
+    .modal-detail { 
+      flex-direction: row; /* Desktop: Side by Side */
+      height: 80vh; 
+    }
     .detail-image { width: 60%; height: 100%; object-fit: cover; }
     .detail-content { width: 40%; overflow-y: auto; }
   }
+  
   @media (max-width: 767px) {
-    .modal-detail { height: 90vh; }
-    .detail-image { width: 100%; height: 50%; object-fit: cover; }
+    /* HP: Vertical Layout dengan Scrollable Text */
+    .modal-detail {
+      flex-direction: column;
+    height: 90vh;
+    border-radius: 16px; /* Sedikit lebih tajam di HP */
+    margin: 0;
+    max-height: 90vh;
+    width: 100%;
+    height: 100%;
+      max-height: none; /* Full height minus header/footer if any, or 100% viewport */
+    }
+    
+    .detail-image { 
+      width: 100%; 
+      height: 40vh; /* Gambar hanya 40% layar */
+      object-fit: cover; 
+      flex-shrink: 0; /* Jangan kecil */
+    }
+    
+    .detail-content { 
+      width: 100%; 
+      /* KURPENTING: SCROLL VERTICAL */
+      flex: 1; 
+      overflow-y: auto; 
+      padding: 20px;
+      padding-bottom: 40px; /* Extra padding di bawah agar teks terakhir tertutup tombol close/scrollbar */
+      position: relative;
+    }
+    
+    /* Scrollbar HP lebih jelas */
+    .detail-content::-webkit-scrollbar { width: 6px; }
+    .detail-content::-webkit-scrollbar-track { background: transparent; }
+    .detail-content::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
   }
+
   .detail-image { background: #000; }
   .detail-content { padding: 30px; position: relative; }
-  .detail-close { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; transition: 0.2s; }
+  .detail-close { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; transition: 0.2s; flex-shrink: 0; }
   .detail-close:hover { background: var(--danger); }
   .detail-badge { display: inline-block; background: var(--primary-light); color: var(--primary); padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; }
   .detail-title { font-size: 24px; font-weight: 800; margin: 0 0 10px 0; color: var(--text-main); line-height: 1.2; }
   .detail-meta { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
   
-  /* RATING & DESC */
+  /* RATING & DESC STYLES */
   .rating-stars-container { margin-bottom: 25px; background: rgba(0,0,0,0.02); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color); }
   .rating-label { font-size: 12px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 5px; font-weight: 700; }
   .rating-stars { color: #fbbf24; font-size: 28px; letter-spacing: 2px; line-height: 1; }
+
   .detail-desc-box { background-color: #fff7d1; border-left: 4px solid #facc15; color: #422006; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; line-height: 1.5; }
   .detail-desc-box.hidden { display: none; }
-  .detail-desc { font-size: 15px; line-height: 1.6; color: var(--text-muted); margin-bottom: 20px; }
+  .detail-desc { font-size: 15px; line-height: 1.6; color: var(--text-muted); margin-bottom: 20px; white-space: pre-wrap; /* Agar teks panjang wrap dengan rapi */ }
 
+  /* Form Styles */
   .form-group { margin-bottom: 15px; }
   .form-label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; }
   .form-input { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-body); color: var(--text-main); }
   .form-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
 
+  /* Settings */
   .theme-options { display: flex; gap: 10px; margin-top: 10px; }
   .color-dot { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
   .color-dot.active { border-color: var(--text-main); transform: scale(1.1); }
   #bgColorPicker { height: 40px; padding: 2px; cursor: pointer; }
+
+  /* Upload Status */
+  .upload-status { text-align: center; padding: 20px; display: none; }
+  .upload-status.active { display: block; }
+  .success-msg { color: var(--success); font-weight: 700; font-size: 18px; margin-top: 10px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .success-icon { font-size: 40px; }
 
   .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--text-main); color: var(--bg-body); padding: 12px 24px; border-radius: 30px; font-size: 14px; font-weight: 600; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); z-index: 2000; display: none; }
   .loader { border: 3px solid var(--bg-card); border-top: 3px solid var(--primary); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto; }
@@ -204,32 +263,44 @@
 
 <!-- HEADER -->
 <header>
+  <!-- KIRI: LOGO & TEXT -->
   <div class="brand-container">
     <img src="https://drive.google.com/thumbnail?id=1jjuiSRnNEex2-87cfM1kUiZDs7zucwKr&sz=w200" alt="Logo Sekolah" class="brand-logo">
     <div class="brand-text">
       <h1>SPATRA MEDIA</h1>
-      <p>Ekstrakurikuler Informatika SMA N 1 Wiradesa</p>
+      <p>Ekstrakurikuler Informatika SMA N 1 Wiradesa Pekalongan</p>
     </div>
   </div>
 
+  <!-- TENGAH: NAVIGASI -->
   <nav class="nav-pills">
     <button class="nav-pill active" onclick="switchView('home')" id="pill-home">Beranda</button>
     <button class="nav-pill" onclick="switchView('dashboard')" id="pill-dashboard">Dashboard</button>
   </nav>
 
+  <!-- KANAN: CONTROLS (RESPONSIVE) -->
   <div class="controls">
     <button class="btn-icon" onclick="openModal('settingsModal')">⚙️</button>
     <div id="auth-section">
+      <!-- TOMBOL LOGIN (Default) -->
       <button class="btn" id="btnLogin" onclick="openModal('loginModal')">Login</button>
+      
+      <!-- USER PROFILE (Setelah Login) -->
       <div id="userProfile" class="user-profile hidden">
+        <!-- Nama & Kelas (Disembunyikan di HP via CSS) -->
         <div class="user-info">
           <span class="user-name" id="dispName">Nama</span>
           <span class="user-class" id="dispClass">Kelas</span>
         </div>
+        
         <img id="dispAvatar" class="user-avatar" src="">
+        
+        <!-- LOGOUT (Icon + Text) -->
         <button class="btn btn-logout" onclick="logout()">
           🚪 <span class="btn-text-mobile">Keluar</span>
         </button>
+        
+        <!-- UPLOAD (Icon + Text) -->
         <button class="btn" id="btnUpload" style="background: var(--success);" onclick="openModal('uploadModal')">
           + <span class="btn-text-mobile">Unggah</span>
         </button>
@@ -350,16 +421,19 @@
         <button type="submit" id="btnSubmitUpload" class="btn" style="width:100%; justify-content:center; background:var(--success);">Kirim Sekarang</button>
       </form>
     </div>
-    
     <button class="btn-icon" style="position:absolute; top:15px; right:15px;" onclick="closeModal('uploadModal')">✕</button>
   </div>
 </div>
 
-<!-- === DETAIL MODAL === -->
+<!-- === DETAIL MODAL (FULL SCROLLABLE TEXT) === -->
 <div id="detailModal" class="modal-overlay">
   <div class="modal-detail">
+    <!-- Close Button (Fixed Position) -->
     <div class="detail-close" onclick="closeModal('detailModal')">✕</div>
+    
     <img id="detail-img" class="detail-image" src="">
+    
+    <!-- Content Container: Scroolable on Mobile -->
     <div class="detail-content">
       <span id="detail-badge" class="detail-badge">KATEGORI</span>
       <h2 id="detail-title" class="detail-title">Judul</h2>
@@ -380,6 +454,7 @@
       <!-- TEKS PENILAIAN / URAIAN BRIEF -->
       <div id="detail-desc" class="detail-desc">Deskripsi...</div>
       
+      <!-- Tombol Action di paling bawah -->
       <button id="detail-action" class="btn" style="margin-top:20px; width:100%; justify-content:center;">Buka File</button>
     </div>
   </div>
@@ -412,7 +487,13 @@
       els: { tabs: 'tabs-briev', row: 'row-briev', loading: 'loading-briev' },
       map: (row) => {
         let imgRaw = row[2]?.v; let img = (imgRaw && !imgRaw.startsWith('http')) ? `https://drive.google.com/thumbnail?id=${imgRaw}&sz=w400` : imgRaw;
-        return { judul: row[0]?.v, waktu: row[1]?.v, gambar: img, filter: row[3]?.v, uraian: row[4]?.v };
+        return {
+          judul: row[0]?.v,      // B
+          waktu: row[1]?.v,      // D
+          gambar: img,           // F
+          filter: row[3]?.v,    // H
+          uraian: row[4]?.v      // E (Uraian Brief)
+        };
       }
     },
     bootcamp: {
@@ -458,7 +539,7 @@
     document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active')); el.classList.add('active');
   }
   function changeBgColor(color) { document.documentElement.style.setProperty('--bg-body', color); localStorage.setItem('customBg', color); }
-
+  
   function switchView(view) {
     document.getElementById('view-home').classList.add('hidden');
     document.getElementById('view-dashboard').classList.add('hidden');
@@ -504,11 +585,14 @@
     showToast("Logout");
   }
 
-  /* --- DETAIL VIEW --- */
+  /* --- DETAIL VIEW (UPDATED FOR MOBILE SCROLL) --- */
   function showDetail(item) {
     document.getElementById('detail-title').textContent = item.judul;
     document.getElementById('detail-badge').textContent = item.filter || 'INFO';
+    
+    // Handle Meta (Untuk Briev tampilkan Waktu, untuk Lainnya Tampilkan Meta umum)
     document.getElementById('detail-meta').textContent = item.waktu || item.meta || '-';
+    
     let imgSrc = item.gambar;
     if(imgSrc && !imgSrc.startsWith('http')) imgSrc = `https://drive.google.com/uc?export=view&id=${imgSrc}`;
     document.getElementById('detail-img').src = imgSrc;
@@ -517,30 +601,35 @@
     const descYellow = document.getElementById('detail-desc-yellow');
     const descEl = document.getElementById('detail-desc');
 
-    // Handle Rating
-    if (item.rating !== undefined && item.penilaian !== undefined) {
+    // Reset Visibility Default
+    ratingWrapper.classList.add('hidden');
+    descYellow.classList.add('hidden');
+
+    // LOGIC 1: BRIEV (Uraian)
+    if (item.uraian) {
+      descEl.textContent = item.uraian; // Tampilkan Uraian Brief (Kolom E)
+    }
+    // LOGIC 2: GALLERY (Rating & Penilaian)
+    else if (item.rating !== undefined && item.penilaian !== undefined) {
       ratingWrapper.classList.remove('hidden');
       descEl.textContent = item.penilaian || "Belum ada penilaian.";
+      
       const r = parseFloat(item.rating) || 0;
       let stars = '';
-      for (let i =1; i <=5; i++) {
+      for (let i = 1; i <= 5; i++) {
         if (i <= r) stars += '★'; else if (i - 0.5 <= r) stars += '✦'; else stars += '☆';
       }
       document.getElementById('detail-rating-stars').textContent = stars;
+
+      // Handle Yellow Box untuk Gallery
       if (item.deskripsi) {
         descYellow.classList.remove('hidden');
         document.getElementById('detail-text-desc').textContent = item.deskripsi;
-      } else {
-        descYellow.classList.add('hidden');
       }
-    } else if (item.uraian) {
-      ratingWrapper.classList.add('hidden');
-      descEl.textContent = item.uraian;
-      descYellow.classList.add('hidden');
-    } else {
-      ratingWrapper.classList.add('hidden');
+    }
+    // LOGIC 3: DEFAULT (Bootcamp/Tutorial/Fallback)
+    else {
       descEl.textContent = item.ket || item.deskripsi || "Karya ini diunggah oleh siswa sebagai bagian dari portofolio kreatif mereka.";
-      descYellow.classList.add('hidden');
     }
 
     const btn = document.getElementById('detail-action');
@@ -620,81 +709,17 @@
     `).join('');
   }
 
-  /* --- HANDLE UPLOAD (DENGAN LOADING STATUS) --- */
   function handleUpload(e) {
     e.preventDefault();
     if (!currentUser) return showToast("Harap login dulu!");
-    
     const f = document.getElementById('uFile').files[0];
     if (!f) return showToast("Pilih file!");
-
-    // UI Setup
-    const statusBox = document.getElementById('uploadStatus');
-    const loadDiv = document.getElementById('uploadLoading');
-    const successDiv = document.getElementById('uploadSuccess');
-    const formContent = document.getElementById('uploadFormContent');
-    const submitBtn = document.getElementById('btnSubmitUpload');
-
-    // Mulai Proses Upload
-    statusBox.classList.add('active');
-    loadDiv.classList.remove('hidden');
-    successDiv.classList.add('hidden'); // Sembunyikan sukses jika ada sisa
-    formContent.style.display = 'none'; // Sembunyikan form agar user fokus ke status
-    submitBtn.disabled = true;
-
-    // Reader
     const reader = new FileReader();
     reader.onload = function(ev) {
-      const payload = { 
-        akun: currentUser.username, 
-        judul: document.getElementById('uJudul').value, 
-        deskripsi: document.getElementById('uDeskripsi').value, 
-        jenisKarya: document.getElementById('uJenisKarya').value, 
-        fileData: ev.target.result.substring(ev.target.result.indexOf(',')+1), 
-        fileName: f.name, mimeType: f.type 
-      };
-
-      fetch(SCRIPT_URL, { 
-        method: 'POST', 
-        mode: 'no-cors', 
-        headers: {'Content-Type':'application/json'}, 
-        body: JSON.stringify(payload) 
-      })
-      .then(() => {
-        // SUKSES
-        loadDiv.classList.add('hidden');
-        successDiv.classList.remove('hidden');
-        
-        submitBtn.innerText = "Selesai";
-        submitBtn.style.background = "var(--success)";
-        submitBtn.onclick = function() { closeModal('uploadModal'); };
-
-        // Tunggu 2 detik agar user melihat sukses, lalu tutup modal dan refresh
-        setTimeout(() => {
-          closeModal('uploadModal');
-          showToast("Karya berhasil ditambahkan!");
-          e.target.reset();
-          
-          // Reset UI Button untuk next upload
-          submitBtn.innerText = "Kirim Sekarang";
-          submitBtn.disabled = false;
-          submitBtn.onclick = null; // Kembalikan handler default
-          
-          // Reset UI Status Box
-          statusBox.classList.remove('active');
-          formContent.style.display = 'block';
-          
-          fetchData('gallery'); // Refresh galeri
-        }, 2000);
-      })
-      .catch(err => {
-        // GAGAL
-        loadDiv.classList.add('hidden');
-        formContent.style.display = 'block';
-        submitBtn.disabled = false;
-        showToast("Gagal mengunggah file.");
-        console.error(err);
-      });
+      const p = { akun: currentUser.username, judul: document.getElementById('uJudul').value, deskripsi: document.getElementById('uDeskripsi').value, jenisKarya: document.getElementById('uJenisKarya').value, fileData: ev.target.result.substring(ev.target.result.indexOf(',')+1), fileName: f.name, mimeType: f.type };
+      fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type':'application/json'}, body: JSON.stringify(p) })
+      .then(() => { showToast("Berhasil!"); closeModal('uploadModal'); e.target.reset(); setTimeout(()=>fetchData('gallery'),2000); })
+      .catch(() => showToast("Gagal."));
     };
     reader.readAsDataURL(f);
   }
