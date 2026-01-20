@@ -3,154 +3,48 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portal Siswa - Galeri & Dashboard</title>
+<title>Portal Siswa - Unggah Portofolio</title>
 <style>
   /* --- RESET & DASAR --- */
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f4f6f8;
-    margin: 0;
-    padding: 0;
-    color: #333;
-  }
-
-  /* --- HEADER GLOBAL --- */
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto 10px auto;
-    padding: 20px 20px 10px 20px;
-    border-bottom: 2px solid #e0e0e0;
-    background: white;
-    position: sticky;
-    top: 0;
-    z-index: 900;
-  }
-
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f6f8; margin: 0; padding: 0; color: #333; }
+  
+  /* HEADER */
+  header { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto 10px auto; padding: 20px 20px 10px 20px; border-bottom: 2px solid #e0e0e0; background: white; position: sticky; top: 0; z-index: 900; }
   h1 { margin: 0; font-size: 24px; color: #333; }
-
-  /* Area Auth */
-  #auth-section {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-  }
-
-  .btn-primary {
-    background-color: #4f46e5;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background 0.3s;
-  }
+  
+  /* AUTH & NAV */
+  #auth-section { display: flex; align-items: center; gap: 15px; }
+  .btn-primary { background-color: #4f46e5; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: background 0.3s; }
   .btn-primary:hover { background-color: #4338ca; }
   .btn-logout { background-color: #ef4444; padding: 6px 15px; font-size: 13px; }
   .btn-logout:hover { background-color: #dc2626; }
+  
+  .main-nav { max-width: 1200px; margin: 0 auto; display: flex; gap: 10px; padding: 10px 20px; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+  .nav-btn { padding: 10px 25px; font-weight: 600; color: #666; background: transparent; border: none; border-bottom: 3px solid transparent; cursor: pointer; font-size: 16px; }
+  .nav-btn.active { color: #4f46e5; border-bottom: 3px solid #4f46e5; }
 
-  /* Profil User */
+  /* USER PROFILE */
   .user-profile { display: flex; align-items: center; gap: 12px; animation: fadeIn 0.5s; }
-  .user-avatar { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #4f46e5; }
+  .user-avatar { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #4f46e5; background: #eee; }
   .user-info { text-align: right; line-height: 1.2; }
   .user-name { font-weight: 700; font-size: 15px; color: #111; }
   .user-class { font-size: 12px; color: #666; }
 
-  /* --- NAVIGASI UTAMA (Tabs Beranda / Dashboard) --- */
-  .main-nav {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    gap: 10px;
-    padding: 10px 20px;
-    background: white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  }
-
-  .nav-btn {
-    padding: 10px 25px;
-    font-weight: 600;
-    color: #666;
-    background: transparent;
-    border: none;
-    border-bottom: 3px solid transparent;
-    cursor: pointer;
-    font-size: 16px;
-  }
-
-  .nav-btn.active {
-    color: #4f46e5;
-    border-bottom: 3px solid #4f46e5;
-  }
-
-  /* --- CONTAINER UTAMA --- */
-  .main-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-
-  .view-section { display: none; animation: fadeInView 0.4s ease-in-out; }
+  /* LAYOUT */
+  .main-container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+  .view-section { display: none; animation: fadeInView 0.4s; }
   .view-section.active-view { display: block; }
+  
+  h2.section-title { font-size: 20px; color: #333; margin: 20px 0 15px 0; padding-left: 10px; border-left: 5px solid #4f46e5; }
 
-  @keyframes fadeInView { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-  h2.section-title {
-    font-size: 20px;
-    color: #333;
-    margin: 20px 0 15px 0;
-    padding-left: 10px;
-    border-left: 5px solid #4f46e5;
-  }
-
-  /* --- TAPS FILTER --- */
-  .tabs-container { margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px; }
-  .tab-btn {
-    padding: 6px 16px;
-    border: 1px solid #ddd;
-    background: white;
-    color: #555;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 500;
-  }
-  .tab-btn:hover { background: #f0f0f0; }
-  .tab-btn.active { background-color: #4f46e5; color: white; border-color: #4f46e5; }
-
-  /* --- GALLERY HORIZONTAL (Untuk Galeri & Briev) --- */
-  .gallery-wrapper {
-    background: white;
-    border-radius: 12px;
-    padding: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-    border: 1px solid #eee;
-  }
-  .gallery-row {
-    display: flex;
-    overflow-x: auto;
-    gap: 20px;
-    padding: 10px 5px 25px 5px;
-    scroll-behavior: smooth;
-  }
+  /* GALLERY HORIZONTAL */
+  .gallery-wrapper { background: white; border-radius: 12px; padding: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid #eee; }
+  .gallery-row { display: flex; overflow-x: auto; gap: 20px; padding: 10px 5px 25px 5px; scroll-behavior: smooth; }
   .gallery-row::-webkit-scrollbar { height: 6px; }
   .gallery-row::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
 
-  /* --- CARD STYLE UMUM --- */
-  .card {
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-    flex: 0 0 auto;
-    width: 260px;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid #f0f0f0;
-  }
+  /* CARD STYLE */
+  .card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.08); flex: 0 0 auto; width: 260px; display: flex; flex-direction: column; border: 1px solid #f0f0f0; }
   .card img { width: 100%; height: 160px; object-fit: cover; background: #f9f9f9; }
   .card .content { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; }
   .card h3 { margin: 0 0 5px 0; font-size: 16px; color: #111; line-height: 1.3; }
@@ -159,82 +53,31 @@
   .card button { margin-top: auto; width: 100%; padding: 8px; border: none; background: #f9fafb; color: #4f46e5; border-radius: 6px; cursor: pointer; border: 1px solid #e5e7eb; }
   .card button:hover { background: #eef2ff; }
 
-  /* --- BOOTCAMP (NEWS STYLE) --- */
-  .news-item {
-    display: flex;
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    border: 1px solid #eee;
-    transition: transform 0.2s;
-  }
-  .news-item:hover { transform: scale(1.005); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-  
-  .news-img {
-    width: 200px;
-    min-width: 200px;
-    height: auto;
-    object-fit: cover;
-    background: #eee;
-  }
-  
+  /* BOOTCAMP & TUTORIAL */
+  .news-item { display: flex; background: white; border-radius: 10px; overflow: hidden; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid #eee; }
+  .news-img { width: 200px; min-width: 200px; height: auto; object-fit: cover; background: #eee; }
   .news-content { padding: 20px; flex-grow: 1; }
-  .news-date { font-size: 12px; color: #888; margin-bottom: 5px; display: block; }
   .news-title { font-size: 18px; font-weight: 700; margin: 0 0 10px 0; color: #111; }
   .news-desc { font-size: 14px; color: #555; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-
-  /* --- TUTORIAL (YOUTUBE STYLE GRID) --- */
-  .yt-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-  }
-
-  .yt-card {
-    background: transparent;
-    border-radius: 12px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.2s;
-  }
-  .yt-card:hover { transform: scale(1.02); }
-
-  .yt-thumb-container {
-    position: relative;
-    width: 100%;
-    padding-top: 56.25%; /* 16:9 Aspect Ratio */
-    background: #eee;
-    border-radius: 12px;
-    overflow: hidden;
-  }
-
-  .yt-thumb {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .yt-info { padding-top: 10px; }
-  .yt-title { font-size: 16px; font-weight: 600; color: #111; margin: 0 0 5px 0; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  
+  .yt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+  .yt-card { background: transparent; border-radius: 12px; overflow: hidden; cursor: pointer; }
+  .yt-thumb-container { position: relative; width: 100%; padding-top: 56.25%; background: #eee; border-radius: 12px; overflow: hidden; }
+  .yt-thumb { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+  .yt-title { font-size: 16px; font-weight: 600; color: #111; margin: 10px 0 5px 0; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .yt-desc { font-size: 13px; color: #666; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
-  /* --- MODAL & TOAST --- */
-  .modal-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000;
-  }
+  /* MODAL & FORM */
+  .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; }
   .modal-overlay.open { display: flex; }
-  .modal-box { background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 400px; position: relative; box-shadow: 0 20px 25px rgba(0,0,0,0.2); }
-  .close-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: #999; }
+  .modal-box { background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 450px; position: relative; box-shadow: 0 20px 25px rgba(0,0,0,0.2); }
   .form-group { margin-bottom: 15px; }
   .form-group label { display: block; margin-bottom: 5px; font-size: 14px; font-weight: 600; }
-  .form-group input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+  .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-family: inherit; }
+  .form-group input[type="file"] { padding: 6px; }
+  .close-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: #999; position: absolute; top: 15px; right: 15px; }
 
+  /* TOAST */
   .toast { position: fixed; bottom: 20px; right: 20px; background: #333; color: white; padding: 12px 24px; border-radius: 8px; display: none; z-index: 2000; }
 
   @media (max-width: 768px) {
@@ -256,7 +99,7 @@
         <div class="user-class" id="dispClass">Kelas X</div>
       </div>
       <img id="dispAvatar" class="user-avatar" src="" alt="Profile">
-      <button id="btnUpload" class="btn-primary" onclick="openModal('uploadModal')" style="display: none;">+ Upload</button>
+      <button id="btnUpload" class="btn-primary" onclick="openModal('uploadModal')" style="display: none; background-color: #059669;">+ Upload Karya</button>
       <button id="btnLogout" class="btn-primary btn-logout" onclick="logout()">Logout</button>
     </div>
   </div>
@@ -301,19 +144,15 @@
   <!-- === VIEW 2: DASHBOARD (Bootcamp & Tutorial) === -->
   <div id="view-dashboard" class="view-section">
     
-    <!-- SECTION BOOTCAMP (NEWS STYLE) -->
+    <!-- SECTION BOOTCAMP -->
     <h2 class="section-title">Kegiatan Bootcamp</h2>
     <div id="loading-bootcamp" style="text-align:center; padding:20px;">Memuat Kegiatan...</div>
-    <div id="container-bootcamp">
-      <!-- Item Berita di-render di sini -->
-    </div>
+    <div id="container-bootcamp"></div>
 
-    <!-- SECTION TUTORIAL (YOUTUBE STYLE) -->
+    <!-- SECTION TUTORIAL -->
     <h2 class="section-title">Tutorial Video Online</h2>
     <div id="loading-tutorial" style="text-align:center; padding:20px;">Memuat Tutorial...</div>
-    <div id="container-tutorial" class="yt-grid">
-      <!-- Card YouTube di-render di sini -->
-    </div>
+    <div id="container-tutorial" class="yt-grid"></div>
 
   </div>
 
@@ -322,26 +161,46 @@
 <!-- MODAL LOGIN -->
 <div id="loginModal" class="modal-overlay">
   <div class="modal-box">
-    <div class="modal-header"><h2>Login Siswa</h2><button class="close-btn" onclick="closeModal('loginModal')">&times;</button></div>
+    <div class="modal-header" style="margin-bottom:20px;"><h2>Login Siswa</h2></div>
     <form onsubmit="handleLogin(event)">
       <div class="form-group"><label>Username</label><input type="text" id="username" required></div>
       <div class="form-group"><label>Password</label><input type="password" id="password" required></div>
       <button type="submit" class="btn-primary" style="width: 100%;" id="btnSubmitLogin">Masuk</button>
     </form>
+    <button class="close-btn" onclick="closeModal('loginModal')">&times;</button>
   </div>
 </div>
 
-<!-- MODAL UPLOAD -->
+<!-- MODAL UPLOAD (DISESUAIKAN) -->
 <div id="uploadModal" class="modal-overlay">
   <div class="modal-box">
-    <div class="modal-header"><h2>Upload ke Galeri</h2><button class="close-btn" onclick="closeModal('uploadModal')">&times;</button></div>
+    <div class="modal-header" style="margin-bottom:20px;"><h2>Upload Portofolio</h2></div>
     <form onsubmit="handleUpload(event)">
-      <div class="form-group"><label>Judul (Kolom E)</label><input type="text" id="uJudul" required></div>
-      <div class="form-group"><label>Siswa (Kolom J)</label><input type="text" id="uSiswa" required></div>
-      <div class="form-group"><label>Kategori (Kolom L)</label><input type="text" id="uKategori" required></div>
-      <div class="form-group"><label>URL Gambar (Kolom F)</label><input type="url" id="uGambar" required></div>
-      <button type="submit" class="btn-primary" style="width: 100%;">Simpan</button>
+      <!-- Judul Karya (Kolom E) -->
+      <div class="form-group">
+        <label>Judul Karya</label>
+        <input type="text" id="uJudul" required placeholder="Contoh: Poster Bumi Hijau">
+      </div>
+      
+      <!-- Deskripsi (Kolom D) -->
+      <div class="form-group">
+        <label>Deskripsi</label>
+        <textarea id="uDeskripsi" rows="3" required placeholder="Ceritakan tentang karya ini..."></textarea>
+      </div>
+      
+      <!-- Unggah File Karya (Kolom C) -->
+      <div class="form-group">
+        <label>File Gambar / Dokumen</label>
+        <input type="file" id="uFile" accept="image/*,.pdf,.doc,.docx" required>
+        <small style="color:#666;">Maksimal 5MB.</small>
+      </div>
+
+      <!-- Akun (Hidden - otomatis dari login) -->
+      <input type="hidden" id="uAkun">
+
+      <button type="submit" class="btn-primary" style="width: 100%;" id="btnSubmitUpload">Unggah ke Drive & Sheet</button>
     </form>
+    <button class="close-btn" onclick="closeModal('uploadModal')">&times;</button>
   </div>
 </div>
 
@@ -350,6 +209,9 @@
 <script>
   const SHEET_ID = '1iOxHNN6Y5idBTF5QH0zzr3FTxK_YcToOx56KN9I2wlY';
   const GID_USERS = '23797909';
+
+  // --- PENTING: MASUKKAN URL WEB APP DARI LANGKAH 1 DI SINI ---
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyrIKrW19dYIkNSkDTZUBDuyJTbIFuG_1xuVcdXcAJ1AurcryN_0NqCLTZj4bBGX6faqw/exec';
 
   // --- KONFIGURASI SECTION ---
   const CONFIG = {
@@ -373,46 +235,29 @@
         let imgRaw = row[2]?.v || '';
         let imgUrl = imgRaw;
         if (imgRaw && !imgRaw.startsWith('http')) { imgUrl = `https://drive.google.com/thumbnail?id=${imgRaw}&sz=w400`; }
-        return {
-          judul: row[0]?.v || 'Tanpa Judul',
-          gambar: imgUrl,
-          meta: row[1]?.v || 'Tgl N/A',
-          filter: row[3]?.v || 'Umum',
-          type: 'Briev'
-        };
+        return { judul: row[0]?.v || '', gambar: imgUrl, meta: row[1]?.v || '', filter: row[3]?.v || '' };
       }
     },
     bootcamp: {
-      gid: '1880887156', // ID SHEET BOOTCAMP
+      gid: '1880887156',
       query: 'SELECT B,C,G,E WHERE B<>""',
       els: { container: 'container-bootcamp', loading: 'loading-bootcamp' },
       map: (row) => {
-        // B=Judul, C=Waktu, D=Gambar, E=Keterangan
         let imgRaw = row[2]?.v || '';
         let imgUrl = imgRaw;
         if (imgRaw && !imgRaw.startsWith('http')) { imgUrl = `https://drive.google.com/thumbnail?id=${imgRaw}&sz=w800`; }
-        return {
-          judul: row[0]?.v || '',
-          waktu: row[1]?.v || '',
-          gambar: imgUrl,
-          ket: row[3]?.v || ''
-        };
+        return { judul: row[0]?.v, waktu: row[1]?.v, gambar: imgUrl, ket: row[3]?.v };
       }
     },
     tutorial: {
-      gid: '1819053111', // ID SHEET TUTORIAL
+      gid: '1819053111',
       query: 'SELECT B,C,G WHERE B<>""',
       els: { container: 'container-tutorial', loading: 'loading-tutorial' },
       map: (row) => {
-        // B=Judul, C=Deskripsi, D=Image
         let imgRaw = row[2]?.v || '';
         let imgUrl = imgRaw;
         if (imgRaw && !imgRaw.startsWith('http')) { imgUrl = `https://drive.google.com/thumbnail?id=${imgRaw}&sz=w600`; }
-        return {
-          judul: row[0]?.v || '',
-          deskripsi: row[1]?.v || '',
-          gambar: imgUrl
-        };
+        return { judul: row[0]?.v, deskripsi: row[1]?.v, gambar: imgUrl };
       }
     }
   };
@@ -420,23 +265,16 @@
   let dataStore = { gallery: [], briev: [], bootcamp: [], tutorial: [] };
   let currentUser = null;
 
-  // --- 1. NAVIGASI VIEW ---
+  // --- 1. NAVIGASI & AUTH ---
   function switchView(viewName) {
-    // Hide all views
     document.getElementById('view-home').classList.remove('active-view');
     document.getElementById('view-dashboard').classList.remove('active-view');
-    
-    // Show selected view
     document.getElementById(`view-${viewName}`).classList.add('active-view');
-
-    // Update Nav Buttons
     const btns = document.querySelectorAll('.nav-btn');
     btns.forEach(btn => btn.classList.remove('active'));
-    if(viewName === 'home') btns[0].classList.add('active');
-    else btns[1].classList.add('active');
+    if(viewName === 'home') btns[0].classList.add('active'); else btns[1].classList.add('active');
   }
 
-  // --- 2. LOGIN & AUTH ---
   async function handleLogin(e) {
     e.preventDefault();
     const userIn = document.getElementById('username').value;
@@ -444,13 +282,11 @@
     const credential = `${userIn}__${passIn}`;
     const btn = document.getElementById('btnSubmitLogin');
     
-    btn.innerText = "Mengecek...";
-    btn.disabled = true;
+    btn.innerText = "Mengecek..."; btn.disabled = true;
 
     try {
       const query = `SELECT B,C,H WHERE G = '${credential}'`;
       const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${GID_USERS}&tq=${encodeURIComponent(query)}`;
-
       const res = await fetch(url);
       const text = await res.text();
       const jsonStr = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
@@ -461,21 +297,15 @@
         currentUser = {
           nama: rowData[0]?.v || 'Siswa',
           kelas: rowData[1]?.v || '-',
-          gambar: rowData[2]?.v || ''
+          gambar: rowData[2]?.v || '',
+          username: userIn // Simpan username asli untuk Kolom B (Akun)
         };
         loginSuccessUI(currentUser);
         closeModal('loginModal');
         showToast(`Selamat datang, ${currentUser.nama}`);
-      } else {
-        alert("Login Gagal! (Format: User__Pass)");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Gagal terkoneksi.");
-    } finally {
-      btn.innerText = "Masuk";
-      btn.disabled = false;
-    }
+      } else { alert("Login Gagal!"); }
+    } catch (err) { alert("Gagal terkoneksi."); } 
+    finally { btn.innerText = "Masuk"; btn.disabled = false; }
   }
 
   function loginSuccessUI(user) {
@@ -502,66 +332,105 @@
     showToast("Logout.");
   }
 
-  // --- 3. FETCH DATA UTAMA ---
+  // --- 2. LOGIKA UPLOAD KE GDRIVE (TERBARU) ---
+  function handleUpload(e) {
+    e.preventDefault();
+    
+    if (SCRIPT_URL === 'MASUKKAN_URL_WEB_APP_ANDA_DISINI') {
+      alert("Harap masukkan SCRIPT_URL di kode HTML dulu!");
+      return;
+    }
+
+    const fileInput = document.getElementById('uFile');
+    const file = fileInput.files[0];
+    const judul = document.getElementById('uJudul').value;
+    const deskripsi = document.getElementById('uDeskripsi').value;
+    const akun = currentUser ? currentUser.username : 'Guest'; // Kolom B (Akun)
+
+    if (!file) { alert("Pilih file terlebih dahulu!"); return; }
+
+    // Proses membaca file ke Base64
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      const base64Data = event.target.result;
+      // Hapus header "data:image/png;base64," agar clean base64
+      const cleanBase64 = base64Data.substring(base64Data.indexOf(',') + 1);
+
+      const payload = {
+        akun: akun,
+        judul: judul,
+        deskripsi: deskripsi,
+        fileData: cleanBase64,
+        fileName: file.name,
+        mimeType: file.type
+      };
+
+      // Kirim ke Web App
+      const btn = document.getElementById('btnSubmitUpload');
+      btn.innerText = "Mengunggah..."; btn.disabled = true;
+
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors', // Penting untuk Google Apps Script
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+      .then(() => {
+        showToast("Karya berhasil diunggah!");
+        closeModal('uploadModal');
+        e.target.reset();
+        // Refresh Gallery setelah 2 detik agar data baru muncul
+        setTimeout(() => fetchData('gallery'), 2000);
+      })
+      .catch(err => {
+        console.error(err);
+        alert("Gagal mengunggah.");
+      })
+      .finally(() => {
+        btn.innerText = "Unggah ke Drive & Sheet"; btn.disabled = false;
+      });
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // --- 3. FETCH & RENDER DATA ---
   async function initAllData() {
-    // Parallel fetch
-    await Promise.all([
-      fetchData('gallery'),
-      fetchData('briev'),
-      fetchData('bootcamp'),
-      fetchData('tutorial')
-    ]);
+    await Promise.all([fetchData('gallery'), fetchData('briev'), fetchData('bootcamp'), fetchData('tutorial')]);
   }
 
   async function fetchData(sectionKey) {
     const config = CONFIG[sectionKey];
     const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${config.gid}&tq=${encodeURIComponent(config.query)}`;
-    
     try {
       const res = await fetch(url);
       const text = await res.text();
       const jsonStr = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
       const data = JSON.parse(jsonStr);
-
       let results = [];
-      if (data.table && data.table.rows) {
-        results = data.table.rows.map(r => config.map(r.c));
-      }
-
+      if (data.table && data.table.rows) results = data.table.rows.map(r => config.map(r.c));
       dataStore[sectionKey] = results;
       
-      // Render sesuai tipe section
+      // Render Logic
       if(sectionKey === 'gallery' || sectionKey === 'briev') {
         renderTabs(sectionKey);
         renderRow(sectionKey);
         document.getElementById(config.els.loading).style.display = 'none';
         document.getElementById(config.els.row).style.display = 'flex';
-      } 
-      else if (sectionKey === 'bootcamp') {
-        renderBootcamp();
-      } 
-      else if (sectionKey === 'tutorial') {
-        renderTutorial();
-      }
-
-    } catch (e) {
-      console.error(`Error loading ${sectionKey}:`, e);
-      if(config.els.loading) document.getElementById(config.els.loading).innerText = "Gagal memuat data.";
-    }
+      } else if (sectionKey === 'bootcamp') { renderBootcamp(); } 
+      else if (sectionKey === 'tutorial') { renderTutorial(); }
+    } catch (e) { console.error(e); if(config.els.loading) document.getElementById(config.els.loading).innerText = "Gagal memuat."; }
   }
 
-  // --- 4. RENDER FUNGSI HOME (Galeri & Briev) ---
+  // Render Functions (Sama seperti sebelumnya)
   function renderTabs(sectionKey) {
     const config = CONFIG[sectionKey];
     const container = document.getElementById(config.els.tabs);
     const data = dataStore[sectionKey];
     const uniqueFilters = [...new Set(data.map(item => item.filter))];
-    
     container.innerHTML = `<button class="tab-btn active" onclick="filterData('${sectionKey}', 'all')">Semua</button>`;
     uniqueFilters.forEach(filter => {
       const btn = document.createElement('button');
-      btn.className = 'tab-btn';
-      btn.innerText = filter;
+      btn.className = 'tab-btn'; btn.innerText = filter;
       btn.onclick = () => filterData(sectionKey, filter);
       container.appendChild(btn);
     });
@@ -571,56 +440,37 @@
     const config = CONFIG[sectionKey];
     const btns = document.getElementById(config.els.tabs).querySelectorAll('.tab-btn');
     btns.forEach(b => b.classList.toggle('active', b.innerText === filterValue));
-
-    const filtered = (filterValue === 'all') 
-      ? dataStore[sectionKey] 
-      : dataStore[sectionKey].filter(i => i.filter === filterValue);
-    
+    const filtered = (filterValue === 'all') ? dataStore[sectionKey] : dataStore[sectionKey].filter(i => i.filter === filterValue);
     renderRow(sectionKey, filtered);
   }
 
   function renderRow(sectionKey, data = dataStore[sectionKey]) {
     const config = CONFIG[sectionKey];
     const container = document.getElementById(config.els.row);
+    if (data.length === 0) { container.innerHTML = '<div style="padding:20px;">Data kosong.</div>'; return; }
     
-    if (data.length === 0) {
-      container.innerHTML = '<div style="padding:20px; color:#888;">Data kosong.</div>';
-      return;
-    }
-
-    container.innerHTML = data.map(item => {
-      let metaLabel = (sectionKey === 'gallery') ? `Oleh: ${item.meta}` : `Exp: ${item.meta}`;
-      return `
-        <div class="card">
-          <img src="${item.gambar}" alt="${item.judul}" onerror="this.src='https://via.placeholder.com/260x160?text=No+Image'">
-          <div class="content">
-            <div class="badge">${item.filter}</div>
-            <h3>${item.judul}</h3>
-            <div class="meta">${metaLabel}</div>
-            <button onclick="showToast('${item.judul}')">Detail</button>
-          </div>
+    // CATATAN: Jika upload Anda menyimpan link di kolom C, tapi galeri membaca kolom F,
+    // maka item baru mungkin tidak muncul di Galeri lama. 
+    // Pastikan struktur Sheet Anda konsisten atau ubah Query Gallery ke kolom C jika perlu.
+    
+    container.innerHTML = data.map(item => `
+      <div class="card">
+        <img src="${item.gambar}" alt="${item.judul}" onerror="this.src='https://via.placeholder.com/260x160?text=No+Image'">
+        <div class="content">
+          <div class="badge">${item.filter}</div>
+          <h3>${item.judul}</h3>
+          <div class="meta">${sectionKey==='gallery' ? `Oleh: ${item.meta}` : `Exp: ${item.meta}`}</div>
+          <button onclick="showToast('${item.judul}')">Detail</button>
         </div>
-      `;
-    }).join('');
+      </div>
+    `).join('');
     container.scrollLeft = 0;
   }
 
-  // --- 5. RENDER FUNGSI DASHBOARD ---
-
-  // Render Bootcamp (News Style)
   function renderBootcamp() {
     const data = dataStore.bootcamp;
-    const container = document.getElementById('container-bootcamp');
-    const loading = document.getElementById('loading-bootcamp');
-
-    loading.style.display = 'none';
-
-    if (data.length === 0) {
-      container.innerHTML = '<p>Tidak ada kegiatan bootcamp.</p>';
-      return;
-    }
-
-    container.innerHTML = data.map(item => `
+    document.getElementById('loading-bootcamp').style.display = 'none';
+    document.getElementById('container-bootcamp').innerHTML = data.map(item => `
       <div class="news-item">
         <img class="news-img" src="${item.gambar}" onerror="this.src='https://via.placeholder.com/200x200?text=News'">
         <div class="news-content">
@@ -632,21 +482,11 @@
     `).join('');
   }
 
-  // Render Tutorial (Youtube Style)
   function renderTutorial() {
     const data = dataStore.tutorial;
-    const container = document.getElementById('container-tutorial');
-    const loading = document.getElementById('loading-tutorial');
-
-    loading.style.display = 'none';
-
-    if (data.length === 0) {
-      container.innerHTML = '<p>Belum ada tutorial tersedia.</p>';
-      return;
-    }
-
-    container.innerHTML = data.map(item => `
-      <div class="yt-card" onclick="showToast('Putar video: ${item.judul}')">
+    document.getElementById('loading-tutorial').style.display = 'none';
+    document.getElementById('container-tutorial').innerHTML = data.map(item => `
+      <div class="yt-card" onclick="showToast('Putar: ${item.judul}')">
         <div class="yt-thumb-container">
           <img class="yt-thumb" src="${item.gambar}" onerror="this.src='https://via.placeholder.com/320x180?text=Video'">
         </div>
@@ -658,36 +498,16 @@
     `).join('');
   }
 
-  // --- 6. MODAL & UPLOAD ---
+  // --- UTILITAS ---
   function openModal(id) { document.getElementById(id).classList.add('open'); }
   function closeModal(id) { document.getElementById(id).classList.remove('open'); }
   window.onclick = (e) => { if(e.target.classList.contains('modal-overlay')) closeModal(e.target.id); }
-
-  function handleUpload(e) {
-    e.preventDefault();
-    const newItem = {
-      judul: document.getElementById('uJudul').value,
-      gambar: document.getElementById('uGambar').value,
-      meta: document.getElementById('uSiswa').value,
-      filter: document.getElementById('uKategori').value,
-      type: 'Siswa'
-    };
-    dataStore['gallery'].unshift(newItem);
-    renderTabs('gallery');
-    filterData('gallery', 'all');
-    e.target.reset();
-    closeModal('uploadModal');
-    showToast("Karya ditambahkan.");
-  }
-
   function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.innerText = msg; t.style.display = 'block';
+    const t = document.getElementById('toast'); t.innerText = msg; t.style.display = 'block';
     setTimeout(() => t.style.display = 'none', 3000);
   }
 
   document.addEventListener('DOMContentLoaded', initAllData);
 </script>
-
 </body>
 </html>
