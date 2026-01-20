@@ -55,34 +55,54 @@
     border-bottom:1px solid var(--border-color);
     padding: 10px 20px;
     display: flex; justify-content: space-between; align-items: center;
-    height: 80px;
+    height: 70px;
   }
-  .brand-container { display: flex; align-items: center; gap: 15px; flex: 1; }
-  .brand-logo { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-color); }
-  .brand-text { display: flex; flex-direction: column; justify-content: center; }
-  .brand-text h1 { margin: 0; font-size: 22px; font-weight: 800; color: var(--primary); letter-spacing: 0.5px; line-height: 1.1; }
-  .brand-text p { margin: 2px 0 0 0; font-size: 11px; font-weight: 500; color: var(--text-muted); line-height: 1.2; max-width: 250px; }
+  .brand-container { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+  .brand-logo { width: 40px; height: 40px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-color); flex-shrink: 0; }
+  .brand-text { display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+  .brand-text h1 { margin: 0; font-size: 18px; font-weight: 800; color: var(--primary); letter-spacing: 0.5px; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .brand-text p { margin: 2px 0 0 0; font-size: 11px; font-weight: 500; color: var(--text-muted); line-height: 1.2; display: none; }
 
-  .nav-pills { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 30px; padding: 4px; display: flex; gap: 5px; }
-  .nav-pill { border: none; background: transparent; color: var(--text-muted); padding: 8px 16px; border-radius: 25px; font-weight: 600; cursor: pointer; transition: var(--transition); font-size: 14px; }
+  .nav-pills { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 30px; padding: 4px; display: flex; gap: 5px; flex-shrink: 0; }
+  .nav-pill { border: none; background: transparent; color: var(--text-muted); padding: 6px 14px; border-radius: 25px; font-weight: 600; cursor: pointer; transition: var(--transition); font-size: 13px; }
   .nav-pill.active { background: var(--primary); color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
 
   .controls { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-  .btn-icon { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
+  .btn-icon { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
   .btn-icon:hover { background: var(--primary-light); color: var(--primary); border-color: var(--primary); }
 
   .user-profile { display: flex; align-items: center; gap: 8px; }
-  .user-avatar { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
-  .user-info { display: flex; flex-direction: column; line-height: 1.2; }
+  .user-avatar { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); flex-shrink: 0; }
+  .user-info { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
   .user-name { font-weight: 700; font-size: 13px; }
-  .user-class { font-size: 10px; color: var(--text-muted); }
+  .user-class { font-size: 11px; color: var(--text-muted); }
 
-  .btn { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; gap: 8px; font-size: 13px; }
+  .btn { background: var(--primary); color: white; border: none; padding: 6px 14px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; gap: 6px; font-size: 13px; white-space: nowrap; }
   .btn:hover { background: var(--primary-hover); transform: translateY(-1px); }
   .btn-logout { background: transparent; color: var(--danger); border: 1px solid var(--danger); }
   .btn-logout:hover { background: var(--danger); color: white; }
 
-  /* --- 4. COMPONENTS --- */
+  /* --- 4. RESPONSIVE MEDIA QUERIES --- */
+  @media (min-width: 768px) {
+    .brand-text p { display: block; }
+    .brand-logo { width: 50px; height: 50px; }
+    .brand-text h1 { font-size: 22px; }
+    .controls { gap: 15px; }
+    .btn-icon { width: 36px; height: 36px; }
+    .user-avatar { width: 35px; height: 35px; }
+    header { height: 80px; }
+  }
+  @media (max-width: 600px) {
+    .controls { gap: 5px; }
+    .user-info { display: none !important; }
+    .btn { padding: 6px 8px; font-size: 12px; }
+    .btn-text-mobile { display: none; }
+    .btn-icon { width: 30px; height: 30px; font-size: 14px; }
+    .nav-pills { padding: 3px; }
+    .nav-pill { padding: 5px 10px; font-size: 12px; }
+  }
+
+  /* --- 5. COMPONENTS --- */
   .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
   .section-title { margin: 25px 0 15px 0; font-size: 18px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
   .section-title::before { content: ''; width: 4px; height: 18px; background: var(--primary); border-radius: 2px; }
@@ -92,7 +112,7 @@
   .chip { padding: 6px 16px; border-radius: 20px; background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-muted); font-size: 13px; font-weight: 600; white-space: nowrap; cursor: pointer; transition: var(--transition); }
   .chip.active { background: var(--primary); color: white; border-color: var(--primary); }
 
-  .scroll-wrapper { background: var(--bg-card); border-radius: var(--radius); padding: 15px; box-shadow: var(--shadow); border: 1px solid var(--border-color); }
+  .scroll-wrapper { background: var(--bg-card); border-radius: var(--radius); padding: 15px; box-shadow: var(--shadow); border:1px solid var(--border-color); }
   .scroll-row { display: flex; gap: 15px; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 10px; }
   .scroll-row::-webkit-scrollbar { height: 4px; }
   .scroll-row::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
@@ -123,11 +143,17 @@
   .yt-title { font-size: 14px; font-weight: 600; color: var(--text-main); margin-bottom: 5px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;}
   .yt-desc { font-size: 12px; color: var(--text-muted); }
 
-  /* --- 5. MODAL & FORM --- */
+  /* --- 6. MODAL & FORM --- */
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
   .modal-overlay.open { display: flex; animation: fadeIn 0.3s; }
   .modal { background: var(--bg-card); width: 100%; max-width: 450px; border-radius: 16px; padding: 25px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); position: relative; border: 1px solid var(--border-color); animation: slideUp 0.3s; }
   
+  /* Upload Status (Loading/Success) */
+  .upload-status { text-align: center; padding: 20px; display: none; }
+  .upload-status.active { display: block; }
+  .success-msg { color: var(--success); font-weight: 700; font-size: 18px; margin-top: 10px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .success-icon { font-size: 40px; }
+
   .modal-detail { background: var(--bg-card); width: 100%; max-width: 900px; border-radius: 20px; overflow: hidden; position: relative; display: flex; flex-direction: column; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); animation: zoomIn 0.3s; }
   @media (min-width: 768px) {
     .modal-detail { flex-direction: row; height: 80vh; }
@@ -146,16 +172,12 @@
   .detail-title { font-size: 24px; font-weight: 800; margin: 0 0 10px 0; color: var(--text-main); line-height: 1.2; }
   .detail-meta { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
   
-  /* RATING */
+  /* RATING & DESC */
   .rating-stars-container { margin-bottom: 25px; background: rgba(0,0,0,0.02); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color); }
   .rating-label { font-size: 12px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 5px; font-weight: 700; }
   .rating-stars { color: #fbbf24; font-size: 28px; letter-spacing: 2px; line-height: 1; }
-
-  /* DESCRIPTION BOX (YELLOW) */
   .detail-desc-box { background-color: #fff7d1; border-left: 4px solid #facc15; color: #422006; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; line-height: 1.5; }
   .detail-desc-box.hidden { display: none; }
-
-  /* REGULAR DESC */
   .detail-desc { font-size: 15px; line-height: 1.6; color: var(--text-muted); margin-bottom: 20px; }
 
   .form-group { margin-bottom: 15px; }
@@ -169,19 +191,13 @@
   #bgColorPicker { height: 40px; padding: 2px; cursor: pointer; }
 
   .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--text-main); color: var(--bg-body); padding: 12px 24px; border-radius: 30px; font-size: 14px; font-weight: 600; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); z-index: 2000; display: none; }
-  .loader { border: 3px solid var(--bg-card); border-top: 3px solid var(--primary); border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; margin: 0 auto; }
+  .loader { border: 3px solid var(--bg-card); border-top: 3px solid var(--primary); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto; }
 
   @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
   @keyframes zoomIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
   .hidden { display: none !important; }
-
-  @media (max-width: 500px) {
-    .brand-text h1 { font-size: 18px; }
-    .brand-text p { display: none; }
-    .btn span { display: none; }
-  }
 </style>
 </head>
 <body>
@@ -192,7 +208,7 @@
     <img src="https://drive.google.com/thumbnail?id=1jjuiSRnNEex2-87cfM1kUiZDs7zucwKr&sz=w200" alt="Logo Sekolah" class="brand-logo">
     <div class="brand-text">
       <h1>SPATRA MEDIA</h1>
-      <p>Ekstrakurikuler Informatika SMA N 1 Wiradesa</p>
+      <p>Ekstrakurikuler Informatika SMA N 1 Wiradesa Pekalongan</p>
     </div>
   </div>
 
@@ -211,8 +227,12 @@
           <span class="user-class" id="dispClass">Kelas</span>
         </div>
         <img id="dispAvatar" class="user-avatar" src="">
-        <button class="btn btn-logout" style="padding: 6px 10px; font-size: 12px;" onclick="logout()">Out</button>
-        <button class="btn" id="btnUpload" style="background: var(--success); padding: 6px 10px;" onclick="openModal('uploadModal')">+ Upload</button>
+        <button class="btn btn-logout" onclick="logout()">
+          🚪 <span class="btn-text-mobile">Keluar</span>
+        </button>
+        <button class="btn" id="btnUpload" style="background: var(--success);" onclick="openModal('uploadModal')">
+          + <span class="btn-text-mobile">Unggah</span>
+        </button>
       </div>
     </div>
   </div>
@@ -295,24 +315,42 @@
   </div>
 </div>
 
-<!-- Upload Modal -->
+<!-- Upload Modal (Updated with Status) -->
 <div id="uploadModal" class="modal-overlay">
   <div class="modal">
-    <h2 style="margin-top:0; color:var(--success);">Unggah Portofolio</h2>
-    <form onsubmit="handleUpload(event)">
-      <div class="form-group"><label class="form-label">Judul Karya</label><input type="text" id="uJudul" class="form-input" required></div>
-      <div class="form-group">
-        <label class="form-label">Jenis Karya</label>
-        <select id="uJenisKarya" class="form-input" required>
-          <option value="" disabled selected>Pilih Jenis Karya...</option>
-          <option value="Desain">Desain</option>
-          <option value="FOTO">FOTO</option>
-        </select>
+    <!-- Status Container (Loader / Success) -->
+    <div id="uploadStatus" class="upload-status">
+      <!-- Loading State -->
+      <div id="uploadLoading">
+        <div class="loader"></div>
+        <p style="margin-top:10px; color:var(--text-muted);">Mengunggah ke Server...</p>
       </div>
-      <div class="form-group"><label class="form-label">Deskripsi</label><textarea id="uDeskripsi" class="form-input" rows="3" required></textarea></div>
-      <div class="form-group"><label class="form-label">File (Gambar/Dokumen)</label><input type="file" id="uFile" class="form-input" accept="image/*,.pdf,.doc,.docx" required></div>
-      <button type="submit" class="btn" style="width:100%; justify-content:center; background:var(--success);">Kirim Sekarang</button>
-    </form>
+      <!-- Success State -->
+      <div id="uploadSuccess" class="success-msg hidden">
+        <div class="success-icon">✅</div>
+        <p>Berhasil Disimpan!</p>
+      </div>
+    </div>
+
+    <!-- Form Content -->
+    <div id="uploadFormContent">
+      <h2 style="margin-top:0; color:var(--success);">Unggah Portofolio</h2>
+      <form onsubmit="handleUpload(event)">
+        <div class="form-group"><label class="form-label">Judul Karya</label><input type="text" id="uJudul" class="form-input" required></div>
+        <div class="form-group">
+          <label class="form-label">Jenis Karya</label>
+          <select id="uJenisKarya" class="form-input" required>
+            <option value="" disabled selected>Pilih Jenis Karya...</option>
+            <option value="Desain">Desain</option>
+            <option value="FOTO">FOTO</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Deskripsi</label><textarea id="uDeskripsi" class="form-input" rows="3" required></textarea></div>
+        <div class="form-group"><label class="form-label">File (Gambar/Dokumen)</label><input type="file" id="uFile" class="form-input" accept="image/*,.pdf,.doc,.docx" required></div>
+        <button type="submit" id="btnSubmitUpload" class="btn" style="width:100%; justify-content:center; background:var(--success);">Kirim Sekarang</button>
+      </form>
+    </div>
+    
     <button class="btn-icon" style="position:absolute; top:15px; right:15px;" onclick="closeModal('uploadModal')">✕</button>
   </div>
 </div>
@@ -370,19 +408,11 @@
       })
     },
     briev: {
-      // UPDATE QUERY: SELECT B,D,F,H,E
-      // Mapping: B(judul), D(waktu), F(gambar), H(filter), E(uraian)
       gid: '991020926', query: 'SELECT B,D,F,H,E WHERE B<>""',
       els: { tabs: 'tabs-briev', row: 'row-briev', loading: 'loading-briev' },
       map: (row) => {
         let imgRaw = row[2]?.v; let img = (imgRaw && !imgRaw.startsWith('http')) ? `https://drive.google.com/thumbnail?id=${imgRaw}&sz=w400` : imgRaw;
-        return {
-          judul: row[0]?.v,      // B
-          waktu: row[1]?.v,      // D
-          gambar: img,           // F
-          filter: row[3]?.v,    // H
-          uraian: row[4]?.v      // E (BARU: Uraian Brief)
-        };
+        return { judul: row[0]?.v, waktu: row[1]?.v, gambar: img, filter: row[3]?.v, uraian: row[4]?.v };
       }
     },
     bootcamp: {
@@ -428,7 +458,7 @@
     document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active')); el.classList.add('active');
   }
   function changeBgColor(color) { document.documentElement.style.setProperty('--bg-body', color); localStorage.setItem('customBg', color); }
-  
+
   function switchView(view) {
     document.getElementById('view-home').classList.add('hidden');
     document.getElementById('view-dashboard').classList.add('hidden');
@@ -478,48 +508,39 @@
   function showDetail(item) {
     document.getElementById('detail-title').textContent = item.judul;
     document.getElementById('detail-badge').textContent = item.filter || 'INFO';
-    
-    // Handle Meta (Untuk Briev tampilkan Waktu, untuk Lainnya Tampilkan Meta umum)
     document.getElementById('detail-meta').textContent = item.waktu || item.meta || '-';
-    
     let imgSrc = item.gambar;
     if(imgSrc && !imgSrc.startsWith('http')) imgSrc = `https://drive.google.com/uc?export=view&id=${imgSrc}`;
     document.getElementById('detail-img').src = imgSrc;
 
-    // Get Elements
     const ratingWrapper = document.getElementById('detail-rating-wrapper');
     const descYellow = document.getElementById('detail-desc-yellow');
     const descEl = document.getElementById('detail-desc');
 
-    // Reset Visibility Default
-    ratingWrapper.classList.add('hidden');
-    descYellow.classList.add('hidden');
-
-    // LOGIC 1: BRIEV (Uraian)
-    if (item.uraian) {
-      descEl.textContent = item.uraian; // Tampilkan Uraian Brief (Kolom E)
-    }
-    // LOGIC 2: GALLERY (Rating & Penilaian)
-    else if (item.rating !== undefined && item.penilaian !== undefined) {
+    // Handle Rating
+    if (item.rating !== undefined && item.penilaian !== undefined) {
       ratingWrapper.classList.remove('hidden');
       descEl.textContent = item.penilaian || "Belum ada penilaian.";
-      
       const r = parseFloat(item.rating) || 0;
       let stars = '';
-      for (let i = 1; i <= 5; i++) {
+      for (let i =1; i <=5; i++) {
         if (i <= r) stars += '★'; else if (i - 0.5 <= r) stars += '✦'; else stars += '☆';
       }
       document.getElementById('detail-rating-stars').textContent = stars;
-
-      // Handle Yellow Box untuk Gallery
       if (item.deskripsi) {
         descYellow.classList.remove('hidden');
         document.getElementById('detail-text-desc').textContent = item.deskripsi;
+      } else {
+        descYellow.classList.add('hidden');
       }
-    }
-    // LOGIC 3: DEFAULT (Bootcamp/Tutorial/Fallback)
-    else {
+    } else if (item.uraian) {
+      ratingWrapper.classList.add('hidden');
+      descEl.textContent = item.uraian;
+      descYellow.classList.add('hidden');
+    } else {
+      ratingWrapper.classList.add('hidden');
       descEl.textContent = item.ket || item.deskripsi || "Karya ini diunggah oleh siswa sebagai bagian dari portofolio kreatif mereka.";
+      descYellow.classList.add('hidden');
     }
 
     const btn = document.getElementById('detail-action');
@@ -599,17 +620,81 @@
     `).join('');
   }
 
+  /* --- HANDLE UPLOAD (DENGAN LOADING STATUS) --- */
   function handleUpload(e) {
     e.preventDefault();
     if (!currentUser) return showToast("Harap login dulu!");
+    
     const f = document.getElementById('uFile').files[0];
     if (!f) return showToast("Pilih file!");
+
+    // UI Setup
+    const statusBox = document.getElementById('uploadStatus');
+    const loadDiv = document.getElementById('uploadLoading');
+    const successDiv = document.getElementById('uploadSuccess');
+    const formContent = document.getElementById('uploadFormContent');
+    const submitBtn = document.getElementById('btnSubmitUpload');
+
+    // Mulai Proses Upload
+    statusBox.classList.add('active');
+    loadDiv.classList.remove('hidden');
+    successDiv.classList.add('hidden'); // Sembunyikan sukses jika ada sisa
+    formContent.style.display = 'none'; // Sembunyikan form agar user fokus ke status
+    submitBtn.disabled = true;
+
+    // Reader
     const reader = new FileReader();
     reader.onload = function(ev) {
-      const p = { akun: currentUser.username, judul: document.getElementById('uJudul').value, deskripsi: document.getElementById('uDeskripsi').value, jenisKarya: document.getElementById('uJenisKarya').value, fileData: ev.target.result.substring(ev.target.result.indexOf(',')+1), fileName: f.name, mimeType: f.type };
-      fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type':'application/json'}, body: JSON.stringify(p) })
-      .then(() => { showToast("Berhasil!"); closeModal('uploadModal'); e.target.reset(); setTimeout(()=>fetchData('gallery'),2000); })
-      .catch(() => showToast("Gagal."));
+      const payload = { 
+        akun: currentUser.username, 
+        judul: document.getElementById('uJudul').value, 
+        deskripsi: document.getElementById('uDeskripsi').value, 
+        jenisKarya: document.getElementById('uJenisKarya').value, 
+        fileData: ev.target.result.substring(ev.target.result.indexOf(',')+1), 
+        fileName: f.name, mimeType: f.type 
+      };
+
+      fetch(SCRIPT_URL, { 
+        method: 'POST', 
+        mode: 'no-cors', 
+        headers: {'Content-Type':'application/json'}, 
+        body: JSON.stringify(payload) 
+      })
+      .then(() => {
+        // SUKSES
+        loadDiv.classList.add('hidden');
+        successDiv.classList.remove('hidden');
+        
+        submitBtn.innerText = "Selesai";
+        submitBtn.style.background = "var(--success)";
+        submitBtn.onclick = function() { closeModal('uploadModal'); };
+
+        // Tunggu 2 detik agar user melihat sukses, lalu tutup modal dan refresh
+        setTimeout(() => {
+          closeModal('uploadModal');
+          showToast("Karya berhasil ditambahkan!");
+          e.target.reset();
+          
+          // Reset UI Button untuk next upload
+          submitBtn.innerText = "Kirim Sekarang";
+          submitBtn.disabled = false;
+          submitBtn.onclick = null; // Kembalikan handler default
+          
+          // Reset UI Status Box
+          statusBox.classList.remove('active');
+          formContent.style.display = 'block';
+          
+          fetchData('gallery'); // Refresh galeri
+        }, 2000);
+      })
+      .catch(err => {
+        // GAGAL
+        loadDiv.classList.add('hidden');
+        formContent.style.display = 'block';
+        submitBtn.disabled = false;
+        showToast("Gagal mengunggah file.");
+        console.error(err);
+      });
     };
     reader.readAsDataURL(f);
   }
