@@ -1,16 +1,15 @@
- 
  <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portal Siswa - Update Terakhir</title>
+<title>SPATRA MEDIA - Portal Siswa</title>
 <style>
-  /* --- 1. CSS VARIABLES (THEMING) --- */
+  /* --- 1. CSS VARIABLES --- */
   :root {
     --bg-body: #f3f4f6;
     --bg-card: #ffffff;
-    --bg-header: rgba(255, 255, 255, 0.9);
+    --bg-header: rgba(255, 255, 255, 0.95);
     --text-main: #1f2937;
     --text-muted: #6b7280;
     --border-color: #e5e7eb;
@@ -22,10 +21,11 @@
     --transition: all 0.3s ease;
   }
 
+  /* Dark Mode Override */
   [data-theme="dark"] {
     --bg-body: #0f172a;
     --bg-card: #1e293b;
-    --bg-header: rgba(15, 23, 42, 0.9);
+    --bg-header: rgba(15, 23, 42, 0.95);
     --text-main: #f1f5f9;
     --text-muted: #94a3b8;
     --border-color: #334155;
@@ -47,89 +47,85 @@
     padding-bottom: 80px;
   }
 
-  /* --- 3. HEADER & NAV --- */
+  /* --- 3. HEADER & NAV (RESPONSIVE UPDATE) --- */
   header {
     position: sticky; top: 0; z-index: 100;
     background: var(--bg-header);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border-color);
-    padding: 15px 20px;
+    padding: 10px 20px;
     display: flex; justify-content: space-between; align-items: center;
+    height: 70px; /* Sedikit dikecilkan agar rapi di HP */
   }
-  h1 { margin: 0; font-size: 20px; font-weight: 700; color: var(--primary); }
-  
-  .nav-pills {
-    background: var(--bg-card); border: 1px solid var(--border-color);
-    border-radius: 30px; padding: 4px; display: flex; gap: 5px;
-  }
-  .nav-pill {
-    border: none; background: transparent; color: var(--text-muted);
-    padding: 8px 16px; border-radius: 25px; font-weight: 600; cursor: pointer;
-    transition: var(--transition); font-size: 14px;
-  }
+  .brand-container { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+  .brand-logo { width: 40px; height: 40px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-color); flex-shrink: 0; }
+  .brand-text { display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+  .brand-text h1 { margin: 0; font-size: 18px; font-weight: 800; color: var(--primary); letter-spacing: 0.5px; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .brand-text p { margin: 2px 0 0 0; font-size: 11px; font-weight: 500; color: var(--text-muted); line-height: 1.2; display: none; /* Hidden by default for cleaner look */ }
+
+  .nav-pills { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 30px; padding: 4px; display: flex; gap: 5px; flex-shrink: 0; }
+  .nav-pill { border: none; background: transparent; color: var(--text-muted); padding: 6px 14px; border-radius: 25px; font-weight: 600; cursor: pointer; transition: var(--transition); font-size: 13px; }
   .nav-pill.active { background: var(--primary); color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
 
-  .controls { display: flex; align-items: center; gap: 15px; }
-  .btn-icon {
-    background: transparent; border: 1px solid var(--border-color);
-    color: var(--text-main); width: 36px; height: 36px; border-radius: 50%;
-    cursor: pointer; display: flex; align-items: center; justify-content: center;
-    transition: var(--transition);
-  }
+  /* CONTROLS (RESPONSIVE) */
+  .controls { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .btn-icon { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
   .btn-icon:hover { background: var(--primary-light); color: var(--primary); border-color: var(--primary); }
 
-  .user-profile { display: flex; align-items: center; gap: 10px; }
-  .user-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
-  .user-info { display: flex; flex-direction: column; line-height: 1.2; }
-  .user-name { font-weight: 700; font-size: 14px; }
+  .user-profile { display: flex; align-items: center; gap: 8px; }
+  .user-avatar { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); flex-shrink: 0; }
+  .user-info { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
+  .user-name { font-weight: 700; font-size: 13px; }
   .user-class { font-size: 11px; color: var(--text-muted); }
 
-  .btn {
-    background: var(--primary); color: white; border: none; padding: 10px 20px;
-    border-radius: 8px; font-weight: 600; cursor: pointer; transition: var(--transition);
-    display: inline-flex; align-items: center; gap: 8px; font-size: 14px;
-  }
+  .btn { background: var(--primary); color: white; border: none; padding: 6px 14px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; gap: 6px; font-size: 13px; white-space: nowrap; }
   .btn:hover { background: var(--primary-hover); transform: translateY(-1px); }
   .btn-logout { background: transparent; color: var(--danger); border: 1px solid var(--danger); }
   .btn-logout:hover { background: var(--danger); color: white; }
 
-  /* --- 4. COMPONENTS --- */
-  .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-  .section-title {
-    margin: 25px 0 15px 0; font-size: 18px; font-weight: 700; color: var(--text-main);
-    display: flex; align-items: center; gap: 10px;
+  /* --- 4. RESPONSIVE MEDIA QUERIES --- */
+  @media (min-width: 768px) {
+    .brand-text p { display: block; } /* Show school name on Desktop */
+    .brand-logo { width: 50px; height: 50px; }
+    .brand-text h1 { font-size: 22px; }
+    .controls { gap: 15px; }
+    .btn-icon { width: 36px; height: 36px; }
+    .user-avatar { width: 35px; height: 35px; }
+    header { height: 80px; }
   }
+
+  /* Mobile Specifics (< 600px) */
+  @media (max-width: 600px) {
+    .controls { gap: 5px; } /* Kompak */
+    .user-info { display: none !important; } /* Sembunyikan Nama/Kelas di HP */
+    .btn { padding: 6px 8px; font-size: 12px; } /* Tombol Kecil */
+    
+    /* Sembunyikan teks tombol di HP agar muat (Hanya ikon/simbol) */
+    .btn-text-mobile { display: none; }
+    
+    .btn-icon { width: 30px; height: 30px; font-size: 14px; }
+    
+    /* Sesuaikan Nav Pills */
+    .nav-pills { padding: 3px; }
+    .nav-pill { padding: 5px 10px; font-size: 12px; }
+  }
+
+  /* --- 5. COMPONENTS --- */
+  .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+  .section-title { margin: 25px 0 15px 0; font-size: 18px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
   .section-title::before { content: ''; width: 4px; height: 18px; background: var(--primary); border-radius: 2px; }
 
   .chip-container { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
   .chip-container::-webkit-scrollbar { display: none; }
-  .chip {
-    padding: 6px 16px; border-radius: 20px; background: var(--bg-card);
-    border: 1px solid var(--border-color); color: var(--text-muted);
-    font-size: 13px; font-weight: 600; white-space: nowrap; cursor: pointer;
-    transition: var(--transition);
-  }
+  .chip { padding: 6px 16px; border-radius: 20px; background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-muted); font-size: 13px; font-weight: 600; white-space: nowrap; cursor: pointer; transition: var(--transition); }
   .chip.active { background: var(--primary); color: white; border-color: var(--primary); }
-  .chip:hover:not(.active) { border-color: var(--primary); color: var(--primary); }
 
-  /* HORIZONTAL SCROLL WRAPPER */
-  .scroll-wrapper {
-    background: var(--bg-card); border-radius: var(--radius);
-    padding: 15px; box-shadow: var(--shadow); border: 1px solid var(--border-color);
-  }
-  .scroll-row {
-    display: flex; gap: 15px; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 10px;
-  }
+  .scroll-wrapper { background: var(--bg-card); border-radius: var(--radius); padding: 15px; box-shadow: var(--shadow); border: 1px solid var(--border-color); }
+  .scroll-row { display: flex; gap: 15px; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 10px; }
   .scroll-row::-webkit-scrollbar { height: 4px; }
   .scroll-row::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
 
-  /* CARD STYLE */
-  .card {
-    background: var(--bg-body); border-radius: 10px; overflow: hidden;
-    min-width: 220px; max-width: 240px; flex-shrink: 0;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: var(--transition);
-    border: 1px solid transparent; cursor: pointer;
-  }
+  .card { background: var(--bg-body); border-radius: 10px; overflow: hidden; min-width: 220px; max-width: 240px; flex-shrink: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: var(--transition); border: 1px solid transparent; cursor: pointer; }
   .card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--primary-light); }
   .card img { width: 100%; height: 140px; object-fit: cover; background: #e5e7eb; }
   .card-body { padding: 12px; }
@@ -137,12 +133,7 @@
   .card-title { font-size: 15px; font-weight: 700; margin: 0 0 8px 0; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .card-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; display: flex; align-items: center; gap: 5px; }
 
-  /* NEWS (BOOTCAMP) */
-  .news-card {
-    display: flex; background: var(--bg-card); border-radius: var(--radius);
-    overflow: hidden; box-shadow: var(--shadow); margin-bottom: 15px;
-    border: 1px solid var(--border-color); transition: var(--transition); cursor: pointer;
-  }
+  .news-card { display: flex; background: var(--bg-card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 15px; border: 1px solid var(--border-color); transition: var(--transition); cursor: pointer; }
   .news-card:hover { transform: scale(1.01); }
   .news-img { width: 130px; object-fit: cover; min-width: 130px; background: var(--bg-body); }
   .news-content { padding: 15px; flex: 1; display: flex; flex-direction: column; justify-content: center; }
@@ -151,7 +142,6 @@
   .news-excerpt { font-size: 13px; color: var(--text-muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   @media (min-width: 768px) { .news-img { width: 250px; min-width: 250px; } .news-excerpt { -webkit-line-clamp: 3; } }
 
-  /* YOUTUBE STYLE */
   .yt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); gap: 20px; }
   @media (min-width: 600px) { .yt-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (min-width: 900px) { .yt-grid { grid-template-columns: repeat(3, 1fr); } }
@@ -161,27 +151,12 @@
   .yt-title { font-size: 14px; font-weight: 600; color: var(--text-main); margin-bottom: 5px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;}
   .yt-desc { font-size: 12px; color: var(--text-muted); }
 
-  /* --- 5. MODAL & DETAIL VIEW --- */
-  .modal-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.8);
-    backdrop-filter: blur(5px); z-index: 1000;
-    display: none; align-items: center; justify-content: center; padding: 20px;
-  }
+  /* --- 6. MODAL & FORM --- */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
   .modal-overlay.open { display: flex; animation: fadeIn 0.3s; }
+  .modal { background: var(--bg-card); width: 100%; max-width: 450px; border-radius: 16px; padding: 25px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); position: relative; border: 1px solid var(--border-color); animation: slideUp 0.3s; }
   
-  .modal {
-    background: var(--bg-card); width: 100%; max-width: 450px;
-    border-radius: 16px; padding: 25px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
-    position: relative; border: 1px solid var(--border-color); animation: slideUp 0.3s;
-  }
-
-  /* DETAIL MODAL */
-  .modal-detail {
-    background: var(--bg-card); width: 100%; max-width: 900px;
-    border-radius: 20px; overflow: hidden; position: relative;
-    display: flex; flex-direction: column;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); animation: zoomIn 0.3s;
-  }
+  .modal-detail { background: var(--bg-card); width: 100%; max-width: 900px; border-radius: 20px; overflow: hidden; position: relative; display: flex; flex-direction: column; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); animation: zoomIn 0.3s; }
   @media (min-width: 768px) {
     .modal-detail { flex-direction: row; height: 80vh; }
     .detail-image { width: 60%; height: 100%; object-fit: cover; }
@@ -193,32 +168,31 @@
   }
   .detail-image { background: #000; }
   .detail-content { padding: 30px; position: relative; }
-  .detail-close {
-    position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); color: white;
-    width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center;
-    justify-content: center; cursor: pointer; z-index: 10; transition: 0.2s;
-  }
+  .detail-close { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; transition: 0.2s; }
   .detail-close:hover { background: var(--danger); }
-  .detail-badge {
-    display: inline-block; background: var(--primary-light); color: var(--primary);
-    padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;
-    margin-bottom: 10px; text-transform: uppercase;
-  }
+  .detail-badge { display: inline-block; background: var(--primary-light); color: var(--primary); padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; }
   .detail-title { font-size: 24px; font-weight: 800; margin: 0 0 10px 0; color: var(--text-main); line-height: 1.2; }
   .detail-meta { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
-  .detail-desc { font-size: 15px; line-height: 1.6; color: var(--text-muted); }
   
+  /* RATING & DESC */
+  .rating-stars-container { margin-bottom: 25px; background: rgba(0,0,0,0.02); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color); }
+  .rating-label { font-size: 12px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 5px; font-weight: 700; }
+  .rating-stars { color: #fbbf24; font-size: 28px; letter-spacing: 2px; line-height: 1; }
+
+  .detail-desc-box { background-color: #fff7d1; border-left: 4px solid #facc15; color: #422006; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; line-height: 1.5; }
+  .detail-desc-box.hidden { display: none; }
+  .detail-desc { font-size: 15px; line-height: 1.6; color: var(--text-muted); margin-bottom: 20px; }
+
   .form-group { margin-bottom: 15px; }
   .form-label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; }
   .form-input { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-body); color: var(--text-main); }
   .form-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
 
-  /* Settings */
   .theme-options { display: flex; gap: 10px; margin-top: 10px; }
   .color-dot { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
   .color-dot.active { border-color: var(--text-main); transform: scale(1.1); }
+  #bgColorPicker { height: 40px; padding: 2px; cursor: pointer; }
 
-  /* Toast & Loader */
   .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--text-main); color: var(--bg-body); padding: 12px 24px; border-radius: 30px; font-size: 14px; font-weight: 600; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); z-index: 2000; display: none; }
   .loader { border: 3px solid var(--bg-card); border-top: 3px solid var(--primary); border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; margin: 0 auto; }
 
@@ -233,28 +207,47 @@
 
 <!-- HEADER -->
 <header>
-  <div style="display: flex; align-items: center; gap: 10px;">
-    <div style="width:32px; height:32px; background:var(--primary); border-radius:8px; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold;">P</div>
-    <h1>PortalSiswa</h1>
+  <!-- KIRI: LOGO & TEXT -->
+  <div class="brand-container">
+    <img src="https://drive.google.com/thumbnail?id=1jjuiSRnNEex2-87cfM1kUiZDs7zucwKr&sz=w200" alt="Logo Sekolah" class="brand-logo">
+    <div class="brand-text">
+      <h1>SPATRA MEDIA</h1>
+      <p>Ekstrakurikuler Informatika SMA N 1 Wiradesa Pekalongan</p>
+    </div>
   </div>
 
+  <!-- TENGAH: NAVIGASI -->
   <nav class="nav-pills">
     <button class="nav-pill active" onclick="switchView('home')" id="pill-home">Beranda</button>
     <button class="nav-pill" onclick="switchView('dashboard')" id="pill-dashboard">Dashboard</button>
   </nav>
 
+  <!-- KANAN: CONTROLS (RESPONSIVE) -->
   <div class="controls">
     <button class="btn-icon" onclick="openModal('settingsModal')">⚙️</button>
     <div id="auth-section">
+      <!-- TOMBOL LOGIN (Default) -->
       <button class="btn" id="btnLogin" onclick="openModal('loginModal')">Login</button>
+      
+      <!-- USER PROFILE (Setelah Login) -->
       <div id="userProfile" class="user-profile hidden">
+        <!-- Nama & Kelas (Disembunyikan di HP via CSS) -->
         <div class="user-info">
           <span class="user-name" id="dispName">Nama</span>
           <span class="user-class" id="dispClass">Kelas</span>
         </div>
+        
         <img id="dispAvatar" class="user-avatar" src="">
-        <button class="btn btn-logout" style="padding: 6px 12px; font-size: 12px; margin-left:5px;" onclick="logout()">Out</button>
-        <button class="btn" id="btnUpload" style="background: var(--success); padding: 6px 12px;" onclick="openModal('uploadModal')">+ Upload</button>
+        
+        <!-- LOGOUT (Icon + Text) -->
+        <button class="btn btn-logout" onclick="logout()">
+          🚪 <span class="btn-text-mobile">Keluar</span>
+        </button>
+        
+        <!-- UPLOAD (Icon + Text) -->
+        <button class="btn" id="btnUpload" style="background: var(--success);" onclick="openModal('uploadModal')">
+          + <span class="btn-text-mobile">Unggah</span>
+        </button>
       </div>
     </div>
   </div>
@@ -321,6 +314,10 @@
       </button>
     </div>
     <div class="form-group">
+      <label class="form-label">Warna Background</label>
+      <input type="color" id="bgColorPicker" class="form-input" value="#f3f4f6" oninput="changeBgColor(this.value)">
+    </div>
+    <div class="form-group">
       <label class="form-label">Warna Tema</label>
       <div class="theme-options">
         <div class="color-dot active" style="background:#4f46e5;" onclick="setColor('blue', this)"></div>
@@ -333,25 +330,22 @@
   </div>
 </div>
 
-<!-- Upload Modal (Updated with Jenis Karya) -->
+<!-- Upload Modal -->
 <div id="uploadModal" class="modal-overlay">
   <div class="modal">
     <h2 style="margin-top:0; color:var(--success);">Unggah Portofolio</h2>
     <form onsubmit="handleUpload(event)">
       <div class="form-group"><label class="form-label">Judul Karya</label><input type="text" id="uJudul" class="form-input" required></div>
-      
-      <!-- INPUT BARU: JENIS KARYA -->
       <div class="form-group">
         <label class="form-label">Jenis Karya</label>
         <select id="uJenisKarya" class="form-input" required>
           <option value="" disabled selected>Pilih Jenis Karya...</option>
           <option value="Desain">Desain</option>
-          <option value="Foto">FOTO</option>
+          <option value="FOTO">FOTO</option>
         </select>
       </div>
-
       <div class="form-group"><label class="form-label">Deskripsi</label><textarea id="uDeskripsi" class="form-input" rows="3" required></textarea></div>
-      <div class="form-group"><label class="form-label">File (Gambar/Dokumen)</label><input type="file" id="uFile" class="form-input" accept="image/*,.pdf,.doc,.docx" required></div>
+      <div class="form-group"><label class="form-label">File</label><input type="file" id="uFile" class="form-input" accept="image/*,.pdf,.doc,.docx" required></div>
       <button type="submit" class="btn" style="width:100%; justify-content:center; background:var(--success);">Kirim Sekarang</button>
     </form>
     <button class="btn-icon" style="position:absolute; top:15px; right:15px;" onclick="closeModal('uploadModal')">✕</button>
@@ -367,7 +361,22 @@
       <span id="detail-badge" class="detail-badge">KATEGORI</span>
       <h2 id="detail-title" class="detail-title">Judul</h2>
       <div id="detail-meta" class="detail-meta">Meta Info</div>
-      <div id="detail-desc" class="detail-desc">Deskripsi lengkap...</div>
+      
+      <!-- RATING -->
+      <div id="detail-rating-wrapper" class="rating-stars-container hidden">
+        <div class="rating-label">Penilaian Juri / Guru</div>
+        <div id="detail-rating-stars" class="rating-stars"></div>
+      </div>
+
+      <!-- DESKRIPSI (ARSIRAN KUNING) -->
+      <div id="detail-desc-yellow" class="detail-desc-box hidden">
+        <div class="rating-label">Deskripsi Karya</div>
+        <div id="detail-text-desc"></div>
+      </div>
+
+      <!-- TEKS PENILAIAN / URAIAN BRIEF -->
+      <div id="detail-desc" class="detail-desc">Deskripsi...</div>
+      
       <button id="detail-action" class="btn" style="margin-top:20px; width:100%; justify-content:center;">Buka File</button>
     </div>
   </div>
@@ -379,43 +388,44 @@
   /* --- CONFIGURATION --- */
   const SHEET_ID = '1iOxHNN6Y5idBTF5QH0zzr3FTxK_YcToOx56KN9I2wlY';
   const GID_USERS = '23797909';
-  
-  // URL AUTOSCRIPT (DIUPDATE)
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbysreBIaV8juIO-zF5ol5q7JqCJNUbpJXk0cnc7Y5rKzLhs_u3ZPZGBmhMa2eKg1U81hQ/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyrIKrW19dYIkNSkDTZUBDuyJTbIFuG_1xuVcdXcAJ1AurcryN_0NqCLTZj4bBGX6faqw/exec';
 
-  // CONFIG DIUPDATE QUERY DAN MAPPING
   const CONFIG = {
     gallery: {
-      gid: '921098100', query: 'SELECT E,F,J,L WHERE E<>""',
+      gid: '921098100', query: 'SELECT E,F,J,L,H,I,D WHERE E<>""',
       els: { tabs: 'tabs-gallery', row: 'row-gallery', loading: 'loading-gallery' },
-      map: (row) => ({ judul: row[0]?.v, gambar: row[1]?.v, meta: row[2]?.v, filter: row[3]?.v })
+      map: (row) => ({
+        judul: row[0]?.v,         // E
+        gambar: row[1]?.v,       // F
+        meta: row[2]?.v,         // J (Nama)
+        filter: row[3]?.v,       // L (Kategori)
+        rating: row[4]?.v || 0,   // H (Rating)
+        penilaian: row[5]?.v,     // I (Teks Penilaian)
+        deskripsi: row[6]?.v      // D (Deskripsi)
+      })
     },
     briev: {
-      gid: '991020926', query: 'SELECT B,D,F,H WHERE B<>""',
+      gid: '991020926', query: 'SELECT B,D,F,H,E WHERE B<>""',
       els: { tabs: 'tabs-briev', row: 'row-briev', loading: 'loading-briev' },
       map: (row) => {
         let imgRaw = row[2]?.v; let img = (imgRaw && !imgRaw.startsWith('http')) ? `https://drive.google.com/thumbnail?id=${imgRaw}&sz=w400` : imgRaw;
-        return { judul: row[0]?.v, gambar: img, meta: row[1]?.v, filter: row[3]?.v };
+        return { judul: row[0]?.v, waktu: row[1]?.v, gambar: img, filter: row[3]?.v, uraian: row[4]?.v };
       }
     },
     bootcamp: {
-      // QUERY BARU: B,C,G,E (E dianggap keterangan/link ekstra)
       gid: '1880887156', query: 'SELECT B,C,G,E WHERE B<>""',
       els: { container: 'container-bootcamp', loading: 'loading-bootcamp' },
       map: (row) => {
-        let imgRaw = row[2]?.v; // Index 2 adalah G (Gambar)
-        let img = (imgRaw && !imgRaw.startsWith('http')) ? `https://drive.google.com/thumbnail?id=${imgRaw}&sz=w800` : imgRaw;
-        return { judul: row[0]?.v, waktu: row[1]?.v, gambar: img, ket: row[3]?.v }; // Index 3 adalah E
+        let imgRaw = row[2]?.v; let img = (imgRaw && !imgRaw.startsWith('http')) ? `https://drive.google.com/thumbnail?id=${imgRaw}&sz=w800` : imgRaw;
+        return { judul: row[0]?.v, waktu: row[1]?.v, gambar: img, ket: row[3]?.v };
       }
     },
     tutorial: {
-      // QUERY BARU: B,C,G,E (E adalah Link Youtube)
       gid: '1819053111', query: 'SELECT B,C,G,E WHERE B<>""',
       els: { container: 'container-tutorial', loading: 'loading-tutorial' },
       map: (row) => {
-        let imgRaw = row[2]?.v; // Index 2 adalah G (Gambar)
-        let img = (imgRaw && !imgRaw.startsWith('http')) ? `https://drive.google.com/thumbnail?id=${imgRaw}&sz=w600` : imgRaw;
-        return { judul: row[0]?.v, deskripsi: row[1]?.v, gambar: img, link: row[3]?.v }; // Index 3 adalah E (Link)
+        let imgRaw = row[2]?.v; let img = (imgRaw && !imgRaw.startsWith('http')) ? `https://drive.google.com/thumbnail?id=${imgRaw}&sz=w600` : imgRaw;
+        return { judul: row[0]?.v, deskripsi: row[1]?.v, gambar: img, link: row[3]?.v };
       }
     }
   };
@@ -427,6 +437,7 @@
   function initTheme() {
     const t = localStorage.getItem('theme'); if (t === 'dark') document.body.setAttribute('data-theme', 'dark'); updateThemeUI();
     const c = localStorage.getItem('color'); if (c) { document.body.setAttribute('data-color', c); document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active')); document.querySelector(`.color-dot[onclick*="${c}"]`)?.classList.add('active'); }
+    const bg = localStorage.getItem('customBg'); if(bg) { document.documentElement.style.setProperty('--bg-body', bg); document.getElementById('bgColorPicker').value = bg; }
   }
   function toggleTheme() {
     const isDark = document.body.getAttribute('data-theme') === 'dark';
@@ -443,6 +454,8 @@
     document.body.setAttribute('data-color', color); localStorage.setItem('color', color);
     document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active')); el.classList.add('active');
   }
+  function changeBgColor(color) { document.documentElement.style.setProperty('--bg-body', color); localStorage.setItem('customBg', color); }
+
   function switchView(view) {
     document.getElementById('view-home').classList.add('hidden');
     document.getElementById('view-dashboard').classList.add('hidden');
@@ -488,27 +501,55 @@
     showToast("Logout");
   }
 
-  /* --- DETAIL VIEW (Updated for Youtube Link) --- */
+  /* --- DETAIL VIEW --- */
   function showDetail(item) {
     document.getElementById('detail-title').textContent = item.judul;
     document.getElementById('detail-badge').textContent = item.filter || 'INFO';
-    document.getElementById('detail-meta').textContent = item.meta || item.waktu || '-';
-    
+    document.getElementById('detail-meta').textContent = item.waktu || item.meta || '-';
     let imgSrc = item.gambar;
     if(imgSrc && !imgSrc.startsWith('http')) imgSrc = `https://drive.google.com/uc?export=view&id=${imgSrc}`;
     document.getElementById('detail-img').src = imgSrc;
 
-    document.getElementById('detail-desc').textContent = item.ket || item.deskripsi || "Karya ini diunggah oleh siswa sebagai bagian dari portofolio kreatif mereka.";
+    const ratingWrapper = document.getElementById('detail-rating-wrapper');
+    const descYellow = document.getElementById('detail-desc-yellow');
+    const descEl = document.getElementById('detail-desc');
+
+    // Handle Rating & Gallery
+    if (item.rating !== undefined && item.penilaian !== undefined) {
+      ratingWrapper.classList.remove('hidden');
+      descEl.textContent = item.penilaian || "Belum ada penilaian.";
+      const r = parseFloat(item.rating) || 0;
+      let stars = '';
+      for (let i =1; i <= 5; i++) {
+        if (i <= r) stars += '★'; else if (i - 0.5 <= r) stars += '✦'; else stars += '☆';
+      }
+      document.getElementById('detail-rating-stars').textContent = stars;
+      
+      if (item.deskripsi) {
+        descYellow.classList.remove('hidden');
+        document.getElementById('detail-text-desc').textContent = item.deskripsi;
+      } else {
+        descYellow.classList.add('hidden');
+      }
+    } 
+    // Handle Briev
+    else if (item.uraian) {
+      ratingWrapper.classList.add('hidden');
+      descEl.textContent = item.uraian;
+      descYellow.classList.add('hidden');
+    }
+    // Default
+    else {
+      ratingWrapper.classList.add('hidden');
+      descEl.textContent = item.ket || item.deskripsi || "Karya ini diunggah oleh siswa sebagai bagian dari portofolio kreatif mereka.";
+      descYellow.classList.add('hidden');
+    }
 
     const btn = document.getElementById('detail-action');
-    
-    // LOGIKA UPDATE JIKA ITEM MEMILIKI LINK (TUTORIAL)
     if (item.link && item.link.startsWith('http')) {
-      btn.textContent = "Tonton Video";
-      btn.onclick = () => window.open(item.link, '_blank');
+      btn.textContent = "Tonton Video"; btn.onclick = () => window.open(item.link, '_blank');
     } else {
-      btn.textContent = "Buka File Asli";
-      btn.onclick = () => window.open(item.gambar, '_blank');
+      btn.textContent = "Buka File Asli"; btn.onclick = () => window.open(item.gambar, '_blank');
     }
     
     openModal('detailModal');
@@ -518,7 +559,6 @@
   async function initAllData() {
     await Promise.all([fetchData('gallery'), fetchData('briev'), fetchData('bootcamp'), fetchData('tutorial')]);
   }
-
   async function fetchData(key) {
     const c = CONFIG[key];
     const u = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${c.gid}&tq=${encodeURIComponent(c.query)}`;
@@ -527,12 +567,8 @@
       const txt = await r.text();
       const j = JSON.parse(txt.substring(txt.indexOf('{'), txt.lastIndexOf('}') + 1));
       dataStore[key] = (j.table && j.table.rows) ? j.table.rows.map(r => c.map(r.c)) : [];
-      
-      if(key === 'gallery' || key === 'briev') {
-        renderTabs(key);
-        renderRow(key);
-      } else if(key === 'bootcamp') renderBootcamp();
-      else if(key === 'tutorial') renderTutorial();
+      if(key === 'gallery' || key === 'briev') { renderTabs(key); renderRow(key); } 
+      else if(key === 'bootcamp') renderBootcamp(); else if(key === 'tutorial') renderTutorial();
       document.getElementById(c.els.loading).classList.add('hidden');
     } catch(e) { console.error(e); document.getElementById(c.els.loading).textContent="Gagal"; }
   }
@@ -540,17 +576,14 @@
   function renderTabs(key) {
     const c = CONFIG[key];
     const u = [...new Set(dataStore[key].map(i => i.filter))];
-    document.getElementById(c.els.tabs).innerHTML = `<button class="chip active" onclick="filterData('${key}', 'all')">Semua</button>` +
-    u.map(f => `<button class="chip" onclick="filterData('${key}', '${f}')">${f}</button>`).join('');
+    document.getElementById(c.els.tabs).innerHTML = `<button class="chip active" onclick="filterData('${key}', 'all')">Semua</button>` + u.map(f => `<button class="chip" onclick="filterData('${key}', '${f}')">${f}</button>`).join('');
   }
-
   function filterData(key, val) {
     const c = CONFIG[key];
     document.querySelectorAll(`#${c.els.tabs} .chip`).forEach(b => b.classList.toggle('active', b.textContent===val));
     const d = val==='all' ? dataStore[key] : dataStore[key].filter(i => i.filter===val);
     renderRow(key, d);
   }
-
   function renderRow(key, d = dataStore[key]) {
     const c = CONFIG[key];
     const el = document.getElementById(c.els.row);
@@ -560,12 +593,11 @@
         <div class="card-body">
           <div class="card-tag">${i.filter||'-'}</div>
           <h3 class="card-title">${i.judul}</h3>
-          <div class="card-meta">${key==='gallery'?'👤':'📅'} ${i.meta||'-'}</div>
+          <div class="card-meta">${key==='gallery'?'👤':'📅'} ${i.meta||i.waktu||'-'}</div>
         </div>
       </div>
     `).join(''); el.scrollLeft = 0;
   }
-
   function renderBootcamp() {
     const d = dataStore.bootcamp;
     document.getElementById('container-bootcamp').innerHTML = d.map(i => `
@@ -579,7 +611,6 @@
       </div>
     `).join('');
   }
-
   function renderTutorial() {
     const d = dataStore.tutorial;
     document.getElementById('container-tutorial').innerHTML = d.map(i => `
@@ -598,15 +629,7 @@
     if (!f) return showToast("Pilih file!");
     const reader = new FileReader();
     reader.onload = function(ev) {
-      // Payload Update: Menambahkan jenisKarya
-      const p = { 
-        akun: currentUser.username, 
-        judul: document.getElementById('uJudul').value, 
-        deskripsi: document.getElementById('uDeskripsi').value,
-        jenisKarya: document.getElementById('uJenisKarya').value, // BARU
-        fileData: ev.target.result.substring(ev.target.result.indexOf(',')+1), 
-        fileName: f.name, mimeType: f.type
-      };
+      const p = { akun: currentUser.username, judul: document.getElementById('uJudul').value, deskripsi: document.getElementById('uDeskripsi').value, jenisKarya: document.getElementById('uJenisKarya').value, fileData: ev.target.result.substring(ev.target.result.indexOf(',')+1), fileName: f.name, mimeType: f.type };
       fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type':'application/json'}, body: JSON.stringify(p) })
       .then(() => { showToast("Berhasil!"); closeModal('uploadModal'); e.target.reset(); setTimeout(()=>fetchData('gallery'),2000); })
       .catch(() => showToast("Gagal."));
