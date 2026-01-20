@@ -1,34 +1,27 @@
-<!DOCTYPE html>
+ 
+ <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portal Siswa Modern</title>
+<title>Portal Siswa - Update Terakhir</title>
 <style>
   /* --- 1. CSS VARIABLES (THEMING) --- */
   :root {
-    /* Light Mode Default */
     --bg-body: #f3f4f6;
     --bg-card: #ffffff;
     --bg-header: rgba(255, 255, 255, 0.9);
     --text-main: #1f2937;
     --text-muted: #6b7280;
     --border-color: #e5e7eb;
-    
-    /* Default Color (Blue) */
-    --primary: #4f46e5; 
-    --primary-hover: #4338ca;
-    --primary-light: #e0e7ff;
-    
-    /* Functional Colors */
+    --primary: #4f46e5; --primary-hover: #4338ca; --primary-light: #e0e7ff;
     --danger: #ef4444;
     --success: #10b981;
-    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     --radius: 12px;
     --transition: all 0.3s ease;
   }
 
-  /* Dark Mode Override */
   [data-theme="dark"] {
     --bg-body: #0f172a;
     --bg-card: #1e293b;
@@ -44,21 +37,17 @@
   [data-color="rose"] { --primary: #e11d48; --primary-hover: #be123c; --primary-light: #ffe4e6; }
   [data-color="teal"] { --primary: #0d9488; --primary-hover: #0f766e; --primary-light: #ccfbf1; }
 
-  /* --- 2. RESET & BASE STYLES --- */
+  /* --- 2. RESET & BASE --- */
   * { box-sizing: border-box; outline: none; }
   body {
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     background-color: var(--bg-body);
     color: var(--text-main);
-    margin: 0;
-    padding: 0;
-    transition: background-color 0.3s, color 0.3s;
-    padding-bottom: 80px; /* Space for mobile nav if needed, or scroll */
+    margin: 0; padding: 0; transition: background-color 0.3s, color 0.3s;
+    padding-bottom: 80px;
   }
 
-  /* --- 3. COMPONENTS --- */
-  
-  /* Header */
+  /* --- 3. HEADER & NAV --- */
   header {
     position: sticky; top: 0; z-index: 100;
     background: var(--bg-header);
@@ -67,31 +56,20 @@
     padding: 15px 20px;
     display: flex; justify-content: space-between; align-items: center;
   }
-
   h1 { margin: 0; font-size: 20px; font-weight: 700; color: var(--primary); }
   
-  /* Navigation Pills (Home / Dashboard) */
   .nav-pills {
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: 30px;
-    padding: 4px;
-    display: flex;
-    gap: 5px;
+    background: var(--bg-card); border: 1px solid var(--border-color);
+    border-radius: 30px; padding: 4px; display: flex; gap: 5px;
   }
   .nav-pill {
     border: none; background: transparent; color: var(--text-muted);
-    padding: 8px 16px; border-radius: 25px; font-weight: 600;
-    cursor: pointer; transition: var(--transition); font-size: 14px;
+    padding: 8px 16px; border-radius: 25px; font-weight: 600; cursor: pointer;
+    transition: var(--transition); font-size: 14px;
   }
-  .nav-pill.active {
-    background: var(--primary); color: white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  }
+  .nav-pill.active { background: var(--primary); color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
 
-  /* User Profile & Controls */
   .controls { display: flex; align-items: center; gap: 15px; }
-  
   .btn-icon {
     background: transparent; border: 1px solid var(--border-color);
     color: var(--text-main); width: 36px; height: 36px; border-radius: 50%;
@@ -106,7 +84,6 @@
   .user-name { font-weight: 700; font-size: 14px; }
   .user-class { font-size: 11px; color: var(--text-muted); }
 
-  /* Buttons */
   .btn {
     background: var(--primary); color: white; border: none; padding: 10px 20px;
     border-radius: 8px; font-weight: 600; cursor: pointer; transition: var(--transition);
@@ -116,24 +93,16 @@
   .btn-logout { background: transparent; color: var(--danger); border: 1px solid var(--danger); }
   .btn-logout:hover { background: var(--danger); color: white; }
 
-  /* --- 4. LAYOUTS & SECTIONS --- */
+  /* --- 4. COMPONENTS --- */
   .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-
   .section-title {
-    margin: 25px 0 15px 0; font-size: 18px; font-weight: 700;
-    color: var(--text-main); display: flex; align-items: center; gap: 10px;
+    margin: 25px 0 15px 0; font-size: 18px; font-weight: 700; color: var(--text-main);
+    display: flex; align-items: center; gap: 10px;
   }
-  .section-title::before {
-    content: ''; width: 4px; height: 18px; background: var(--primary); border-radius: 2px;
-  }
+  .section-title::before { content: ''; width: 4px; height: 18px; background: var(--primary); border-radius: 2px; }
 
-  /* Filter Tabs (Chips) */
-  .chip-container {
-    display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px;
-    scrollbar-width: none; /* Firefox */
-  }
+  .chip-container { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
   .chip-container::-webkit-scrollbar { display: none; }
-  
   .chip {
     padding: 6px 16px; border-radius: 20px; background: var(--bg-card);
     border: 1px solid var(--border-color); color: var(--text-muted);
@@ -143,111 +112,59 @@
   .chip.active { background: var(--primary); color: white; border-color: var(--primary); }
   .chip:hover:not(.active) { border-color: var(--primary); color: var(--primary); }
 
-  /* --- 5. HORIZONTAL SCROLL (Gallery & Briev) --- */
+  /* HORIZONTAL SCROLL WRAPPER */
   .scroll-wrapper {
     background: var(--bg-card); border-radius: var(--radius);
     padding: 15px; box-shadow: var(--shadow); border: 1px solid var(--border-color);
-    position: relative;
-    /* Gradient indicators for scroll */
-    background-image: linear-gradient(to right, var(--bg-card), var(--bg-card) 95%, transparent 100%);
   }
   .scroll-row {
-    display: flex; gap: 15px; overflow-x: auto;
-    scroll-behavior: smooth; padding-bottom: 10px;
+    display: flex; gap: 15px; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 10px;
   }
-  /* Custom Scrollbar */
   .scroll-row::-webkit-scrollbar { height: 4px; }
   .scroll-row::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
 
-  /* Card Design */
+  /* CARD STYLE */
   .card {
-    background: var(--bg-body); /* Slightly different than wrapper */
-    border-radius: 10px; overflow: hidden;
-    min-width: 220px; max-width: 240px;
-    flex-shrink: 0;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    transition: var(--transition); border: 1px solid transparent;
+    background: var(--bg-body); border-radius: 10px; overflow: hidden;
+    min-width: 220px; max-width: 240px; flex-shrink: 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: var(--transition);
+    border: 1px solid transparent; cursor: pointer;
   }
-  .card:hover {
-    transform: translateY(-4px); box-shadow: var(--shadow);
-    border-color: var(--primary-light);
-  }
-  .card img {
-    width: 100%; height: 140px; object-fit: cover;
-    background: #e5e7eb; transition: transform 0.5s;
-  }
-  .card:hover img { transform: scale(1.05); }
-  
+  .card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--primary-light); }
+  .card img { width: 100%; height: 140px; object-fit: cover; background: #e5e7eb; }
   .card-body { padding: 12px; }
-  .card-tag {
-    font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px;
-    color: var(--primary); font-weight: 700; margin-bottom: 5px;
-  }
-  .card-title {
-    font-size: 15px; font-weight: 700; color: var(--text-main);
-    margin: 0 0 8px 0; line-height: 1.3; display: -webkit-box;
-    -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-  }
-  .card-meta {
-    font-size: 12px; color: var(--text-muted); margin-bottom: 10px;
-    display: flex; align-items: center; gap: 5px;
-  }
-  .card-btn {
-    width: 100%; padding: 8px; background: var(--bg-card);
-    border: 1px solid var(--border-color); color: var(--primary);
-    border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px;
-  }
-  .card-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+  .card-tag { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--primary); font-weight: 700; margin-bottom: 5px; }
+  .card-title { font-size: 15px; font-weight: 700; margin: 0 0 8px 0; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .card-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; display: flex; align-items: center; gap: 5px; }
 
-  /* --- 6. BOOTCAMP (News Style) --- */
+  /* NEWS (BOOTCAMP) */
   .news-card {
     display: flex; background: var(--bg-card); border-radius: var(--radius);
     overflow: hidden; box-shadow: var(--shadow); margin-bottom: 15px;
-    border: 1px solid var(--border-color); transition: var(--transition);
+    border: 1px solid var(--border-color); transition: var(--transition); cursor: pointer;
   }
   .news-card:hover { transform: scale(1.01); }
-  .news-img {
-    width: 130px; object-fit: cover; min-width: 130px; background: var(--bg-body);
-  }
+  .news-img { width: 130px; object-fit: cover; min-width: 130px; background: var(--bg-body); }
   .news-content { padding: 15px; flex: 1; display: flex; flex-direction: column; justify-content: center; }
   .news-date { font-size: 11px; color: var(--primary); font-weight: 600; margin-bottom: 5px; }
   .news-headline { font-size: 16px; font-weight: 700; margin: 0 0 5px 0; color: var(--text-main); }
   .news-excerpt { font-size: 13px; color: var(--text-muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  @media (min-width: 768px) { .news-img { width: 250px; min-width: 250px; } .news-excerpt { -webkit-line-clamp: 3; } }
 
-  @media (min-width: 768px) {
-    .news-img { width: 250px; min-width: 250px; }
-    .news-excerpt { -webkit-line-clamp: 3; }
-  }
-
-  /* --- 7. TUTORIAL (YouTube Style) --- */
-  .yt-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); gap: 20px;
-  }
-  @media (min-width: 600px) {
-    .yt-grid { grid-template-columns: repeat(2, 1fr); }
-  }
-  @media (min-width: 900px) {
-    .yt-grid { grid-template-columns: repeat(3, 1fr); }
-  }
-
-  .yt-card {
-    background: transparent; cursor: pointer; transition: var(--transition);
-  }
-  .yt-thumb-box {
-    width: 100%; aspect-ratio: 16/9; border-radius: 12px; overflow: hidden;
-    background: var(--bg-body); position: relative;
-    box-shadow: var(--shadow); margin-bottom: 10px;
-  }
-  .yt-thumb { width: 100%; height: 100%; object-fit: cover; transition: var(--transition); }
-  .yt-card:hover .yt-thumb { transform: scale(1.05); }
-  
+  /* YOUTUBE STYLE */
+  .yt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); gap: 20px; }
+  @media (min-width: 600px) { .yt-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 900px) { .yt-grid { grid-template-columns: repeat(3, 1fr); } }
+  .yt-card { background: transparent; cursor: pointer; transition: var(--transition); }
+  .yt-thumb-box { width: 100%; aspect-ratio: 16/9; border-radius: 12px; overflow: hidden; background: var(--bg-body); position: relative; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .yt-thumb { width: 100%; height: 100%; object-fit: cover; }
   .yt-title { font-size: 14px; font-weight: 600; color: var(--text-main); margin-bottom: 5px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;}
   .yt-desc { font-size: 12px; color: var(--text-muted); }
 
-  /* --- 8. MODAL & FORM --- */
+  /* --- 5. MODAL & DETAIL VIEW --- */
   .modal-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(4px); z-index: 1000;
+    position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(5px); z-index: 1000;
     display: none; align-items: center; justify-content: center; padding: 20px;
   }
   .modal-overlay.open { display: flex; animation: fadeIn 0.3s; }
@@ -257,40 +174,58 @@
     border-radius: 16px; padding: 25px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
     position: relative; border: 1px solid var(--border-color); animation: slideUp 0.3s;
   }
+
+  /* DETAIL MODAL */
+  .modal-detail {
+    background: var(--bg-card); width: 100%; max-width: 900px;
+    border-radius: 20px; overflow: hidden; position: relative;
+    display: flex; flex-direction: column;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); animation: zoomIn 0.3s;
+  }
+  @media (min-width: 768px) {
+    .modal-detail { flex-direction: row; height: 80vh; }
+    .detail-image { width: 60%; height: 100%; object-fit: cover; }
+    .detail-content { width: 40%; overflow-y: auto; }
+  }
+  @media (max-width: 767px) {
+    .modal-detail { height: 90vh; }
+    .detail-image { width: 100%; height: 50%; object-fit: cover; }
+  }
+  .detail-image { background: #000; }
+  .detail-content { padding: 30px; position: relative; }
+  .detail-close {
+    position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); color: white;
+    width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; cursor: pointer; z-index: 10; transition: 0.2s;
+  }
+  .detail-close:hover { background: var(--danger); }
+  .detail-badge {
+    display: inline-block; background: var(--primary-light); color: var(--primary);
+    padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;
+    margin-bottom: 10px; text-transform: uppercase;
+  }
+  .detail-title { font-size: 24px; font-weight: 800; margin: 0 0 10px 0; color: var(--text-main); line-height: 1.2; }
+  .detail-meta { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
+  .detail-desc { font-size: 15px; line-height: 1.6; color: var(--text-muted); }
   
   .form-group { margin-bottom: 15px; }
-  .form-label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; color: var(--text-main); }
-  .form-input {
-    width: 100%; padding: 12px; border: 1px solid var(--border-color);
-    border-radius: 8px; background: var(--bg-body); color: var(--text-main);
-    transition: var(--transition);
-  }
+  .form-label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; }
+  .form-input { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-body); color: var(--text-main); }
   .form-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
-  
-  /* Settings Panel (Theme Color) */
+
+  /* Settings */
   .theme-options { display: flex; gap: 10px; margin-top: 10px; }
   .color-dot { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
   .color-dot.active { border-color: var(--text-main); transform: scale(1.1); }
 
-  /* --- 9. TOAST & LOADER --- */
-  .toast {
-    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-    background: var(--text-main); color: var(--bg-body);
-    padding: 12px 24px; border-radius: 30px; font-size: 14px; font-weight: 600;
-    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); z-index: 2000; display: none;
-  }
-  
-  .loader {
-    border: 3px solid var(--bg-card); border-top: 3px solid var(--primary);
-    border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; margin: 0 auto;
-  }
+  /* Toast & Loader */
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--text-main); color: var(--bg-body); padding: 12px 24px; border-radius: 30px; font-size: 14px; font-weight: 600; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); z-index: 2000; display: none; }
+  .loader { border: 3px solid var(--bg-card); border-top: 3px solid var(--primary); border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; margin: 0 auto; }
 
-  /* Animations */
   @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
-  /* Visibility Helpers */
+  @keyframes zoomIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
   .hidden { display: none !important; }
 </style>
 </head>
@@ -299,28 +234,19 @@
 <!-- HEADER -->
 <header>
   <div style="display: flex; align-items: center; gap: 10px;">
-    <!-- App Icon/Logo -->
     <div style="width:32px; height:32px; background:var(--primary); border-radius:8px; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold;">P</div>
     <h1>PortalSiswa</h1>
   </div>
 
-  <!-- Navigation Tabs -->
   <nav class="nav-pills">
     <button class="nav-pill active" onclick="switchView('home')" id="pill-home">Beranda</button>
     <button class="nav-pill" onclick="switchView('dashboard')" id="pill-dashboard">Dashboard</button>
   </nav>
 
-  <!-- Right Controls -->
   <div class="controls">
-    <!-- Settings Icon (Theme/Color) -->
-    <button class="btn-icon" onclick="openModal('settingsModal')">
-      ⚙️
-    </button>
-
-    <!-- User Section -->
+    <button class="btn-icon" onclick="openModal('settingsModal')">⚙️</button>
     <div id="auth-section">
       <button class="btn" id="btnLogin" onclick="openModal('loginModal')">Login</button>
-      
       <div id="userProfile" class="user-profile hidden">
         <div class="user-info">
           <span class="user-name" id="dispName">Nama</span>
@@ -336,11 +262,8 @@
 
 <!-- MAIN CONTAINER -->
 <div class="container">
-  
-  <!-- === VIEW: BERANDA === -->
+  <!-- VIEW HOME -->
   <div id="view-home" class="view-section">
-    
-    <!-- Gallery -->
     <div class="section-title">Galeri Karya Siswa</div>
     <div class="chip-container" id="tabs-gallery">
       <button class="chip active" onclick="filterData('gallery', 'all')">Semua</button>
@@ -350,7 +273,6 @@
       <div class="scroll-row" id="row-gallery"></div>
     </div>
 
-    <!-- Briev -->
     <div class="section-title">Info & Briefing</div>
     <div class="chip-container" id="tabs-briev">
       <button class="chip active" onclick="filterData('briev', 'all')">Semua</button>
@@ -361,20 +283,16 @@
     </div>
   </div>
 
-  <!-- === VIEW: DASHBOARD === -->
+  <!-- VIEW DASHBOARD -->
   <div id="view-dashboard" class="view-section hidden">
-    
-    <!-- Bootcamp -->
     <div class="section-title">Kegiatan Bootcamp</div>
     <div id="loading-bootcamp" style="padding:20px;"><div class="loader"></div></div>
     <div id="container-bootcamp"></div>
 
-    <!-- Tutorial -->
     <div class="section-title">Tutorial Video</div>
     <div id="loading-tutorial" style="padding:20px;"><div class="loader"></div></div>
     <div id="container-tutorial" class="yt-grid"></div>
   </div>
-
 </div>
 
 <!-- === MODALS === -->
@@ -384,29 +302,22 @@
   <div class="modal">
     <h2 style="margin-top:0; color:var(--primary);">Masuk Siswa</h2>
     <form onsubmit="handleLogin(event)">
-      <div class="form-group">
-        <label class="form-label">Username</label>
-        <input type="text" id="username" class="form-input" required placeholder="Contoh: siswa01">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Password</label>
-        <input type="password" id="password" class="form-input" required>
-      </div>
-      <button type="submit" class="btn" style="width:100%; justify-content:center; margin-top:10px;">Login</button>
+      <div class="form-group"><label class="form-label">Username</label><input type="text" id="username" class="form-input" required></div>
+      <div class="form-group"><label class="form-label">Password</label><input type="password" id="password" class="form-input" required></div>
+      <button type="submit" class="btn" style="width:100%; justify-content:center;">Login</button>
     </form>
     <button class="btn-icon" style="position:absolute; top:15px; right:15px;" onclick="closeModal('loginModal')">✕</button>
   </div>
 </div>
 
-<!-- Settings Modal (Theme/Color) -->
+<!-- Settings Modal -->
 <div id="settingsModal" class="modal-overlay">
   <div class="modal">
-    <h2 style="margin-top:0;">Pengaturan Tampilan</h2>
+    <h2 style="margin-top:0;">Pengaturan</h2>
     <div class="form-group">
       <label class="form-label">Mode</label>
       <button class="btn" style="width:100%; justify-content:space-between;" onclick="toggleTheme()">
-        <span id="theme-label">Mode Terang</span>
-        <span id="theme-icon">☀️</span>
+        <span id="theme-label">Mode Terang</span> <span id="theme-icon">☀️</span>
       </button>
     </div>
     <div class="form-group">
@@ -422,26 +333,43 @@
   </div>
 </div>
 
-<!-- Upload Modal -->
+<!-- Upload Modal (Updated with Jenis Karya) -->
 <div id="uploadModal" class="modal-overlay">
   <div class="modal">
     <h2 style="margin-top:0; color:var(--success);">Unggah Portofolio</h2>
     <form onsubmit="handleUpload(event)">
+      <div class="form-group"><label class="form-label">Judul Karya</label><input type="text" id="uJudul" class="form-input" required></div>
+      
+      <!-- INPUT BARU: JENIS KARYA -->
       <div class="form-group">
-        <label class="form-label">Judul Karya</label>
-        <input type="text" id="uJudul" class="form-input" required>
+        <label class="form-label">Jenis Karya</label>
+        <select id="uJenisKarya" class="form-input" required>
+          <option value="" disabled selected>Pilih Jenis Karya...</option>
+          <option value="Desain">Desain</option>
+          <option value="Foto">FOTO</option>
+        </select>
       </div>
-      <div class="form-group">
-        <label class="form-label">Deskripsi</label>
-        <textarea id="uDeskripsi" class="form-input" rows="3" required></textarea>
-      </div>
-      <div class="form-group">
-        <label class="form-label">File (Gambar/Dokumen)</label>
-        <input type="file" id="uFile" class="form-input" accept="image/*,.pdf,.doc,.docx" required>
-      </div>
+
+      <div class="form-group"><label class="form-label">Deskripsi</label><textarea id="uDeskripsi" class="form-input" rows="3" required></textarea></div>
+      <div class="form-group"><label class="form-label">File (Gambar/Dokumen)</label><input type="file" id="uFile" class="form-input" accept="image/*,.pdf,.doc,.docx" required></div>
       <button type="submit" class="btn" style="width:100%; justify-content:center; background:var(--success);">Kirim Sekarang</button>
     </form>
     <button class="btn-icon" style="position:absolute; top:15px; right:15px;" onclick="closeModal('uploadModal')">✕</button>
+  </div>
+</div>
+
+<!-- === DETAIL MODAL === -->
+<div id="detailModal" class="modal-overlay">
+  <div class="modal-detail">
+    <div class="detail-close" onclick="closeModal('detailModal')">✕</div>
+    <img id="detail-img" class="detail-image" src="">
+    <div class="detail-content">
+      <span id="detail-badge" class="detail-badge">KATEGORI</span>
+      <h2 id="detail-title" class="detail-title">Judul</h2>
+      <div id="detail-meta" class="detail-meta">Meta Info</div>
+      <div id="detail-desc" class="detail-desc">Deskripsi lengkap...</div>
+      <button id="detail-action" class="btn" style="margin-top:20px; width:100%; justify-content:center;">Buka File</button>
+    </div>
   </div>
 </div>
 
@@ -452,42 +380,42 @@
   const SHEET_ID = '1iOxHNN6Y5idBTF5QH0zzr3FTxK_YcToOx56KN9I2wlY';
   const GID_USERS = '23797909';
   
-  // PENTING: MASUKKAN URL WEB APP GOOGLE APPS SCRIPT DISINI
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyrIKrW19dYIkNSkDTZUBDuyJTbIFuG_1xuVcdXcAJ1AurcryN_0NqCLTZj4bBGX6faqw/exec';
+  // URL AUTOSCRIPT (DIUPDATE)
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbysreBIaV8juIO-zF5ol5q7JqCJNUbpJXk0cnc7Y5rKzLhs_u3ZPZGBmhMa2eKg1U81hQ/exec';
 
+  // CONFIG DIUPDATE QUERY DAN MAPPING
   const CONFIG = {
     gallery: {
-      gid: '921098100', query: 'SELECT E,F,J,L WHERE H>3',
+      gid: '921098100', query: 'SELECT E,F,J,L WHERE E<>""',
       els: { tabs: 'tabs-gallery', row: 'row-gallery', loading: 'loading-gallery' },
-      map: (row) => ({
-        judul: row[0]?.v || 'Tanpa Judul', gambar: row[1]?.v || '', meta: row[2]?.v || 'Anonim', filter: row[3]?.v || 'Umum', type: 'Siswa'
-      })
+      map: (row) => ({ judul: row[0]?.v, gambar: row[1]?.v, meta: row[2]?.v, filter: row[3]?.v })
     },
     briev: {
       gid: '991020926', query: 'SELECT B,D,F,H WHERE B<>""',
       els: { tabs: 'tabs-briev', row: 'row-briev', loading: 'loading-briev' },
       map: (row) => {
-        let imgRaw = row[2]?.v || ''; let imgUrl = imgRaw;
-        if (imgRaw && !imgRaw.startsWith('http')) imgUrl = `https://drive.google.com/thumbnail?id=${imgRaw}&sz=w400`;
-        return { judul: row[0]?.v || '', gambar: imgUrl, meta: row[1]?.v || '', filter: row[3]?.v || '' };
+        let imgRaw = row[2]?.v; let img = (imgRaw && !imgRaw.startsWith('http')) ? `https://drive.google.com/thumbnail?id=${imgRaw}&sz=w400` : imgRaw;
+        return { judul: row[0]?.v, gambar: img, meta: row[1]?.v, filter: row[3]?.v };
       }
     },
     bootcamp: {
+      // QUERY BARU: B,C,G,E (E dianggap keterangan/link ekstra)
       gid: '1880887156', query: 'SELECT B,C,G,E WHERE B<>""',
       els: { container: 'container-bootcamp', loading: 'loading-bootcamp' },
       map: (row) => {
-        let imgRaw = row[2]?.v || ''; let imgUrl = imgRaw;
-        if (imgRaw && !imgRaw.startsWith('http')) imgUrl = `https://drive.google.com/thumbnail?id=${imgRaw}&sz=w800`;
-        return { judul: row[0]?.v, waktu: row[1]?.v, gambar: imgUrl, ket: row[3]?.v };
+        let imgRaw = row[2]?.v; // Index 2 adalah G (Gambar)
+        let img = (imgRaw && !imgRaw.startsWith('http')) ? `https://drive.google.com/thumbnail?id=${imgRaw}&sz=w800` : imgRaw;
+        return { judul: row[0]?.v, waktu: row[1]?.v, gambar: img, ket: row[3]?.v }; // Index 3 adalah E
       }
     },
     tutorial: {
-      gid: '1819053111', query: 'SELECT B,C,G WHERE B<>""',
+      // QUERY BARU: B,C,G,E (E adalah Link Youtube)
+      gid: '1819053111', query: 'SELECT B,C,G,E WHERE B<>""',
       els: { container: 'container-tutorial', loading: 'loading-tutorial' },
       map: (row) => {
-        let imgRaw = row[2]?.v || ''; let imgUrl = imgRaw;
-        if (imgRaw && !imgRaw.startsWith('http')) imgUrl = `https://drive.google.com/thumbnail?id=${imgRaw}&sz=w600`;
-        return { judul: row[0]?.v, deskripsi: row[1]?.v, gambar: imgUrl };
+        let imgRaw = row[2]?.v; // Index 2 adalah G (Gambar)
+        let img = (imgRaw && !imgRaw.startsWith('http')) ? `https://drive.google.com/thumbnail?id=${imgRaw}&sz=w600` : imgRaw;
+        return { judul: row[0]?.v, deskripsi: row[1]?.v, gambar: img, link: row[3]?.v }; // Index 3 adalah E (Link)
       }
     }
   };
@@ -495,110 +423,95 @@
   let dataStore = { gallery: [], briev: [], bootcamp: [], tutorial: [] };
   let currentUser = null;
 
-  /* --- THEME & UI LOGIC --- */
+  /* --- UI FUNCTIONS --- */
   function initTheme() {
-    // Load Dark Mode
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') document.body.setAttribute('data-theme', 'dark');
-    updateThemeUI();
-
-    // Load Color
-    const savedColor = localStorage.getItem('color');
-    if (savedColor) {
-      document.body.setAttribute('data-color', savedColor);
-      document.querySelectorAll('.color-dot').forEach(dot => dot.classList.remove('active'));
-      document.querySelector(`.color-dot[onclick*="${savedColor}"]`)?.classList.add('active');
-    }
+    const t = localStorage.getItem('theme'); if (t === 'dark') document.body.setAttribute('data-theme', 'dark'); updateThemeUI();
+    const c = localStorage.getItem('color'); if (c) { document.body.setAttribute('data-color', c); document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active')); document.querySelector(`.color-dot[onclick*="${c}"]`)?.classList.add('active'); }
   }
-
   function toggleTheme() {
     const isDark = document.body.getAttribute('data-theme') === 'dark';
-    if (isDark) {
-      document.body.removeAttribute('data-theme');
-      localStorage.setItem('theme', 'light');
-    } else {
-      document.body.setAttribute('data-theme', 'dark');
-      localStorage.setItem('theme', 'dark');
-    }
+    if (isDark) { document.body.removeAttribute('data-theme'); localStorage.setItem('theme', 'light'); } 
+    else { document.body.setAttribute('data-theme', 'dark'); localStorage.setItem('theme', 'dark'); }
     updateThemeUI();
   }
-
   function updateThemeUI() {
     const isDark = document.body.getAttribute('data-theme') === 'dark';
     document.getElementById('theme-label').textContent = isDark ? 'Mode Gelap' : 'Mode Terang';
     document.getElementById('theme-icon').textContent = isDark ? '🌙' : '☀️';
   }
-
   function setColor(color, el) {
-    document.body.setAttribute('data-color', color);
-    localStorage.setItem('color', color);
-    document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
-    el.classList.add('active');
+    document.body.setAttribute('data-color', color); localStorage.setItem('color', color);
+    document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active')); el.classList.add('active');
   }
-
-  /* --- NAVIGATION --- */
   function switchView(view) {
-    // Hide/Show Containers
     document.getElementById('view-home').classList.add('hidden');
     document.getElementById('view-dashboard').classList.add('hidden');
     document.getElementById(`view-${view}`).classList.remove('hidden');
-
-    // Update Pill State
     document.getElementById('pill-home').classList.remove('active');
     document.getElementById('pill-dashboard').classList.remove('active');
     document.getElementById(`pill-${view}`).classList.add('active');
   }
-
   function openModal(id) { document.getElementById(id).classList.add('open'); }
   function closeModal(id) { document.getElementById(id).classList.remove('open'); }
   window.onclick = (e) => { if(e.target.classList.contains('modal-overlay')) closeModal(e.target.id); }
 
-  /* --- AUTH & LOGIN --- */
+  /* --- AUTH --- */
   async function handleLogin(e) {
     e.preventDefault();
-    const userIn = document.getElementById('username').value;
-    const passIn = document.getElementById('password').value;
-    const credential = `${userIn}__${passIn}`;
-    
+    const cred = `${document.getElementById('username').value}__${document.getElementById('password').value}`;
     try {
-      const query = `SELECT B,C,H WHERE G = '${credential}'`;
-      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${GID_USERS}&tq=${encodeURIComponent(query)}`;
-      const res = await fetch(url);
-      const text = await res.text();
-      const jsonStr = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
-      const data = JSON.parse(jsonStr);
-
-      if (data.table && data.table.rows && data.table.rows.length > 0) {
-        const rowData = data.table.rows[0].c;
-        currentUser = {
-          nama: rowData[0]?.v || 'Siswa', kelas: rowData[1]?.v || '-',
-          gambar: rowData[2]?.v || '', username: userIn
-        };
-        loginSuccessUI();
+      const q = `SELECT B,C,H WHERE G = '${cred}'`;
+      const u = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${GID_USERS}&tq=${encodeURIComponent(q)}`;
+      const r = await fetch(u);
+      const txt = await r.text();
+      const j = JSON.parse(txt.substring(txt.indexOf('{'), txt.lastIndexOf('}') + 1));
+      if (j.table && j.table.rows) {
+        const d = j.table.rows[0].c;
+        currentUser = { nama: d[0]?.v, kelas: d[1]?.v, gambar: d[2]?.v, username: document.getElementById('username').value };
+        document.getElementById('btnLogin').classList.add('hidden');
+        document.getElementById('userProfile').classList.remove('hidden');
+        document.getElementById('dispName').textContent = currentUser.nama;
+        document.getElementById('dispClass').textContent = currentUser.kelas;
+        let img = currentUser.gambar;
+        if(img && !img.startsWith('http')) img = `https://drive.google.com/thumbnail?id=${img}&sz=w100`;
+        else if(!img) img = `https://ui-avatars.com/api/?name=${currentUser.nama}&background=random`;
+        document.getElementById('dispAvatar').src = img;
         closeModal('loginModal');
         showToast(`Halo, ${currentUser.nama}`);
-      } else { showToast("Username/Password salah"); }
-    } catch (err) { showToast("Gagal koneksi database"); }
+      } else showToast("Login Gagal");
+    } catch(e) { showToast("Error"); }
   }
-
-  function loginSuccessUI() {
-    document.getElementById('btnLogin').classList.add('hidden');
-    document.getElementById('userProfile').classList.remove('hidden');
-    document.getElementById('dispName').textContent = currentUser.nama;
-    document.getElementById('dispClass').textContent = currentUser.kelas;
-    
-    let imgUrl = currentUser.gambar;
-    if (imgUrl && !imgUrl.startsWith('http')) imgUrl = `https://drive.google.com/thumbnail?id=${imgUrl}&sz=w100`;
-    if(!imgUrl) imgUrl = 'https://ui-avatars.com/api/?name=' + currentUser.nama + '&background=random';
-    document.getElementById('dispAvatar').src = imgUrl;
-  }
-
   function logout() {
-    currentUser = null;
-    document.getElementById('userProfile').classList.add('hidden');
+    currentUser = null; document.getElementById('userProfile').classList.add('hidden');
     document.getElementById('btnLogin').classList.remove('hidden');
-    document.getElementById('username').value = ''; document.getElementById('password').value = '';
-    showToast("Logout berhasil");
+    document.getElementById('username').value=''; document.getElementById('password').value='';
+    showToast("Logout");
+  }
+
+  /* --- DETAIL VIEW (Updated for Youtube Link) --- */
+  function showDetail(item) {
+    document.getElementById('detail-title').textContent = item.judul;
+    document.getElementById('detail-badge').textContent = item.filter || 'INFO';
+    document.getElementById('detail-meta').textContent = item.meta || item.waktu || '-';
+    
+    let imgSrc = item.gambar;
+    if(imgSrc && !imgSrc.startsWith('http')) imgSrc = `https://drive.google.com/uc?export=view&id=${imgSrc}`;
+    document.getElementById('detail-img').src = imgSrc;
+
+    document.getElementById('detail-desc').textContent = item.ket || item.deskripsi || "Karya ini diunggah oleh siswa sebagai bagian dari portofolio kreatif mereka.";
+
+    const btn = document.getElementById('detail-action');
+    
+    // LOGIKA UPDATE JIKA ITEM MEMILIKI LINK (TUTORIAL)
+    if (item.link && item.link.startsWith('http')) {
+      btn.textContent = "Tonton Video";
+      btn.onclick = () => window.open(item.link, '_blank');
+    } else {
+      btn.textContent = "Buka File Asli";
+      btn.onclick = () => window.open(item.gambar, '_blank');
+    }
+    
+    openModal('detailModal');
   }
 
   /* --- DATA FETCHING --- */
@@ -606,126 +519,106 @@
     await Promise.all([fetchData('gallery'), fetchData('briev'), fetchData('bootcamp'), fetchData('tutorial')]);
   }
 
-  async function fetchData(sectionKey) {
-    const config = CONFIG[sectionKey];
-    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${config.gid}&tq=${encodeURIComponent(config.query)}`;
+  async function fetchData(key) {
+    const c = CONFIG[key];
+    const u = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${c.gid}&tq=${encodeURIComponent(c.query)}`;
     try {
-      const res = await fetch(url);
-      const text = await res.text();
-      const jsonStr = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
-      const data = JSON.parse(jsonStr);
-      let results = [];
-      if (data.table && data.table.rows) results = data.table.rows.map(r => config.map(r.c));
-      dataStore[sectionKey] = results;
+      const r = await fetch(u);
+      const txt = await r.text();
+      const j = JSON.parse(txt.substring(txt.indexOf('{'), txt.lastIndexOf('}') + 1));
+      dataStore[key] = (j.table && j.table.rows) ? j.table.rows.map(r => c.map(r.c)) : [];
       
-      if(sectionKey === 'gallery' || sectionKey === 'briev') {
-        renderTabs(sectionKey);
-        renderRow(sectionKey);
-      } else if (sectionKey === 'bootcamp') { renderBootcamp(); } 
-      else if (sectionKey === 'tutorial') { renderTutorial(); }
-      
-      document.getElementById(config.els.loading).classList.add('hidden');
-    } catch (e) { console.error(e); document.getElementById(config.els.loading).innerText = "Gagal"; }
+      if(key === 'gallery' || key === 'briev') {
+        renderTabs(key);
+        renderRow(key);
+      } else if(key === 'bootcamp') renderBootcamp();
+      else if(key === 'tutorial') renderTutorial();
+      document.getElementById(c.els.loading).classList.add('hidden');
+    } catch(e) { console.error(e); document.getElementById(c.els.loading).textContent="Gagal"; }
   }
 
-  function renderTabs(sectionKey) {
-    const config = CONFIG[sectionKey];
-    const container = document.getElementById(config.els.tabs);
-    const data = dataStore[sectionKey];
-    const uniqueFilters = [...new Set(data.map(item => item.filter))];
-    container.innerHTML = `<button class="chip active" onclick="filterData('${sectionKey}', 'all')">Semua</button>`;
-    uniqueFilters.forEach(filter => {
-      const btn = document.createElement('button');
-      btn.className = 'chip'; btn.innerText = filter;
-      btn.onclick = () => filterData(sectionKey, filter);
-      container.appendChild(btn);
-    });
+  function renderTabs(key) {
+    const c = CONFIG[key];
+    const u = [...new Set(dataStore[key].map(i => i.filter))];
+    document.getElementById(c.els.tabs).innerHTML = `<button class="chip active" onclick="filterData('${key}', 'all')">Semua</button>` +
+    u.map(f => `<button class="chip" onclick="filterData('${key}', '${f}')">${f}</button>`).join('');
   }
 
-  function filterData(sectionKey, filterValue) {
-    const config = CONFIG[sectionKey];
-    const btns = document.getElementById(config.els.tabs).querySelectorAll('.chip');
-    btns.forEach(b => b.classList.toggle('active', b.innerText === filterValue));
-    const filtered = (filterValue === 'all') ? dataStore[sectionKey] : dataStore[sectionKey].filter(i => i.filter === filterValue);
-    renderRow(sectionKey, filtered);
+  function filterData(key, val) {
+    const c = CONFIG[key];
+    document.querySelectorAll(`#${c.els.tabs} .chip`).forEach(b => b.classList.toggle('active', b.textContent===val));
+    const d = val==='all' ? dataStore[key] : dataStore[key].filter(i => i.filter===val);
+    renderRow(key, d);
   }
 
-  function renderRow(sectionKey, data = dataStore[sectionKey]) {
-    const container = document.getElementById(CONFIG[sectionKey].els.row);
-    if (data.length === 0) { container.innerHTML = '<div style="padding:20px; color:var(--text-muted); font-size:14px;">Tidak ada data.</div>'; return; }
-    
-    container.innerHTML = data.map(item => `
-      <div class="card">
-        <img src="${item.gambar}" onerror="this.src='https://via.placeholder.com/260x160?text=No+Image'">
+  function renderRow(key, d = dataStore[key]) {
+    const c = CONFIG[key];
+    const el = document.getElementById(c.els.row);
+    el.innerHTML = d.map(i => `
+      <div class="card" onclick='showDetail(${JSON.stringify(i)})'>
+        <img src="${i.gambar}" onerror="this.src='https://via.placeholder.com/260x160?text=No+Image'">
         <div class="card-body">
-          <div class="card-tag">${item.filter}</div>
-          <h3 class="card-title">${item.judul}</h3>
-          <div class="card-meta">${sectionKey==='gallery' ? '👤 '+item.meta : '📅 '+item.meta}</div>
-          <button class="card-btn" onclick="showToast('${item.judul}')">Lihat</button>
+          <div class="card-tag">${i.filter||'-'}</div>
+          <h3 class="card-title">${i.judul}</h3>
+          <div class="card-meta">${key==='gallery'?'👤':'📅'} ${i.meta||'-'}</div>
         </div>
       </div>
-    `).join('');
-    container.scrollLeft = 0;
+    `).join(''); el.scrollLeft = 0;
   }
 
   function renderBootcamp() {
-    const data = dataStore.bootcamp;
-    const container = document.getElementById('container-bootcamp');
-    container.innerHTML = data.map(item => `
-      <div class="news-card">
-        <img class="news-img" src="${item.gambar}" onerror="this.src='https://via.placeholder.com/200'">
+    const d = dataStore.bootcamp;
+    document.getElementById('container-bootcamp').innerHTML = d.map(i => `
+      <div class="news-card" onclick='showDetail(${JSON.stringify(i)})'>
+        <img class="news-img" src="${i.gambar}" onerror="this.src='https://via.placeholder.com/200'">
         <div class="news-content">
-          <div class="news-date">${item.waktu}</div>
-          <div class="news-headline">${item.judul}</div>
-          <div class="news-excerpt">${item.ket}</div>
+          <div class="news-date">${i.waktu}</div>
+          <div class="news-headline">${i.judul}</div>
+          <div class="news-excerpt">${i.ket}</div>
         </div>
       </div>
     `).join('');
   }
 
   function renderTutorial() {
-    const data = dataStore.tutorial;
-    const container = document.getElementById('container-tutorial');
-    container.innerHTML = data.map(item => `
-      <div class="yt-card" onclick="showToast('Putar: ${item.judul}')">
-        <div class="yt-thumb-box"><img class="yt-thumb" src="${item.gambar}" onerror="this.src='https://via.placeholder.com/320x180'"></div>
-        <div class="yt-title">${item.judul}</div>
-        <div class="yt-desc">${item.deskripsi}</div>
+    const d = dataStore.tutorial;
+    document.getElementById('container-tutorial').innerHTML = d.map(i => `
+      <div class="yt-card" onclick='showDetail(${JSON.stringify(i)})'>
+        <div class="yt-thumb-box"><img class="yt-thumb" src="${i.gambar}" onerror="this.src='https://via.placeholder.com/320x180'"></div>
+        <div class="yt-title">${i.judul}</div>
+        <div class="yt-desc">${i.deskripsi}</div>
       </div>
     `).join('');
   }
 
-  /* --- UPLOAD LOGIC --- */
   function handleUpload(e) {
     e.preventDefault();
-    if (SCRIPT_URL.includes('MASUKKAN')) return showToast("Setup Script URL dulu!");
-    
-    const file = document.getElementById('uFile').files[0];
-    if (!file) return showToast("Pilih file!");
-
+    if (!currentUser) return showToast("Harap login dulu!");
+    const f = document.getElementById('uFile').files[0];
+    if (!f) return showToast("Pilih file!");
     const reader = new FileReader();
     reader.onload = function(ev) {
-      const payload = {
-        akun: currentUser ? currentUser.username : 'Guest',
-        judul: document.getElementById('uJudul').value,
+      // Payload Update: Menambahkan jenisKarya
+      const p = { 
+        akun: currentUser.username, 
+        judul: document.getElementById('uJudul').value, 
         deskripsi: document.getElementById('uDeskripsi').value,
-        fileData: ev.target.result.substring(ev.target.result.indexOf(',') + 1),
-        fileName: file.name, mimeType: file.type
+        jenisKarya: document.getElementById('uJenisKarya').value, // BARU
+        fileData: ev.target.result.substring(ev.target.result.indexOf(',')+1), 
+        fileName: f.name, mimeType: f.type
       };
-      
-      fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) })
-      .then(() => { showToast("Berhasil diunggah!"); closeModal('uploadModal'); e.target.reset(); setTimeout(()=>fetchData('gallery'),2000); })
-      .catch(() => showToast("Gagal upload."));
+      fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type':'application/json'}, body: JSON.stringify(p) })
+      .then(() => { showToast("Berhasil!"); closeModal('uploadModal'); e.target.reset(); setTimeout(()=>fetchData('gallery'),2000); })
+      .catch(() => showToast("Gagal."));
     };
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(f);
   }
 
-  function showToast(msg) {
-    const t = document.getElementById('toast'); t.innerText = msg; t.style.display = 'block';
+  function showToast(m) {
+    const t = document.getElementById('toast'); t.textContent = m; t.style.display = 'block';
     setTimeout(() => t.style.display = 'none', 3000);
   }
 
-  // Initialize
   initTheme();
   document.addEventListener('DOMContentLoaded', initAllData);
 </script>
