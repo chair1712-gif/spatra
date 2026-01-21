@@ -1,0 +1,1325 @@
+ <!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assesmen Diferensiasi PAI Kelas XII</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 30px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #4A6FA5;
+        }
+
+        header h1 {
+            color: #2C3E50;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #7F8C8D;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #E8E8E8;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2C3E50;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #DDD;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: #4A6FA5;
+            outline: none;
+        }
+
+        .btn-primary, .btn-next, .btn-restart {
+            background: linear-gradient(to right, #4A6FA5, #6A8FC3);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            width: 100%;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn-primary:hover, .btn-next:hover, .btn-restart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 111, 165, 0.4);
+        }
+
+        .soal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .badge {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .badge-teks {
+            background: #E3F2FD;
+            color: #1565C0;
+        }
+
+        .badge-gambar {
+            background: #FFF3E0;
+            color: #EF6C00;
+        }
+
+        .badge-analitis {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        .badge-integratif {
+            background: #E8F5E9;
+            color: #2E7D32;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 18px;
+        }
+
+        .badge-visual {
+            background: #F3E5F5;
+            color: #7B1FA2;
+        }
+
+        .soal-counter {
+            color: #7F8C8D;
+            font-weight: 600;
+        }
+
+        .soal-number {
+            background: #4A6FA5;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .teks-container {
+            background: #F8F9FA;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #4A6FA5;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+
+        .gambar-container {
+            text-align: center;
+            margin: 25px 0;
+        }
+
+        .gambar-soal {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 1px solid #ddd;
+        }
+
+        .gambar-caption {
+            margin-top: 15px;
+            color: #666;
+            font-style: italic;
+            font-size: 14px;
+        }
+
+        .opsi-container {
+            margin: 30px 0;
+        }
+
+        .opsi {
+            background: #F8F9FA;
+            border: 2px solid #E8E8E8;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .opsi:hover {
+            background: #E3F2FD;
+            border-color: #4A6FA5;
+        }
+
+        .opsi.terpilih {
+            background: #E3F2FD;
+            border-color: #4A6FA5;
+            box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.2);
+        }
+
+        .opsi-label {
+            background: #4A6FA5;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+
+        .opsi.terpilih .opsi-label {
+            background: #1565C0;
+        }
+
+        .profile-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            padding: 25px;
+            color: white;
+            margin-bottom: 25px;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .avatar {
+            width: 70px;
+            height: 70px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+        }
+
+        .score-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .score-card {
+            background: rgba(255,255,255,0.9);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .score-card h4 {
+            color: #2C3E50;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .score-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4A6FA5, #6A8FC3);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0 auto 10px;
+        }
+
+        .literasi-teks .score-circle {
+            background: linear-gradient(135deg, #1565C0, #42A5F5);
+        }
+
+        .literasi-gambar .score-circle {
+            background: linear-gradient(135deg, #EF6C00, #FF9800);
+        }
+
+        .analitis-kritis .score-circle {
+            background: linear-gradient(135deg, #2E7D32, #4CAF50);
+        }
+
+        .pemahaman-konsep .score-circle {
+            background: linear-gradient(135deg, #7B1FA2, #9C27B0);
+        }
+
+        .analysis-result {
+            background: #F8F9FA;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+
+        .kompetensi-chart {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .kompetensi-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #4A6FA5;
+        }
+
+        .kompetensi-item h5 {
+            color: #2C3E50;
+            margin-bottom: 10px;
+        }
+
+        .kompetensi-bar {
+            height: 10px;
+            background: #E8E8E8;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .kompetensi-fill {
+            height: 100%;
+            background: linear-gradient(to right, #4A6FA5, #6A8FC3);
+            width: 0%;
+            transition: width 1s ease-in-out;
+        }
+
+        .recommendation-card {
+            background: white;
+            border: 2px solid #E8E8E8;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .recommendation-card h4 {
+            color: #2C3E50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .next-questions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .question-chip {
+            background: #E3F2FD;
+            color: #1565C0;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 500;
+            border-left: 4px solid #1565C0;
+        }
+
+        .question-chip.visual {
+            background: #FFF3E0;
+            color: #EF6C00;
+            border-left-color: #EF6C00;
+        }
+
+        .question-chip.analitis {
+            background: #E8F5E9;
+            color: #2E7D32;
+            border-left-color: #2E7D32;
+        }
+
+        .progress-container {
+            margin-top: 30px;
+            background: #F8F9FA;
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #E8E8E8;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #4A6FA5, #6A8FC3);
+            width: 0%;
+            transition: width 0.5s;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .instruction {
+            background: #FFF3CD;
+            border: 1px solid #FFEEBA;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #856404;
+        }
+
+        .instruction i {
+            color: #856404;
+            margin-right: 10px;
+        }
+
+        .soal-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .kategori-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #E3F2FD;
+            color: #1565C0;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .score-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .kompetensi-chart {
+                grid-template-columns: 1fr;
+            }
+            
+            .gambar-soal {
+                max-height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1><i class="fas fa-graduation-cap"></i> ASSESMEN PEMBELAJARAN BERDIFERENSIASI</h1>
+            <p class="subtitle">PAI Kelas XII - 10 Aspek Kompetensi Literasi</p>
+        </header>
+
+        <!-- Form Siswa -->
+        <div class="card" id="form-siswa">
+            <h2><i class="fas fa-user"></i> Identitas Siswa</h2>
+            <div class="form-group">
+                <label for="nama">Nama Lengkap:</label>
+                <input type="text" id="nama" placeholder="Masukkan nama lengkap">
+            </div>
+            <div class="form-group">
+                <label for="kelas">Kelas:</label>
+                <select id="kelas">
+                    <option value="XII IPA 1">XII IPA 1</option>
+                    <option value="XII IPA 2">XII IPA 2</option>
+                    <option value="XII IPS 1">XII IPS 1</option>
+                    <option value="XII IPS 2">XII IPS 2</option>
+                </select>
+            </div>
+            <button onclick="mulaiAssesmen()" class="btn-primary">
+                <i class="fas fa-play"></i> Mulai Assesmen (10 Soal)
+            </button>
+        </div>
+
+        <!-- Container Soal -->
+        <div class="card soal-container" id="soal-container" style="display:none;">
+            <div class="soal-header">
+                <div>
+                    <span class="badge" id="jenis-badge">Teks</span>
+                    <span class="kategori-badge" id="kategori-badge">Literal</span>
+                </div>
+                <span class="soal-counter" id="soal-counter">Soal 1/10</span>
+            </div>
+            
+            <div class="instruction">
+                <i class="fas fa-info-circle"></i>
+                <strong>Petunjuk:</strong> <span id="petunjuk-detail">Baca teks dengan seksama, kemudian pilih jawaban yang paling tepat!</span>
+            </div>
+            
+            <div class="soal-title">
+                <div class="soal-number" id="soal-number">1</div>
+                <h3 id="teks-soal">Pertanyaan akan muncul di sini...</h3>
+            </div>
+            
+            <div class="teks-container" id="teks-container" style="display:none;">
+                <!-- Teks akan dimuat dari database -->
+            </div>
+
+            <div class="gambar-container" id="gambar-container" style="display:none;">
+                <img id="gambar-soal" src="" alt="Gambar soal" class="gambar-soal">
+                <div class="gambar-caption" id="caption-gambar"></div>
+            </div>
+
+            <div class="opsi-container" id="opsi-container">
+                <!-- Opsi akan diisi oleh JavaScript -->
+            </div>
+
+            <button onclick="jawabSoal()" class="btn-next" id="btn-next">
+                <i class="fas fa-arrow-right"></i> Jawab & Lanjut
+            </button>
+        </div>
+
+        <!-- Hasil Analisis -->
+        <div class="card" id="hasil-analisis" style="display:none;">
+            <h2><i class="fas fa-chart-bar"></i> HASIL ANALISIS 10 ASPEK KOMPETENSI</h2>
+            
+            <div class="profile-section">
+                <div class="profile-header">
+                    <div class="avatar">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div>
+                        <h3 id="nama-siswa">Nama Siswa</h3>
+                        <p id="kelas-siswa">Kelas</p>
+                    </div>
+                </div>
+
+                <div class="score-grid">
+                    <div class="score-card literasi-teks">
+                        <h4>LITERASI TEKS</h4>
+                        <div class="score-circle" id="score-teks">0%</div>
+                        <p><span id="level-teks">-</span></p>
+                    </div>
+                    <div class="score-card literasi-gambar">
+                        <h4>LITERASI GAMBAR</h4>
+                        <div class="score-circle" id="score-gambar">0%</div>
+                        <p><span id="level-gambar">-</span></p>
+                    </div>
+                    <div class="score-card analitis-kritis">
+                        <h4>ANALITIS KRITIS</h4>
+                        <div class="score-circle" id="score-analitis">0%</div>
+                        <p><span id="level-analitis">-</span></p>
+                    </div>
+                    <div class="score-card pemahaman-konsep">
+                        <h4>PEMAHAMAN KONSEP</h4>
+                        <div class="score-circle" id="score-konsep">0%</div>
+                        <p><span id="level-konsep">-</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="analysis-result">
+                <h3><i class="fas fa-brain"></i> PROFIL DAYA PIKIR DAN GAYA BELAJAR</h3>
+                <div class="profile-badge" id="profil-badge">
+                    <span class="badge badge-integratif">-</span>
+                </div>
+                <p id="deskripsi-profil">Profil siswa sedang dianalisis...</p>
+                
+                <div class="kompetensi-chart" id="kompetensi-chart">
+                    <!-- Diagram kompetensi akan diisi -->
+                </div>
+            </div>
+
+            <div class="recommendation-section">
+                <h3><i class="fas fa-lightbulb"></i> REKOMENDASI PEMBELAJARAN BERDIFERENSIASI</h3>
+                
+                <div class="recommendation-card">
+                    <h4><i class="fas fa-book-open"></i> STRATEGI PEMBELAJARAN</h4>
+                    <p id="strategi-belajar">-</p>
+                </div>
+                
+                <div class="recommendation-card">
+                    <h4><i class="fas fa-tools"></i> MEDIA & MATERI YANG COCOK</h4>
+                    <p id="media-belajar">-</p>
+                </div>
+
+                <div class="recommendation-card">
+                    <h4><i class="fas fa-tasks"></i> AKTIVITAS PEMBELAJARAN</h4>
+                    <p id="aktivitas-belajar">-</p>
+                </div>
+
+                <div class="recommendation-card">
+                    <h4><i class="fas fa-graduation-cap"></i> SOAL BERIKUTNYA YANG DISARANKAN</h4>
+                    <div class="next-questions" id="next-questions">
+                        <!-- Soal rekomendasi akan diisi -->
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="resetAssesmen()" class="btn-restart">
+                <i class="fas fa-redo"></i> Mulai Assesmen Baru
+            </button>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container" id="progress-container" style="display:none;">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div class="progress-text">
+                <span>Progress: <span id="progress-text">0%</span></span>
+                <span id="soal-status">Soal 0/10</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Database soal 10 point dengan variasi kemampuan
+        const soalDatabase = [
+            // Soal 1-2: Literasi Teks Dasar (KD 3.1)
+            {
+                id: "T1",
+                jenis: "teks",
+                kategori: "Literal",
+                kompetensi: "Memahami informasi eksplisit",
+                teks: "Zakat fitrah adalah kewajiban bagi setiap muslim yang mampu pada bulan Ramadan. Besarnya zakat fitrah adalah 2,5 kg makanan pokok per orang. Zakat ini harus dibayarkan sebelum salat Idul Fitri dilaksanakan.",
+                pertanyaan: "Berdasarkan teks, kapan zakat fitrah harus dibayarkan?",
+                opsi: [
+                    "Setelah Idul Fitri",
+                    "Sebelum salat Idul Fitri", 
+                    "Selama bulan Ramadan",
+                    "Kapan saja sepanjang tahun"
+                ],
+                jawaban: "B",
+                kd: "KD3.1",
+                level: "Dasar"
+            },
+            {
+                id: "T2",
+                jenis: "teks", 
+                kategori: "Literal",
+                kompetensi: "Mengidentifikasi informasi spesifik",
+                teks: "Rukun Islam terdiri dari lima perkara: (1) Syahadat, (2) Salat, (3) Zakat, (4) Puasa, (5) Haji. Salat wajib dilakukan 5 waktu sehari semalam, zakat diberikan kepada mustahik, puasa di bulan Ramadan, dan haji bagi yang mampu.",
+                pertanyaan: "Berapa jumlah rukun Islam yang disebutkan dalam teks?",
+                opsi: ["3", "4", "5", "6"],
+                jawaban: "C",
+                kd: "KD3.1",
+                level: "Dasar"
+            },
+
+            // Soal 3-4: Literasi Gambar (KD 3.2)
+            {
+                id: "G1",
+                jenis: "gambar",
+                kategori: "Visual",
+                kompetensi: "Menginterpretasi simbol agama",
+                gambar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Star_and_Crescent.svg/200px-Star_and_Crescent.svg.png",
+                caption: "Simbol bulan dan bintang",
+                pertanyaan: "Makna simbol bulan dan bintang dalam Islam adalah...",
+                opsi: [
+                    "Lambang negara tertentu",
+                    "Simbul cahaya petunjuk Ilahi",
+                    "Tanda bulan Ramadan",
+                    "Logo organisasi Islam"
+                ],
+                jawaban: "B",
+                kd: "KD3.2",
+                level: "Menengah"
+            },
+            {
+                id: "G2",
+                jenis: "gambar",
+                kategori: "Visual", 
+                kompetensi: "Mengidentifikasi ibadah dari gambar",
+                gambar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Kaaba_Makkah.jpg/300px-Kaaba_Makkah.jpg",
+                caption: "Ka'bah di Masjidil Haram, Makkah",
+                pertanyaan: "Ibadah apa yang dilakukan di tempat pada gambar?",
+                opsi: [
+                    "Shalat wajib",
+                    "Tawaf dalam haji",
+                    "I'tikaf di masjid",
+                    "Ziarah kubur"
+                ],
+                jawaban: "B",
+                kd: "KD3.2",
+                level: "Menengah"
+            },
+
+            // Soal 5-6: Analitis Kritis (KD 3.3)
+            {
+                id: "T3",
+                jenis: "teks",
+                kategori: "Analitis",
+                kompetensi: "Menganalisis penyebab dan akibat",
+                teks: "Larangan riba dalam Islam bertujuan mencegah ketidakadilan ekonomi. Riba menyebabkan akumulasi kekayaan pada segelintir orang dan memperlebar kesenjangan sosial. Sistem ekonomi syariah menawarkan alternatif berbasis bagi hasil dan jual beli yang adil.",
+                pertanyaan: "Berdasarkan teks, mengapa riba dilarang dalam Islam?",
+                opsi: [
+                    "Karena menghambat pertumbuhan ekonomi",
+                    "Karena menciptakan ketidakadilan dan kesenjangan",
+                    "Karena bertentangan dengan budaya lokal",
+                    "Karena sulit dihitung secara matematis"
+                ],
+                jawaban: "B",
+                kd: "KD3.3",
+                level: "Tinggi"
+            },
+            {
+                id: "T4",
+                jenis: "teks",
+                kategori: "Analitis",
+                kompetensi: "Membandingkan konsep",
+                pertanyaan: "Apa perbedaan utama antara mudharabah dan murabahah dalam ekonomi syariah?",
+                opsi: [
+                    "Mudharabah jual beli, murabahah bagi hasil",
+                    "Mudharabah bagi hasil, murabahah jual beli dengan margin",
+                    "Keduanya sama-sama sistem bunga",
+                    "Mudharabah untuk pertanian, murabahah untuk industri"
+                ],
+                jawaban: "B",
+                kd: "KD3.3",
+                level: "Tinggi"
+            },
+
+            // Soal 7-8: Pemahaman Konsep Kompleks (KD 3.4)
+            {
+                id: "T5",
+                jenis: "teks",
+                kategori: "Konseptual",
+                kompetensi: "Memahami makna filosofis",
+                teks: "Maqashid syariah (tujuan-tujuan syariah) meliputi: (1) Hifdzud din (menjaga agama), (2) Hifdzun nafs (menjaga jiwa), (3) Hifdzul aql (menjaga akal), (4) Hifdzun nasl (menjaga keturunan), (5) Hifdzul mal (menjaga harta).",
+                pertanyaan: "Berdasarkan maqashid syariah, larangan minuman keras bertujuan untuk...",
+                opsi: [
+                    "Menjaga agama dari penyimpangan",
+                    "Menjaga akal dari kerusakan",
+                    "Menjaga harta dari pemborosan",
+                    "Menjaga keturunan dari penyakit"
+                ],
+                jawaban: "B",
+                kd: "KD3.4",
+                level: "Kompleks"
+            },
+            {
+                id: "T6",
+                jenis: "teks",
+                kategori: "Konseptual",
+                kompetensi: "Menerapkan konsep dalam konteks baru",
+                teks: "Dalam Islam, etika bisnis mencakup kejujuran, transparansi, keadilan, dan tanggung jawab sosial. Bisnis harus memberikan manfaat bagi semua pihak tanpa merugikan masyarakat atau lingkungan.",
+                pertanyaan: "Jika seorang pengusaha mengetahui produknya cacat tetapi tetap menjualnya tanpa memberi tahu pembeli, dia melanggar prinsip...",
+                opsi: [
+                    "Kejujuran dan transparansi",
+                    "Tanggung jawab sosial",
+                    "Keadilan dalam transaksi",
+                    "Semua prinsip di atas"
+                ],
+                jawaban: "D",
+                kd: "KD3.4",
+                level: "Kompleks"
+            },
+
+            // Soal 9-10: Integrasi Teks dan Gambar (KD 3.5)
+            {
+                id: "G3",
+                jenis: "gambar",
+                kategori: "Integratif",
+                kompetensi: "Menganalisis data visual",
+                gambar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Infographic_of_The_Five_Pillars_of_Islam.svg/400px-Infographic_of_The_Five_Pillars_of_Islam.svg.png",
+                caption: "Infografik Rukun Islam",
+                pertanyaan: "Berdasarkan infografik, rukun Islam mana yang hanya wajib bagi yang mampu secara finansial dan fisik?",
+                opsi: [
+                    "Syahadat dan Salat",
+                    "Zakat dan Puasa",
+                    "Haji",
+                    "Semua rukun sama wajibnya"
+                ],
+                jawaban: "C",
+                kd: "KD3.5",
+                level: "Sangat Kompleks"
+            },
+            {
+                id: "T7",
+                jenis: "teks",
+                kategori: "Integratif",
+                kompetensi: "Mensintesis informasi dari berbagai sumber",
+                teks: "Zakat kontemporer tidak hanya terbatas pada zakat fitrah dan maal tradisional. Kini berkembang zakat profesi, zakat perusahaan, dan zakat investasi. Inovasi ini membuat zakat lebih relevan dengan ekonomi modern.",
+                pertanyaan: "Apa manfaat utama pengembangan bentuk-bentuk zakat kontemporer?",
+                opsi: [
+                    "Memperbanyak jenis kewajiban",
+                    "Meningkatkan pendapatan negara",
+                    "Membuat zakat lebih relevan dengan ekonomi modern",
+                    "Mengurangi beban muzakki"
+                ],
+                jawaban: "C",
+                kd: "KD3.5",
+                level: "Sangat Kompleks"
+            }
+        ];
+
+        // State aplikasi
+        let state = {
+            siswa: {
+                nama: "",
+                kelas: "",
+                id: ""
+            },
+            jawaban: [],
+            soalIndex: 0,
+            jawabanDipilih: null,
+            totalSoal: soalDatabase.length
+        };
+
+        // Fungsi untuk memulai asesmen
+        function mulaiAssesmen() {
+            const nama = document.getElementById('nama').value.trim();
+            const kelas = document.getElementById('kelas').value;
+            
+            if (!nama) {
+                alert('Harap isi nama terlebih dahulu!');
+                document.getElementById('nama').focus();
+                return;
+            }
+            
+            // Generate ID siswa
+            state.siswa = {
+                nama: nama,
+                kelas: kelas,
+                id: 'SISWA_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9)
+            };
+            
+            // Reset state
+            state.jawaban = [];
+            state.soalIndex = 0;
+            state.jawabanDipilih = null;
+            
+            // Sembunyikan form, tampilkan soal
+            document.getElementById('form-siswa').style.display = 'none';
+            document.getElementById('soal-container').style.display = 'block';
+            document.getElementById('progress-container').style.display = 'block';
+            
+            // Tampilkan soal pertama
+            tampilkanSoal(0);
+            updateProgress();
+        }
+
+        // Tampilkan soal berdasarkan index
+        function tampilkanSoal(index) {
+            const soal = soalDatabase[index];
+            if (!soal) return;
+            
+            state.soalIndex = index;
+            state.jawabanDipilih = null;
+            
+            // Update header
+            document.getElementById('soal-number').textContent = index + 1;
+            document.getElementById('soal-counter').textContent = `Soal ${index + 1}/${state.totalSoal}`;
+            
+            // Update jenis dan kategori
+            const jenisBadge = document.getElementById('jenis-badge');
+            jenisBadge.textContent = soal.jenis === 'teks' ? 'Literasi Teks' : 'Literasi Gambar';
+            jenisBadge.className = soal.jenis === 'teks' ? 'badge badge-teks' : 'badge badge-gambar';
+            
+            document.getElementById('kategori-badge').textContent = soal.kategori;
+            
+            // Update petunjuk
+            const petunjuk = document.getElementById('petunjuk-detail');
+            if (soal.jenis === 'teks') {
+                petunjuk.textContent = "Baca teks dengan seksama, kemudian pilih jawaban yang paling tepat!";
+            } else {
+                petunjuk.textContent = "Perhatikan gambar dengan teliti, kemudian pilih jawaban yang paling tepat!";
+            }
+            
+            // Update pertanyaan
+            document.getElementById('teks-soal').textContent = soal.pertanyaan;
+            
+            // Tampilkan teks atau gambar
+            if (soal.jenis === 'teks') {
+                document.getElementById('teks-container').style.display = 'block';
+                document.getElementById('gambar-container').style.display = 'none';
+                document.getElementById('teks-container').innerHTML = `<p>${soal.teks || ''}</p>`;
+            } else {
+                document.getElementById('teks-container').style.display = 'none';
+                document.getElementById('gambar-container').style.display = 'block';
+                document.getElementById('gambar-soal').src = soal.gambar_url;
+                document.getElementById('gambar-soal').alt = soal.caption;
+                document.getElementById('caption-gambar').textContent = soal.caption;
+            }
+            
+            // Update opsi
+            const opsiContainer = document.getElementById('opsi-container');
+            opsiContainer.innerHTML = '';
+            
+            const labels = ['A', 'B', 'C', 'D'];
+            soal.opsi.forEach((opsi, index) => {
+                const opsiElement = document.createElement('div');
+                opsiElement.className = 'opsi';
+                opsiElement.dataset.value = labels[index];
+                opsiElement.innerHTML = `
+                    <span class="opsi-label">${labels[index]}</span>
+                    <span>${opsi}</span>
+                `;
+                opsiElement.addEventListener('click', () => pilihOpsi(labels[index]));
+                opsiContainer.appendChild(opsiElement);
+            });
+            
+            updateProgress();
+        }
+
+        // Pilih opsi jawaban
+        function pilihOpsi(opsi) {
+            state.jawabanDipilih = opsi;
+            
+            // Update tampilan opsi
+            document.querySelectorAll('.opsi').forEach(el => {
+                el.classList.remove('terpilih');
+                if (el.dataset.value === opsi) {
+                    el.classList.add('terpilih');
+                }
+            });
+        }
+
+        // Jawab soal
+        function jawabSoal() {
+            if (!state.jawabanDipilih) {
+                alert('Silakan pilih jawaban terlebih dahulu!');
+                return;
+            }
+            
+            const soal = soalDatabase[state.soalIndex];
+            
+            // Simpan jawaban
+            state.jawaban.push({
+                soalId: soal.id,
+                jenis: soal.jenis,
+                kategori: soal.kategori,
+                kompetensi: soal.kompetensi,
+                jawabanSiswa: state.jawabanDipilih,
+                jawabanBenar: soal.jawaban,
+                kd: soal.kd,
+                level: soal.level
+            });
+            
+            console.log(`Soal ${state.soalIndex + 1} (${soal.kategori}) dijawab: ${state.jawabanDipilih} (benar: ${soal.jawaban})`);
+            
+            // Cek apakah masih ada soal
+            if (state.soalIndex < state.totalSoal - 1) {
+                // Lanjut ke soal berikutnya
+                state.soalIndex++;
+                tampilkanSoal(state.soalIndex);
+            } else {
+                // Selesai, tampilkan hasil
+                selesaikanAssesmen();
+            }
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const persentase = ((state.soalIndex) / state.totalSoal) * 100;
+            
+            document.getElementById('progress-fill').style.width = `${persentase}%`;
+            document.getElementById('progress-text').textContent = `${Math.round(persentase)}%`;
+            document.getElementById('soal-status').textContent = `Soal ${state.soalIndex + 1}/${state.totalSoal}`;
+        }
+
+        // Analisis hasil 10 aspek
+        function selesaikanAssesmen() {
+            // Sembunyikan soal, tampilkan hasil
+            document.getElementById('soal-container').style.display = 'none';
+            document.getElementById('progress-container').style.display = 'none';
+            
+            // Hitung skor
+            const hasil = analisisJawabanMendalam(state.jawaban);
+            
+            // Tampilkan hasil
+            tampilkanHasilMendalam(hasil);
+            
+            // Kirim data ke Google Sheets
+            kirimKeGoogleSheets(hasil);
+        }
+
+        // Analisis mendalam 10 aspek kompetensi
+        function analisisJawabanMendalam(jawaban) {
+            const hasil = {
+                // Skor per jenis soal
+                skorTeks: 0,
+                skorGambar: 0,
+                
+                // Skor per kategori kompetensi
+                skorLiteral: 0,
+                skorVisual: 0,
+                skorAnalitis: 0,
+                skorKonseptual: 0,
+                skorIntegratif: 0,
+                
+                // Skor per level
+                skorDasar: 0,
+                skorMenengah: 0,
+                skorTinggi: 0,
+                skorKompleks: 0,
+                skorSangatKompleks: 0,
+                
+                // Detail jawaban
+                detailJawaban: [],
+                
+                // Profil belajar
+                profilBelajar: '',
+                gayaBelajar: '',
+                
+                // Rekomendasi
+                rekomendasi: {}
+            };
+            
+            // Kelompokkan jawaban
+            const jawabanTeks = jawaban.filter(j => j.jenis === 'teks');
+            const jawabanGambar = jawaban.filter(j => j.jenis === 'gambar');
+            
+            // Hitung skor per jenis
+            hasil.skorTeks = hitungPersentaseBenar(jawabanTeks);
+            hasil.skorGambar = hitungPersentaseBenar(jawabanGambar);
+            
+            // Hitung skor per kategori
+            const kategori = ['Literal', 'Visual', 'Analitis', 'Konseptual', 'Integratif'];
+            kategori.forEach(kat => {
+                const jawabanKategori = jawaban.filter(j => j.kategori === kat);
+                hasil[`skor${kat}`] = hitungPersentaseBenar(jawabanKategori);
+            });
+            
+            // Hitung skor per level
+            const levels = ['Dasar', 'Menengah', 'Tinggi', 'Kompleks', 'Sangat Kompleks'];
+            levels.forEach(level => {
+                const jawabanLevel = jawaban.filter(j => j.level === level);
+                hasil[`skor${level.replace(' ', '')}`] = hitungPersentaseBenar(jawabanLevel);
+            });
+            
+            // Simpan detail
+            hasil.detailJawaban = jawaban;
+            hasil.totalBenar = jawaban.filter(j => j.jawabanSiswa === j.jawabanBenar).length;
+            
+            // Tentukan profil belajar
+            hasil.profilBelajar = tentukanProfilBelajar(hasil);
+            hasil.gayaBelajar = tentukanGayaBelajar(hasil);
+            
+            // Tentukan rekomendasi
+            hasil.rekomendasi = tentukanRekomendasiMendalam(hasil);
+            
+            console.log('Hasil analisis mendalam:', hasil);
+            return hasil;
+        }
+
+        // Fungsi bantu: hitung persentase benar
+        function hitungPersentaseBenar(jawabanArray) {
+            if (jawabanArray.length === 0) return 0;
+            const benar = jawabanArray.filter(j => j.jawabanSiswa === j.jawabanBenar).length;
+            return (benar / jawabanArray.length) * 100;
+        }
+
+        // Tentukan profil belajar berdasarkan pola kemampuan
+        function tentukanProfilBelajar(hasil) {
+            // Analisis dominasi kemampuan
+            const skorKategori = {
+                literal: hasil.skorLiteral,
+                visual: hasil.skorVisual,
+                analitis: hasil.skorAnalitis,
+                konseptual: hasil.skorKonseptual,
+                integratif: hasil.skorIntegratif
+            };
+            
+            // Cari kategori tertinggi
+            const kategoriTertinggi = Object.entries(skorKategori)
+                .reduce((a, b) => a[1] > b[1] ? a : b)[0];
+            
+            // Tentukan profil berdasarkan pola
+            if (hasil.skorIntegratif >= 80 && hasil.skorAnalitis >= 70) {
+                return 'PEMIKIR INTEGRATIF-ANALITIS';
+            } else if (hasil.skorVisual >= 80 && hasil.skorGambar >= 75) {
+                return 'PEMBELAJAR VISUAL-SPASIAL';
+            } else if (hasil.skorTeks >= 80 && hasil.skorKonseptual >= 70) {
+                return 'PEMBELAJAR VERBAL-KONSEPTUAL';
+            } else if (hasil.skorAnalitis >= 70 && hasil.skorTinggi >= 60) {
+                return 'PEMIKIR ANALITIS-KRITIS';
+            } else if (hasil.skorDasar >= 80 && hasil.skorMenengah >= 60) {
+                return 'PEMBELAJAR SEKUENSIAL';
+            } else if (hasil.skorVisual >= 60 && hasil.skorTeks >= 60) {
+                return 'PEMBELAJAR SEIMBANG';
+            } else {
+                return 'PEMBELAJAR DENGAN POTENSI BERKEMBANG';
+            }
+        }
+
+        // Tentukan gaya belajar
+        function tentukanGayaBelajar(hasil) {
+            if (hasil.skorVisual > hasil.skorTeks + 20) {
+                return 'VISUAL DOMINAN';
+            } else if (hasil.skorTeks > hasil.skorVisual + 20) {
+                return 'VERBAL DOMINAN';
+            } else if (hasil.skorAnalitis > hasil.skorKonseptual + 15) {
+                return 'ANALITIS DOMINAN';
+            } else if (hasil.skorKonseptual > hasil.skorAnalitis + 15) {
+                return 'KONSEPTUAL DOMINAN';
+            } else {
+                return 'KOMBINASI SEIMBANG';
+            }
+        }
+
+        // Rekomendasi mendalam berdasarkan profil
+        function tentukanRekomendasiMendalam(hasil) {
+            const rekomendasi = {
+                strategi: '',
+                media: '',
+                aktivitas: '',
+                soalBerikutnya: []
+            };
+            
+            const profil = hasil.profilBelajar;
+            
+            switch(profil) {
+                case 'PEMIKIR INTEGRATIF-ANALITIS':
+                    rekomendasi.strategi = 'Project-Based Learning dengan analisis multidimensi';
+                    rekomendasi.media = 'Jurnal penelitian, data statistik, studi kasus kompleks';
+                    rekomendasi.aktivitas = 'Proyek penelitian, debat ilmiah, analisis kritis teks-teks otentik';
+                    rekomendasi.soalBerikutnya = [
+                        { tipe: 'analitis', text: 'Analisis perbandingan sistem ekonomi syariah vs konvensional' },
+                        { tipe: 'integratif', text: 'Sintesis maqashid syariah dalam konteks kontemporer' },
+                        { tipe: 'konseptual', text: 'Pengembangan model bisnis Islami berbasis data' }
+                    ];
+                    break;
+                    
+                case 'PEMBELAJAR VISUAL-SPASIAL':
+                    rekomendasi.strategi = 'Visual Thinking dan Mind Mapping';
+                    rekomendasi.media = 'Infografik interaktif, video animasi 3D, diagram alur';
+                    rekomendasi.aktivitas = 'Membuat poster konsep, storyboard, peta konsep digital';
+                    rekomendasi.soalBerikutnya = [
+                        { tipe: 'visual', text: 'Membuat infografik perkembangan zakat digital' },
+                        { tipe: 'visual', text: 'Design sistem ekonomi sirkular Islami' },
+                        { tipe: 'integratif', text: 'Analisis data visual perkembangan ekonomi syariah' }
+                    ];
+                    break;
+                    
+                case 'PEMBELAJAR VERBAL-KONSEPTUAL':
+                    rekomendasi.strategi = 'Diskusi mendalam dan analisis teks';
+                    rekomendasi.media = 'Teks akademik, artikel jurnal, materi referensi mendalam';
+                    rekomendasi.aktivitas = 'Diskusi kelompok, presentasi analitis, penulisan makalah';
+                    rekomendasi.soalBerikutnya = [
+                        { tipe: 'konseptual', text: 'Analisis fiqh kontemporer masalah ekonomi digital' },
+                        { tipe: 'analitis', text: 'Kritik teks pemikiran ekonomi Islam modern' },
+                        { tipe: 'integratif', text: 'Sintesis konsep maqashid syariah dalam regulasi' }
+                    ];
+                    break;
+                    
+                case 'PEMIKIR ANALITIS-KRITIS':
+                    rekomendasi.strategi = 'Problem-Based Learning dan studi kasus';
+                    rekomendasi.media = 'Kasus nyata, data penelitian, problem sets';
+                    rekomendasi.aktivitas = 'Analisis kasus, problem solving, evaluasi kritis';
+                    rekomendasi.soalBerikutnya = [
+                        { tipe: 'analitis', text: 'Analisis kritis implementasi zakat di era digital' },
+                        { tipe: 'analitis', text: 'Problem solving kasus ekonomi syariah riil' },
+                        { tipe: 'konseptual', text: 'Evaluasi konsep blockchain dalam ekonomi Islam' }
+                    ];
+                    break;
+                    
+                default: // PEMBELAJAR SEIMBANG dan lainnya
+                    rekomendasi.strategi = 'Blended Learning dengan scaffolding bertahap';
+                    rekomendasi.media = 'Multimedia terstruktur, contoh konkret, panduan bertahap';
+                    rekomendasi.aktivitas = 'Latihan terstruktur, diskusi terbimbing, proyek sederhana';
+                    rekomendasi.soalBerikutnya = [
+                        { tipe: 'dasar', text: 'Latihan aplikasi konsep dasar zakat kontemporer' },
+                        { tipe: 'menengah', text: 'Analisis sederhana kasus ekonomi syariah' },
+                        { tipe: 'visual', text: 'Membuat diagram alur proses ekonomi Islam' }
+                    ];
+            }
+            
+            return rekomendasi;
+        }
+
+        // Tampilkan hasil mendalam
+        function tampilkanHasilMendalam(hasil) {
+            document.getElementById('hasil-analisis').style.display = 'block';
+            
+            // Update data siswa
+            document.getElementById('nama-siswa').textContent = state.siswa.nama;
+            document.getElementById('kelas-siswa').textContent = state.siswa.kelas;
+            
+            // Update skor utama
+            document.getElementById('score-teks').textContent = `${Math.round(hasil.skorTeks)}%`;
+            document.getElementById('score-gambar').textContent = `${Math.round(hasil.skorGambar)}%`;
+            document.getElementById('score-analitis').textContent = `${Math.round(hasil.skorAnalitis)}%`;
+            document.getElementById('score-konsep').textContent = `${Math.round(hasil.skorKonseptual)}%`;
+            
+            // Update level
+            const getLevel = (skor) => skor >= 80 ? 'Tinggi' : skor >= 60 ? 'Sedang' : 'Perlu Bimbingan';
+            document.getElementById('level-teks').textContent = getLevel(hasil.skorTeks);
+            document.getElementById('level-gambar').textContent = getLevel(hasil.skorGambar);
+            document.getElementById('level-analitis').textContent = getLevel(hasil.skorAnalitis);
+            document.getElementById('level-konsep').textContent = getLevel(hasil.skorKonseptual);
+            
+            // Update profil
+            document.getElementById('profil-badge').innerHTML = 
+                `<span class="badge badge-integratif">${hasil.profilBelajar}</span>`;
+            
+            document.getElementById('deskripsi-profil').textContent = 
+                `Gaya belajar: ${hasil.gayaBelajar}. ${getDeskripsiProfil(hasil.profilBelajar)}`;
+            
+            // Update diagram kompetensi
+            const kompetensiChart = document.getElementById('kompetensi-chart');
+            kompetensiChart.innerHTML = '';
+            
+            const kompetensiData = [
+                { label: 'Literal', skor: hasil.skorLiteral },
+                { label: 'Visual', skor: hasil.skorVisual },
+                { label: 'Analitis', skor: hasil.skorAnalitis },
+                { label: 'Konseptual', skor: hasil.skorKonseptual },
+                { label: 'Integratif', skor: hasil.skorIntegratif }
+            ];
+            
+            kompetensiData.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'kompetensi-item';
+                itemElement.innerHTML = `
+                    <h5>${item.label}</h5>
+                    <div>${Math.round(item.skor)}%</div>
+                    <div class="kompetensi-bar">
+                        <div class="kompetensi-fill" style="width: ${item.skor}%"></div>
+                    </div>
+                `;
+                kompetensiChart.appendChild(itemElement);
+            });
+            
+            // Update rekomendasi
+            document.getElementById('strategi-belajar').textContent = hasil.rekomendasi.strategi;
+            document.getElementById('media-belajar').textContent = hasil.rekomendasi.media;
+            document.getElementById('aktivitas-belajar').textContent = hasil.rekomendasi.aktivitas;
+            
+            // Update soal rekomendasi
+            const nextQuestions = document.getElementById('next-questions');
+            nextQuestions.innerHTML = '';
+            hasil.rekomendasi.soalBerikutnya.forEach((soal, index) => {
+                const chip = document.createElement('div');
+                chip.className = `question-chip ${soal.tipe}`;
+                chip.textContent = `${index + 1}. ${soal.text}`;
+                nextQuestions.appendChild(chip);
+            });
+        }
+
+        // Deskripsi profil
+        function getDeskripsiProfil(profil) {
+            const deskripsi = {
+                'PEMIKIR INTEGRATIF-ANALITIS': 'Memiliki kemampuan luar biasa dalam mengintegrasikan informasi dari berbagai sumber dan menganalisisnya secara kritis. Cocok untuk pembelajaran berbasis penelitian dan analisis mendalam.',
+                'PEMBELAJAR VISUAL-SPASIAL': 'Memahami konsep dengan baik melalui representasi visual. Belajar optimal melalui gambar, diagram, dan media visual lainnya.',
+                'PEMBELAJAR VERBAL-KONSEPTUAL': 'Unggul dalam pemrosesan informasi verbal dan pemahaman konsep abstrak. Cocok dengan materi berbasis teks dan diskusi konseptual.',
+                'PEMIKIR ANALITIS-KRITIS': 'Memiliki kemampuan analitis yang tajam dan berpikir kritis. Mampu memecahkan masalah kompleks dengan pendekatan sistematis.',
+                'PEMBELAJAR SEKUENSIAL': 'Belajar optimal melalui urutan yang terstruktur dan langkah-langkah bertahap. Membutuhkan kerangka yang jelas dalam pembelajaran.',
+                'PEMBELAJAR SEIMBANG': 'Memiliki kemampuan yang seimbang di berbagai aspek. Fleksibel dalam berbagai metode pembelajaran.',
+                'PEMBELAJAR DENGAN POTENSI BERKEMBANG': 'Memiliki potensi yang dapat dikembangkan dengan pendekatan yang tepat dan pendampingan intensif.'
+            };
+            
+            return deskripsi[profil] || 'Profil belajar menunjukkan karakteristik unik yang dapat dikembangkan optimal dengan strategi yang sesuai.';
+        }
+
+        // Kirim data ke Google Sheets
+        function kirimKeGoogleSheets(hasil) {
+            const data = {
+                siswa: state.siswa,
+                hasil: hasil,
+                timestamp: new Date().toISOString()
+            };
+            
+            console.log('Data hasil 10 aspek:', data);
+            
+            // Simulasi pengiriman ke Google Sheets
+            setTimeout(() => {
+                console.log('Data berhasil dikirim ke sistem (simulasi)');
+            }, 1000);
+        }
+
+        // Reset asesmen
+        function resetAssesmen() {
+            state = {
+                siswa: { nama: "", kelas: "", id: "" },
+                jawaban: [],
+                soalIndex: 0,
+                jawabanDipilih: null,
+                totalSoal: soalDatabase.length
+            };
+            
+            document.getElementById('hasil-analisis').style.display = 'none';
+            document.getElementById('form-siswa').style.display = 'block';
+            document.getElementById('nama').value = '';
+            document.getElementById('kelas').value = 'XII IPA 1';
+            
+            // Reset progress bar
+            document.getElementById('progress-fill').style.width = '0%';
+            document.getElementById('progress-text').textContent = '0%';
+            document.getElementById('soal-status').textContent = 'Soal 0/10';
+        }
+
+        // Inisialisasi event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Sistem asesmen 10 aspek kompetensi siap digunakan');
+        });
+    </script>
+</body>
+</html>
