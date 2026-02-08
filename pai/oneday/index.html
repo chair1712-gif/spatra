@@ -1,0 +1,1051 @@
+ <!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Input Bacaan Siswa dengan Ayat Al-Qur'an</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a5e63 0%, #0d3c3f 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            padding: 30px;
+            width: 100%;
+        }
+
+        .form-card {
+            display: block;
+        }
+
+        .ayat-card {
+            display: none;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #2a9d8f;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            color: #1a5e63;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        header h1 i {
+            margin-right: 15px;
+            color: #2a9d8f;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: #666;
+            font-weight: 300;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #1a5e63;
+            font-size: 0.95rem;
+        }
+
+        .input-group input[type="text"],
+        .input-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            background: white;
+        }
+
+        .input-group input[type="text"]:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: #2a9d8f;
+            box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.2);
+        }
+
+        /* Checkbox Scroll Area */
+        .scroll-container {
+            height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #fff;
+            margin-top: 5px;
+            border: 2px solid #ddd;
+        }
+
+        .item-materi {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-bottom: 1px solid #f1f1f1;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .item-materi:hover {
+            background: #f9fdfc;
+        }
+
+        .item-materi input {
+            width: 18px;
+            height: 18px;
+            margin-right: 12px;
+            cursor: pointer;
+        }
+
+        /* Info Box */
+        .info-panel {
+            margin-top: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, #2a9d8f 0%, #1a5e63 100%);
+            color: white;
+            border-radius: 15px;
+            display: none;
+        }
+
+        .info-panel h4 {
+            margin: 0 0 15px 0;
+            color: white;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .val {
+            font-weight: bold;
+            color: #f0f0f0;
+        }
+
+        .scroll-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }
+
+        /* Buttons */
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+            gap: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2a9d8f 0%, #1a5e63 100%);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(42, 157, 143, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Ayat Display Styles */
+        .ayat-header {
+            background: linear-gradient(to right, #2a9d8f, #1a5e63);
+            color: white;
+            padding: 20px;
+            border-radius: 15px 15px 0 0;
+            margin: -30px -30px 30px -30px;
+            text-align: center;
+        }
+
+        .ayat-display-container {
+            margin-bottom: 30px;
+            max-height: 500px;
+            overflow-y: auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .ayat-item {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border-right: 5px solid #2a9d8f;
+            transition: transform 0.3s ease;
+        }
+
+        .ayat-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .ayat-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .ayat-number {
+            background: #2a9d8f;
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .surah-name {
+            font-size: 1.2rem;
+            color: #1a5e63;
+            font-weight: 600;
+        }
+
+        .ayat-arabic {
+            font-family: 'Amiri', serif;
+            font-size: 2rem;
+            text-align: right;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: #1a5e63;
+            direction: rtl;
+            min-height: 60px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 10px;
+        }
+
+        .ayat-translation {
+            font-size: 1.1rem;
+            color: #555;
+            line-height: 1.7;
+            padding: 15px;
+            background-color: #f0f8ff;
+            border-radius: 10px;
+            border-left: 4px solid #2a9d8f;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            display: none;
+        }
+
+        .spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #2a9d8f;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .error-message {
+            background: #ffeaea;
+            color: #d32f2f;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #d32f2f;
+            display: none;
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid #eee;
+            margin: 20px 0;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: #a8e6cf;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .btn-container {
+                flex-direction: column;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .ayat-arabic {
+                font-size: 1.6rem;
+            }
+
+            .ayat-header {
+                margin: -20px -20px 20px -20px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Form Input Card -->
+        <div class="card form-card" id="formCard">
+            <header>
+                <h1><i class="fas fa-book-quran"></i> Sistem Input Bacaan Siswa</h1>
+                <p class="subtitle">Laporan Bacaan Al-Qur'an dengan Tampilan Ayat Lengkap</p>
+            </header>
+
+            <div class="input-group">
+                <label>Nama Lengkap Siswa</label>
+                <input type="text" id="namaSiswa" placeholder="Masukkan nama siswa...">
+            </div>
+
+            <div class="input-group">
+                <label>Kelas</label>
+                <select id="kelasSiswa">
+                    <option value="">-- Pilih Kelas --</option>
+                    <option>XII IPA 1</option>
+                    <option>XII IPA 2</option>
+                    <option>XII IPS 1</option>
+                    <option>XII IPS 2</option>
+                </select>
+            </div>
+
+            <hr>
+
+            <div class="input-group">
+                <label>Pilih Juz</label>
+                <select id="comboJuz">
+                    <option value="">-- Silahkan Pilih Juz --</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Daftar Materi (Pilih Berurutan)</label>
+                <div id="materiList" class="scroll-container">
+                    <div style="text-align: center; color: #999; padding-top: 80px;">Pilih Juz terlebih dahulu</div>
+                </div>
+            </div>
+
+            <div id="resultInfo" class="info-panel">
+                <h4 id="displayIdentitas">Detail Seleksi</h4>
+                <div class="info-row"><span>Nama Surat:</span> <span id="outSurat" class="val">-</span></div>
+                <div class="info-row"><span>Ayat Awal:</span> <span id="outAwal" class="val">-</span></div>
+                <div class="info-row"><span>Ayat Akhir:</span> <span id="outAkhir" class="val">-</span></div>
+                <div class="info-row"><span>Total Bacaan:</span> <span id="outTotal" class="val">-</span></div>
+            </div>
+
+            <div id="errorMessage" class="error-message"></div>
+
+            <div class="btn-container">
+                <div></div>
+                <button class="btn btn-primary" id="btnTampilkanAyat" disabled>
+                    <i class="fas fa-search"></i> Tampilkan Ayat Lengkap
+                </button>
+            </div>
+        </div>
+
+        <!-- Ayat Display Card -->
+        <div class="card ayat-card" id="ayatCard">
+            <div class="ayat-header">
+                <h2 id="ayatTitle">Bacaan Ayat Al-Qur'an</h2>
+                <div id="ayatSubtitle" style="font-size: 14px; opacity: 0.9;"></div>
+            </div>
+
+            <div id="loadingDisplay" class="loading">
+                <div class="spinner"></div>
+                <p>Memuat ayat dari Al-Qur'an...</p>
+            </div>
+
+            <div id="ayatDisplay" class="ayat-display-container" style="display: none;">
+                <!-- Ayat akan ditampilkan di sini -->
+            </div>
+
+            <div id="ayatErrorMessage" class="error-message"></div>
+
+            <div class="btn-container">
+                <button class="btn btn-secondary" id="btnKembali">
+                    <i class="fas fa-arrow-left"></i> Kembali ke Form
+                </button>
+                <div class="btn-group">
+                    <button class="btn btn-secondary" id="btnPrint">
+                        <i class="fas fa-print"></i> Cetak
+                    </button>
+                    <button class="btn btn-success" id="btnCopy">
+                        <i class="fas fa-copy"></i> Salin Teks
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Data dari <a href="https://api.alquran.cloud" target="_blank">AlQuran.cloud API</a> • Sistem Input Bacaan Siswa © 2024</p>
+        </footer>
+    </div>
+
+    <script>
+        // Data juz dan materi
+       const rawData = `**JUZ 1#Al-Fatihah 1-7|Al-Baqarah 1-7|Al-Baqarah 8-14|Al-Baqarah 15-21|Al-Baqarah 22-29|Al-Baqarah 30-36|Al-Baqarah 37-42|Al-Baqarah 43-50|Al-Baqarah 51-56|Al-Baqarah 57-64|Al-Baqarah 65-72|Al-Baqarah 73-80|Al-Baqarah 81-88|Al-Baqarah 89-95|Al-Baqarah 96-111|Al-Baqarah 112-118|Al-Baqarah 118-121|Al-Baqarah 122-128|Al-Baqarah 129-136|Al-Baqarah 137-141
+**JUZ 2#Al-Baqarah 142-147|Al-Baqarah 148-153|Al-Baqarah 154-159|Al-Baqarah 160-165|Al-Baqarah 166-171|Al-Baqarah 172-178|Al-Baqarah 179-183|Al-Baqarah 184-189|Al-Baqarah 190-195|Al-Baqarah 196-201|Al-Baqarah 202-207|Al-Baqarah 208-213|Al-Baqarah 214-219|Al-Baqarah 220-226|Al-Baqarah 227-232|Al-Baqarah 233-238|Al-Baqarah 239-243|Al-Baqarah 244-247|Al-Baqarah 248-250|Al-Baqarah 251-252
+**JUZ 3#Al-Baqarah 253-256|Al-Baqarah 257-259|Al-Baqarah 260-264|Al-Baqarah 265-269|Al-Baqarah 270-274|Al-Baqarah 275-281|Al-Baqarah 282|Al-Baqarah 283-286|Ali-Imran 1-9|Ali-Imran 10-15|Ali-Imran 16-22|Ali-Imran 23-29|Ali-Imran 30-37|Ali-Imran 38-45|Ali-Imran 46-52|Ali-Imran 53-61|Ali-Imran 62-70|Ali-Imran 71-77|Ali-Imran 78-83|Ali-Imran 84-91
+**JUZ 4#Ali-Imran 92-100|Ali-Imran 101-108|Ali-Imran 109-115|Ali-Imran 115-121|Ali-Imran 122-132|Ali-Imran 133-140|Ali-Imran 141-148|Ali-Imran 149-153|Ali-Imran 154-157|Ali-Imran 158-165|Ali-Imran 167-173|Ali-Imran 174-180|Ali-Imran 181-186|Ali-Imran 187-194|Ali-Imran 195-200|An-Nisa 1-6|An-Nisa 7-11|An-Nisa 12-14|An-Nisa 15-19|An-Nisa 20-23
+**JUZ 5#An-Nisa 24-26|An-Nisa 27-33|An-Nisa 34-37|An-Nisa 38-44|An-Nisa 45-51|An-Nisa 52-59|An-Nisa 60-65|An-Nisa 66-74|An-Nisa 75-79|An-Nisa 80-86|An-Nisa 87-91|An-Nisa 92-94|An-Nisa 95-101|An-Nisa 102-105|An-Nisa 106-113|An-Nisa 114-121|An-Nisa 122-127|An-Nisa 128-134|An-Nisa 135-140|An-Nisa 141-147
+**JUZ 6#An-Nisa 148-154|An-Nisa 155-162|An-Nisa 163-170|An-Nisa 171-175|An-Nisa 176 - Al-Maidah 2|Al-Maidah 3-5|Al-Maidah 6-9|Al-Maidah 10-13|Al-Maidah 14-17|Al-Maidah 18-23|Al-Maidah 24-31|Al-Maidah 32-36|Al-Maidah 37-41|Al-Maidah 42-45|Al-Maidah 46-50|Al-Maidah 51-57|Al-Maidah 58-64|Al-Maidah 65-70|Al-Maidah 71-76|Al-Maidah 77-82
+**JUZ 7#Al-Maidah 83-89|Al-Maidah 90-95|Al-Maidah 96-103|Al-Maidah 104-108|Al-Maidah 109-113|Al-Maidah 114-120|Al-Anam 1-8|Al-Anam 9-18|Al-Anam 19-27|Al-Anam 28-35|Al-Anam 36-44|Al-Anam 45-52|Al-Anam 53-59|Al-Anam 60-68|Al-Anam 69-73|Al-Anam 74-81|Al-Anam 82-90|Al-Anam 91-94|Al-Anam 95-101|Al-Anam 102-110
+**JUZ 8#Al-Anam 111-118|Al-Anam 119-124|Al-Anam 125-131|Al-Anam 132-137|Al-Anam 138-142|Al-Anam 143-146|Al-Anam 147-151|Al-Anam 152-157|Al-Anam 158-165|Al-Aaraf 1-11|Al-Aaraf 12-22|Al-Aaraf 23-30|Al-Aaraf 31-37|Al-Aaraf 38-43|Al-Aaraf 44-51|Al-Aaraf 52-57|Al-Aaraf 58-67|Al-Aaraf 68-73|Al-Aaraf 74-81|Al-Aaraf 82-87
+**JUZ 9#Al-Aaraf 88-95|Al-Aaraf 96-104|Al-Aaraf 105-120|Al-Aaraf 121-130|Al-Aaraf 131-137|Al-Aaraf 138-143|Al-Aaraf 144-149|Al-Aaraf 150-155|Al-Aaraf 156-159|Al-Aaraf 160-163|Al-Aaraf 164-170|Al-Aaraf 171-178|Al-Aaraf 179-187|Al-Aaraf 188-195|Al-Aaraf 196-206|Al-Anfal 1-8|Al-Anfal 9-16|Al-Anfal 17-25|Al-Anfal 26-33|Al-Anfal 34-40
+**JUZ 10#Al-Anfal 41-45|Al-Anfal 46-52|Al-Anfal 53-61|Al-Anfal 62-69|Al-Anfal 70-75|At-Taubah 1-6|At-Taubah 7-13|At-Taubah 14-20|At-Taubah 21-26|At-Taubah 27-31|At-Taubah 32-36|At-Taubah 37-40|At-Taubah 41-47|At-Taubah 48-54|At-Taubah 55-61|At-Taubah 62-68|At-Taubah 69-72|At-Taubah 73-79|At-Taubah 80-86|At-Taubah 87-93
+**JUZ 11#At-Taubah 94-99|At-Taubah 100-106|At-Taubah 107-111|At-Taubah 112-117|At-Taubah 118-122|At-Taubah 123-129|Yunus 1-6|Yunus 7-14|Yunus 15-20|Yunus 21-25|Yunus 26-33|Yunus 34-42|Yunus 43-53|Yunus 54-61|Yunus 62-70|Yunus 71-78|Yunus 79-88|Yunus 89-97|Yunus 98-106|Yunus 107- Hud 5
+**JUZ 12#Hud 6-12|Hud 13-19|Hud 20-28|Hud 29-37|Hud 38-45|Hud 46-53|Hud 54-62|Hud 63-71|Hud 72-81|Hud 82-88|Hud 89-97|Hud 98-108|Hud 109-117|Hud 118- Yusuf 4|Yusuf 5-14|Yusuf 15-22|Yusuf 23-30|Yusuf 31-37|Yusuf 38-43|Yusuf 44-52
+**JUZ 13#Yusuf 53-63|Yusuf 64-69|Yusuf 70-78|Yusuf 79-86|Yusuf 87-95|Yusuf 96-103|Yusuf 104-111|Ar-Rad 1-5|Ar-Rad 6-13|Ar-Rad 14-18|Ar-Rad 19-28|Ar-Rad 29-34|Ar-Rad 35-42|Ar-Rad 43-Ibrahim 5|Ibrahim 6-10|Ibrahim 11-18|Ibrahim 19-24|Ibrahim 25-33|Ibrahim 34-42|Ibrahim 43-52
+**JUZ 14#Al-Hijr 1-15|Al-Hijr 16-31|Al-Hijr 32-51|Al-Hijr 52-70|Al-Hijr 71-90|Al-Hijr 91-An-Nahl 6|An-Nahl 7-14|An-Nahl 15-26|An-Nahl 27-34|An-Nahl 35-42|An-Nahl 43-54|An-Nahl 55-64|An-Nahl 65-72|An-Nahl 73-79|An-Nahl 80-87|An-Nahl 88-93|An-Nahl 94-102|An-Nahl 103-110|An-Nahl 111-118|An-Nahl 119-128
+**JUZ 15#Al-Isra 1-7|Al-Isra 8-17|Al-Isra 18-27|Al-Isra 28-38|Al-Isra 39-49|Al-Isra 50-58|Al-Isra 59-66|Al-Isra 67-75|Al-Isra 76-86|Al-Isra 87-96|Al-Isra 97-104|Al-Isra 105-Al-Kahf 4|Al-Kahf 5-15|Al-Kahf 16-20|Al-Kahf 21-27|Al-Kahf 28-34|Al-Kahf 35-45|Al-Kahf 46-53|Al-Kahf 54-61|Al-Kahf 62-74
+**JUZ 16#Al-Kahf 75-83|Al-Kahf 84-97|Al-Kahf 98-110|Maryam 1-11|Maryam 12-25|Maryam 26-38|Maryam 39-51|Maryam 52-64|Maryam 65-76|Maryam 77-95|Maryam 96-Taha 12|Taha 13-37|Taha 38-51|Taha 52-64|Taha 65-76|Taha 77-87|Taha 88-98|Taha 99-113|Taha 114-125|Taha 126-135
+**JUZ 17#Al-Anbiya 1-10|Al-Anbiya 11-24|Al-Anbiya 25-35|Al-Anbiya 36-44|Al-Anbiya 45-57|Al-Anbiya 58-72|Al-Anbiya 73-81|Al-Anbiya 82-90|Al-Anbiya 91-101|Al-Anbiya 102-112|Al-Hajj 1-5|Al-Hajj 6-15|Al-Hajj 16-23|Al-Hajj 24-30|Al-Hajj 31-38|Al-Hajj 39-46|Al-Hajj 47-55|Al-Hajj 56-64|Al-Hajj 65-72|Al-Hajj 73-78
+**JUZ 18#Al-Mu'minun 1-17|Al-Mu'minun 18-27|Al-Mu'minun 28-42|Al-Mu'minun 43-59|Al-Mu'minun 60-74|Al-Mu'minun 75-89|Al-Mu'minun 90-104|Al-Mu'minun 105-118|An-Nuur 1-10|An-Nuur 11-20|An-Nuur 21-27|An-Nuur 28-31|An-Nuur 32-36|An-Nuur 37-43|An-Nuur 44-53|An-Nuur 54-58|An-Nuur 59-61|An-Nuur 62- Al-Furqan 2|Al-Furqan 3-11|Al-Furqan 12-20
+**JUZ 19#Al-Furqan 21-32|Al-Furqan 33-43|Al-Furqan 44-55|Al-Furqan 56-67|Al-Furqan 68-77|Asy-Syura 1-19|Asy-Syura 20-39|Asy-Syura 40-60|Asy-Syura 61-83|Asy-Syura 84-111|Asy-Syura 112-136|Asy-Syura 137-159|Asy-Syura 160-183|Asy-Syura 184-206|Asy-Syura 207-227|An-Naml 1-13|An-Naml 14-22|An-Naml 23-35|An-Naml 36-44|An-Naml 45-55
+**JUZ 20#An-Naml 56-73|An-Naml 74-76|An-Naml 77-88|An-Naml 89- Al-Qasas 5|Al-Qasas 6-13|Al-Qasas 14-21|Al-Qasas 22-28|Al-Qasas 29-35|Al-Qasas 36-43|Al-Qasas 44-50|Al-Qasas 51-59|Al-Qasas 60-70|Al-Qasas 71-77|Al-Qasas 78-84|Al-Qasas 85- Al-Ankabut 6|Al-Ankabut 7-14|Al-Ankabut 15-23|Al-Ankabut 24-30|Al-Ankabut 31-38|Al-Ankabut 39-45
+**JUZ 21#Al-Ankabut 46-52|Al-Ankabut 53-63|Al-Ankabut 64 - Ar-Ruum 5|Ar-Ruum 6-15|Ar-Ruum 16-24|Ar-Ruum 25-32|Ar-Ruum 33-41|Ar-Ruum 42-50|Ar-Ruum 51-60|Luqman 1-11|Luqman 12-19|Luqman 20-28|Luqman 29-34|As-Sajdah 1-11|As-Sajdah 12-20|As-Sajdah 21-30|Al-Ahzab 1-6|Al-Ahzab 7-15|Al-Ahzab 16-22|Al-Ahzab 23-30
+**JUZ 22#Al-Ahzab 31-35|Al-Ahzab 36-43|Al-Ahzab 44-50|Al-Ahzab 51-54|Al-Ahzab 55-62|Al-Ahzab 63-73|Saba 1-7|Saba 8-14|Saba 15-22|Saba 23-31|Saba 32-39|Saba 40-48|Saba 49 - Fatir 3|Fatir 4-11|Fatir 12-18|Fatir 19-30|Fatir 31-38|Fatir 39-44|Fatir 45 - Yasin 12|Yasin 13-27
+**JUZ 23#Yasin 28-40|Yasin 41-54|Yasin 55-70|Yasin 71-83|As-Saffat 1-24|As-Saffat 25-51|As-Saffat 52-76|As-Saffat 77-102|As-Saffat 103-126|As-Saffat 127-153|As-Saffat 154-182|Sad 1-16|Sad 17-26|Sad 27-42|Sad 43-61|Sad 62-83|Sad 84 - Az-Zumar 5|Az-Zumar 6-10|Az-Zumar 11-21|Az-Zumar 22-31
+**JUZ 24#Az-Zumar 32-40|Az-Zumar 42-47|Az-Zumar 48-56|Az-Zumar 57-67|Az-Zumar 68-74|Az-Zumar 75-Al-Ghafir 7|Al-Ghafir 8-16|Al-Ghafir 17-25|Al-Ghafir 26-33|Al-Ghafir 34-40|Al-Ghafir 41-49|Al-Ghafir 50-58|Al-Ghafir 59-66|Al-Ghafir 67-77|Al-Ghafir 78-85|Al-Fushilat 1-11|Al-Fushilat 12-20|Al-Fushilat 21-29|Al-Fushilat 30-38|Al-Fushilat 39-46
+**JUZ 25#Al-Fushilat 47-54|Asy-Syura 1-10|Asy-Syura 11-15|Asy-Syura 16-22|Asy-Syura 23-31|Asy-Syura 32-44|Asy-Syura 35-51|Asy-Syura 52- Az-Zukhruf 10|Az-Zukhruf 11-22|Az-Zukhruf 23-33|Az-Zukhruf 34-47|Az-Zukhruf 48-60|Az-Zukhruf 61-73|Az-Zukhruf 74-89|Ad-Dukhan 1-18|Ad-Dukhan 19-39|Ad-Dukhan 40-59|Al-Ghaasyiyah 1-13|Al-Ghaasyiyah 14-22|Al-Ghaasyiyah 23-32
+**JUZ 26#Al-Jasiyah 33 - Al-Ahqaf 5|Al-Ahqaf 6-14|Al-Ahqaf 15-20|Al-Ahqaf 21-28|Al-Ahqaf 29-35|Muhammad 1-11|Muhammad 12-19|Muhammad 20-29|Muhammad 30-38|Al-Fath 1-9|Al-Fath 10-15|Al-Fath 16-23|Al-Fath 24-28|Al-Fath 29 - Al-Hujurat 4|Al-Hujurat 5-11|Al-Hujurat 12-18|Qaf 1-15|Qaf 16-35|Qaf 36 - Az-Zariyat 6|Az-Zariyat 7-30
+**JUZ 27#Az-Zariyat 31-51|Az-Zariyat 52 - At-Tur 14|At-Tur 15-31|At-Tur 32-49|An-Najm 1-26|An-Najm 27-44|An-Najm 45- Al-Qamar 6|Al-Qamar 7-27|Al-Qamar 28-49|Al-Qamar 50 - Ar-Rahman 16|Ar-Rahman 17-40|Ar-Rahman 41-67|Ar-Rahman 68-Al-Waqiah 16|Al-Waqiah 17-50|Al-Waqiah 51-76|Al-Waqiah 77-Al-Hadid 3|Al-Hadid 4-11|Al-Hadid 12-18|Al-Hadid 19-24|Al-Hadid 25-26
+**JUZ 28#Al-Mujadalah 1-6|Al-Mujadalah 7-11|Al-Mujadalah 12-21|Al-Mujadalah 22-Al-Hasyr 3|Al-Hasyr 4-9|Al-Hasyr 10-16|Al-Hasyr 17-24|Al-Mumtahanah 1-5|Al-Mumtahanah 6-11|Al-Mumtahanah 12-As-Saff 5|As-Saff 6-14|Al-Jumu'ah 1-8|Al-Jumu'ah 9-Al-Munafiqun 4|Al-Munafiqun 5-11|At-Tagabun 1-9|At-Tagabun 10-18|At-Talaq 1-5|At-Talaq 6-12|At-Tahrim 1-7|At-Tahrim 8-12
+**JUZ 29#Al-Mulk 1-12|Al-Mulk 13-26|Al-Mulk 27-Al-Qalam 15|Al-Qalam 16-42|Al-Qalam 43-Al-Haqqah 8|Al-Haqqah 9-34|Al-Haqqah 35- Al-Maarij 10|Al-Maarij 11-39|Al-Maarij 40-Nuh 10|Nuh 11-28|Al-Jinn 1-13|Al-Jinn 14-28|Al-Muzzanmil 1-19|Al-Muzzanmil 20-Al-Muddassir 17|Al-Muddassir 18-47|Al-Muddassir 48-Al-Qiyamah 19|Al-Qiyamah 20-Al-Insan 5|Al-Insan 6-25|Al-Insan 26-Al-Mursalat 19|Al-Mursalat 20-50
+**JUZ 30#An-Naba 1-40|An-Naaziaat 1-46|Abasa 1-42|At-Takwiir 1-29|Al-Infithaar 1-19|Al-Muthaffifiin 1-36|Al-Insyiqaaq 1-25|Al-Buruuj 1-22|Ath-Thaariq 1-17|Al-Alaa 1-19|Al-Ghaasyiyah 1-26|Al-Fajr 1-30|Al-Balad 1-20|Asy-Syams 1-15|Al-Lail 1-21|Adh-Dhuhaa 1-11|Al-Insyirah 1-8|At-Tin 1-8|Al-Alaq 1-19|Al-Qadr 1-5|Al-Bayyinah 1-8|Az-Zalzalah 1-8|Al-Aadiyaat 1-11|Al-Qaariah 1-11|At-Takaatsur 1-8|Al-Ashr 1-3|Al-Humazah 1-9|Al-Fiil 1-5|Quraisy 1-4|Al-Maauun 1-7|Al-Kautsar 1-3|Al-Kaafiruun 1-6|An-Nashr 1-3|Al-Lahab 1-5|Al-Ikhlash 1-4|Al-Falaq 1-5|An-Naas 1-6`;
+
+        const juzMap = {};
+        rawData.trim().split('\n').forEach(line => {
+            const [header, content] = line.replace('**', '').split('#');
+            juzMap[header.trim()] = content.split('|');
+        });
+
+        // Mapping nama surat ke nomor surat
+        const suratMapping = {
+            'Al-Fatihah': 1,
+            'Al-Baqarah': 2,
+            'Ali Imran': 3,
+            'An-Nisa': 4,
+            'Al-Maidah': 5,
+            'Al-Anam': 6,
+            'Al-Araf': 7,
+            'Al-Anfal': 8,
+            'At-Taubah': 9,
+            'Yunus': 10,
+            'Hud': 11,
+            'Yusuf': 12,
+            'Ar-Rad': 13,
+            'Ibrahim': 14,
+            'Al-Hijr': 15,
+            'An-Nahl': 16,
+            'Al-Isra': 17,
+            'Al-Kahf': 18,
+            'Maryam': 19,
+            'Taha': 20,
+            'Al-Anbiya': 21,
+            'Al-Hajj': 22,
+            'Al-Muminun': 23,
+            'An-Nur': 24,
+            'Al-Furqan': 25,
+            'Ash-Shuara': 26,
+            'An-Naml': 27,
+            'Al-Qasas': 28,
+            'Al-Ankabut': 29,
+            'Ar-Rum': 30,
+            'Luqman': 31,
+            'As-Sajda': 32,
+            'Al-Ahzab': 33,
+            'Saba': 34,
+            'Fatir': 35,
+            'Yasin': 36,
+            'As-Saffat': 37,
+            'Sad': 38,
+            'Az-Zumar': 39,
+            'Ghafir': 40,
+            'Fussilat': 41,
+            'Ash-Shura': 42,
+            'Az-Zukhruf': 43,
+            'Ad-Dukhan': 44,
+            'Al-Jathiya': 45,
+            'Al-Ahqaf': 46,
+            'Muhammad': 47,
+            'Al-Fath': 48,
+            'Al-Hujurat': 49,
+            'Qaf': 50,
+            'Adh-Dhariyat': 51,
+            'At-Tur': 52,
+            'An-Najm': 53,
+            'Al-Qamar': 54,
+            'Ar-Rahman': 55,
+            'Al-Waqia': 56,
+            'Al-Hadid': 57,
+            'Al-Mujadila': 58,
+            'Al-Hashr': 59,
+            'Al-Mumtahana': 60,
+            'As-Saff': 61,
+            'Al-Jumuah': 62,
+            'Al-Munafiqun': 63,
+            'At-Taghabun': 64,
+            'At-Talaq': 65,
+            'At-Tahrim': 66,
+            'Al-Mulk': 67,
+            'Al-Qalam': 68,
+            'Al-Haqqa': 69,
+            'Al-Maarij': 70,
+            'Nuh': 71,
+            'Al-Jinn': 72,
+            'Al-Muzzammil': 73,
+            'Al-Muddathir': 74,
+            'Al-Qiyama': 75,
+            'Al-Insan': 76,
+            'Al-Mursalat': 77,
+            'An-Naba': 78,
+            'An-Naziat': 79,
+            'Abasa': 80,
+            'At-Takwir': 81,
+            'Al-Infitar': 82,
+            'Al-Mutaffifin': 83,
+            'Al-Insyiqaq': 84,
+            'Al-Buruj': 85,
+            'At-Tariq': 86,
+            'Al-Ala': 87,
+            'Al-Ghashiya': 88,
+            'Al-Fajr': 89,
+            'Al-Balad': 90,
+            'Ash-Shams': 91,
+            'Al-Lail': 92,
+            'Ad-Duha': 93,
+            'Ash-Sharh': 94,
+            'At-Tin': 95,
+            'Al-Alaq': 96,
+            'Al-Qadr': 97,
+            'Al-Bayyina': 98,
+            'Az-Zalzala': 99,
+            'Al-Adiyat': 100,
+            'Al-Qaria': 101,
+            'At-Takathur': 102,
+            'Al-Asr': 103,
+            'Al-Humaza': 104,
+            'Al-Fil': 105,
+            'Quraish': 106,
+            'Al-Maun': 107,
+            'Al-Kawthar': 108,
+            'Al-Kafirun': 109,
+            'An-Nasr': 110,
+            'Al-Masad': 111,
+            'Al-Ikhlas': 112,
+            'Al-Falaq': 113,
+            'An-Nas': 114
+        };
+
+        // Variabel global
+        let currentSurat = "";
+        let currentAwal = 0;
+        let currentAkhir = 0;
+        let currentSuratNumber = 0;
+
+        // DOM Elements
+        const comboJuz = document.getElementById('comboJuz');
+        const materiList = document.getElementById('materiList');
+        const resultInfo = document.getElementById('resultInfo');
+        const btnTampilkanAyat = document.getElementById('btnTampilkanAyat');
+        const formCard = document.getElementById('formCard');
+        const ayatCard = document.getElementById('ayatCard');
+        const btnKembali = document.getElementById('btnKembali');
+        const loadingDisplay = document.getElementById('loadingDisplay');
+        const ayatDisplay = document.getElementById('ayatDisplay');
+        const ayatTitle = document.getElementById('ayatTitle');
+        const ayatSubtitle = document.getElementById('ayatSubtitle');
+        const errorMessage = document.getElementById('errorMessage');
+        const ayatErrorMessage = document.getElementById('ayatErrorMessage');
+        const btnPrint = document.getElementById('btnPrint');
+        const btnCopy = document.getElementById('btnCopy');
+        const namaSiswaInput = document.getElementById('namaSiswa');
+        const kelasSiswaSelect = document.getElementById('kelasSiswa');
+
+        // Inisialisasi pilihan Juz
+        Object.keys(juzMap).forEach(key => comboJuz.add(new Option(key, key)));
+
+        // Event ketika Juz dipilih
+        comboJuz.onchange = function() {
+            materiList.innerHTML = "";
+            resultInfo.style.display = 'none';
+            btnTampilkanAyat.disabled = true;
+            errorMessage.style.display = 'none';
+            
+            if (!this.value) {
+                materiList.innerHTML = '<div style="text-align: center; color: #999; padding-top: 80px;">Pilih Juz terlebih dahulu</div>';
+                return;
+            }
+
+            juzMap[this.value].forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'item-materi';
+                div.innerHTML = `<input type="checkbox" class="chk-materi" value="${item}" data-idx="${index}"><span>${item}</span>`;
+                div.onclick = (e) => {
+                    const cb = div.querySelector('input');
+                    if (e.target.tagName !== 'INPUT') cb.checked = !cb.checked;
+                    validasiUrutan(cb);
+                };
+                materiList.appendChild(div);
+            });
+        };
+
+        // Validasi urutan materi yang dipilih
+        function validasiUrutan(clickedCb) {
+            const allCbs = Array.from(document.querySelectorAll('.chk-materi'));
+            const checked = allCbs.filter(c => c.checked);
+            
+            if (checked.length > 1) {
+                const indices = checked.map(c => parseInt(c.dataset.idx));
+                const min = Math.min(...indices);
+                const max = Math.max(...indices);
+                
+                if (checked.length !== (max - min + 1)) {
+                    errorMessage.textContent = "⚠️ Kesalahan: Pilihan harus berurutan. Jangan melompati materi!";
+                    errorMessage.style.display = 'block';
+                    clickedCb.checked = false;
+                    ekstrakData();
+                    return;
+                }
+            }
+            
+            errorMessage.style.display = 'none';
+            ekstrakData();
+        }
+
+        // Ekstrak data dari materi yang dipilih
+        function ekstrakData() {
+            const checked = Array.from(document.querySelectorAll('.chk-materi:checked'));
+            const nama = namaSiswaInput.value || "Siswa";
+            const kelas = kelasSiswaSelect.value || "";
+
+            if (checked.length === 0) {
+                resultInfo.style.display = 'none';
+                btnTampilkanAyat.disabled = true;
+                return;
+            }
+
+            const firstVal = checked[0].value;
+            const lastVal = checked[checked.length - 1].value;
+
+            const regex = /^(.+?)\s(\d+)(?:-(\d+))?$/;
+            const start = firstVal.match(regex);
+            const end = lastVal.match(regex);
+
+            if (start && end) {
+                const suratStart = start[1].trim();
+                const suratEnd = end[1].trim();
+
+                if (suratStart !== suratEnd) {
+                    errorMessage.textContent = "⚠️ Kesalahan: Materi harus dalam satu surat yang sama.";
+                    errorMessage.style.display = 'block';
+                    checked[checked.length - 1].checked = false;
+                    return;
+                }
+
+                const ayatAwal = parseInt(start[2]);
+                const ayatAkhir = parseInt(end[3] || end[2]);
+
+                // Simpan data global
+                currentSurat = suratStart;
+                currentAwal = ayatAwal;
+                currentAkhir = ayatAkhir;
+                currentSuratNumber = suratMapping[currentSurat] || getSuratNumberByName(currentSurat);
+
+                // Tampilkan Data
+                document.getElementById('displayIdentitas').innerText = `${nama} (${kelas})`;
+                document.getElementById('outSurat').innerText = currentSurat;
+                document.getElementById('outAwal').innerText = ayatAwal;
+                document.getElementById('outAkhir').innerText = ayatAkhir;
+                document.getElementById('outTotal').innerText = (ayatAkhir - ayatAwal + 1) + " Ayat";
+                resultInfo.style.display = 'block';
+                btnTampilkanAyat.disabled = false;
+            }
+        }
+
+        // Fungsi untuk mendapatkan nomor surat berdasarkan nama (fallback)
+        function getSuratNumberByName(suratName) {
+            // Normalisasi nama surat
+            const normalizedName = suratName.toLowerCase()
+                .replace(/['\s-]/g, '')
+                .replace(/aa/g, 'a')
+                .replace(/yy/g, 'y')
+                .replace(/ii/g, 'i')
+                .replace(/uu/g, 'u');
+
+            for (const [name, number] of Object.entries(suratMapping)) {
+                const normalizedMapName = name.toLowerCase()
+                    .replace(/['\s-]/g, '')
+                    .replace(/aa/g, 'a')
+                    .replace(/yy/g, 'y')
+                    .replace(/ii/g, 'i')
+                    .replace(/uu/g, 'u');
+                
+                if (normalizedName === normalizedMapName) {
+                    return number;
+                }
+            }
+            
+            // Jika tidak ditemukan, coba pencarian parsial
+            for (const [name, number] of Object.entries(suratMapping)) {
+                if (suratName.toLowerCase().includes(name.toLowerCase()) || 
+                    name.toLowerCase().includes(suratName.toLowerCase())) {
+                    return number;
+                }
+            }
+            
+            return 1; // Default ke Al-Fatihah
+        }
+
+        // Tampilkan ayat ketika tombol ditekan
+        btnTampilkanAyat.addEventListener('click', async function() {
+            if (!currentSurat || !currentAwal || !currentAkhir) {
+                errorMessage.textContent = "⚠️ Silakan pilih materi terlebih dahulu.";
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            const nama = namaSiswaInput.value || "Siswa";
+            const kelas = kelasSiswaSelect.value || "";
+            
+            // Switch ke tampilan ayat
+            formCard.style.display = 'none';
+            ayatCard.style.display = 'block';
+            
+            // Set judul
+            ayatTitle.textContent = `Bacaan ${currentSurat}`;
+            ayatSubtitle.textContent = `${nama} (${kelas}) - Ayat ${currentAwal} sampai ${currentAkhir}`;
+            
+            // Tampilkan loading
+            loadingDisplay.style.display = 'block';
+            ayatDisplay.style.display = 'none';
+            ayatErrorMessage.style.display = 'none';
+            
+            // Ambil data ayat dari API
+            await fetchAyatFromAPI();
+        });
+
+        // Kembali ke form
+        btnKembali.addEventListener('click', function() {
+            ayatCard.style.display = 'none';
+            formCard.style.display = 'block';
+        });
+
+        // Fungsi untuk mengambil ayat dari AlQuran.cloud API
+        async function fetchAyatFromAPI() {
+            if (!currentSuratNumber) {
+                currentSuratNumber = getSuratNumberByName(currentSurat);
+            }
+            
+            try {
+                // Clear previous content
+                ayatDisplay.innerHTML = '';
+                
+                // Fetch each ayat individually
+                for (let i = currentAwal; i <= currentAkhir; i++) {
+                    try {
+                        // Fetch Arabic text
+                        const arabicResponse = await fetch(`https://api.alquran.cloud/v1/ayah/${currentSuratNumber}:${i}/editions/quran-uthmani`);
+                        const arabicData = await arabicResponse.json();
+                        
+                        // Fetch Indonesian translation
+                        const translationResponse = await fetch(`https://api.alquran.cloud/v1/ayah/${currentSuratNumber}:${i}/editions/id.indonesian`);
+                        const translationData = await translationResponse.json();
+                        
+                        if (arabicData.code === 200 && translationData.code === 200) {
+                            const ayatItem = createAyatElement(
+                                i,
+                                arabicData.data[0].text,
+                                translationData.data[0].text,
+                                currentSurat
+                            );
+                            ayatDisplay.appendChild(ayatItem);
+                        }
+                    } catch (error) {
+                        console.error(`Error fetching ayat ${i}:`, error);
+                        // Continue with next ayat even if one fails
+                    }
+                }
+                
+                // Hide loading and show ayat
+                loadingDisplay.style.display = 'none';
+                ayatDisplay.style.display = 'block';
+                
+                // If no ayat were loaded, show error
+                if (ayatDisplay.children.length === 0) {
+                    throw new Error('Tidak ada ayat yang berhasil dimuat');
+                }
+                
+            } catch (error) {
+                console.error("Error fetching ayat:", error);
+                loadingDisplay.style.display = 'none';
+                ayatErrorMessage.textContent = `⚠️ Gagal memuat ayat. Silakan coba lagi.`;
+                ayatErrorMessage.style.display = 'block';
+                
+                // Show fallback message
+                showFallbackAyat();
+            }
+        }
+
+        // Create ayat element
+        function createAyatElement(number, arabicText, translation, surahName) {
+            const div = document.createElement('div');
+            div.className = 'ayat-item';
+            
+            div.innerHTML = `
+                <div class="ayat-item-header">
+                    <div class="ayat-number">${number}</div>
+                    <div class="surah-name">${surahName} : ${number}</div>
+                </div>
+                <div class="ayat-arabic">${arabicText}</div>
+                <div class="ayat-translation">
+                    <strong>Terjemahan (Indonesia):</strong> ${translation}
+                </div>
+            `;
+            
+            return div;
+        }
+
+        // Show fallback ayat when API fails
+        function showFallbackAyat() {
+            loadingDisplay.style.display = 'none';
+            ayatDisplay.style.display = 'block';
+            
+            const fallbackDiv = document.createElement('div');
+            fallbackDiv.style.textAlign = 'center';
+            fallbackDiv.style.padding = '40px 20px';
+            fallbackDiv.style.color = '#666';
+            
+            fallbackDiv.innerHTML = `
+                <div style="font-size: 48px; margin-bottom: 20px; color: #2a9d8f;">
+                    <i class="fas fa-book-quran"></i>
+                </div>
+                <h3 style="color: #1a5e63; margin-bottom: 15px;">${currentSurat}</h3>
+                <p>Menampilkan ayat ${currentAwal} sampai ${currentAkhir} (${currentAkhir - currentAwal + 1} ayat)</p>
+                <div style="margin-top: 30px; padding: 20px; background: #f9f9f9; border-radius: 10px; text-align: left;">
+                    <p><strong>Contoh ayat Al-Fatihah:</strong></p>
+                    <div style="direction: rtl; text-align: right; font-size: 24px; font-family: 'Amiri', serif; margin: 10px 0;">
+                        بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+                    </div>
+                    <p><strong>Terjemahan:</strong> "Dengan nama Allah Yang Maha Pengasih, Maha Penyayang."</p>
+                </div>
+                <p style="margin-top: 20px; font-size: 14px; color: #888;">
+                    <i>Untuk menampilkan bacaan lengkap, pastikan koneksi internet tersedia.</i>
+                </p>
+            `;
+            
+            ayatDisplay.innerHTML = '';
+            ayatDisplay.appendChild(fallbackDiv);
+        }
+
+        // Fungsi cetak
+        btnPrint.addEventListener('click', function() {
+            const nama = namaSiswaInput.value || "Siswa";
+            const kelas = kelasSiswaSelect.value || "";
+            
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Cetak Bacaan ${currentSurat}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 20px; }
+                        h1 { color: #2a9d8f; text-align: center; }
+                        .header { text-align: center; margin-bottom: 30px; }
+                        .ayat-item { margin-bottom: 20px; direction: rtl; text-align: right; }
+                        .ayat-arabic { font-size: 22px; font-family: 'Amiri', serif; }
+                        .ayat-translation { font-size: 14px; direction: ltr; text-align: left; margin-top: 10px; }
+                        .ayat-number { background: #2a9d8f; color: white; padding: 2px 8px; border-radius: 50%; font-size: 12px; margin-left: 5px; }
+                        .footer { margin-top: 40px; text-align: center; font-size: 12px; color: #666; border-top: 1px solid #ccc; padding-top: 10px; }
+                    </style>
+                    <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>Bacaan ${currentSurat}</h1>
+                        <h3>${nama} - ${kelas}</h3>
+                        <p>Ayat ${currentAwal} sampai ${currentAkhir}</p>
+                    </div>
+                    <div id="print-content">
+                        ${ayatDisplay.innerHTML}
+                    </div>
+                    <div class="footer">
+                        Dicetak dari Sistem Input Bacaan Siswa - ${new Date().toLocaleDateString('id-ID')}
+                    </div>
+                </body>
+                </html>
+            `);
+            
+            printWindow.document.close();
+            setTimeout(() => {
+                printWindow.print();
+            }, 500);
+        });
+
+        // Fungsi salin teks
+        btnCopy.addEventListener('click', async function() {
+            const nama = namaSiswaInput.value || "Siswa";
+            const kelas = kelasSiswaSelect.value || "";
+            
+            let textToCopy = `Bacaan ${currentSurat}\n`;
+            textToCopy += `${nama} - ${kelas}\n`;
+            textToCopy += `Ayat ${currentAwal} sampai ${currentAkhir}\n\n`;
+            
+            // Ambil teks dari ayat yang ditampilkan
+            const ayatItems = ayatDisplay.querySelectorAll('.ayat-item');
+            ayatItems.forEach(item => {
+                const arabic = item.querySelector('.ayat-arabic')?.textContent || '';
+                const translation = item.querySelector('.ayat-translation')?.textContent || '';
+                textToCopy += `${arabic}\n${translation}\n\n`;
+            });
+            
+            try {
+                await navigator.clipboard.writeText(textToCopy);
+                alert('Teks berhasil disalin ke clipboard!');
+            } catch (err) {
+                console.error('Gagal menyalin teks: ', err);
+                alert('Gagal menyalin teks. Silakan coba lagi.');
+            }
+        });
+
+        // Event listeners untuk update otomatis
+        namaSiswaInput.addEventListener('input', ekstrakData);
+        kelasSiswaSelect.addEventListener('change', ekstrakData);
+
+        // Initialize
+        window.onload = function() {
+            console.log('Sistem Input Bacaan Siswa siap digunakan.');
+        };
+    </script>
+</body>
+</html>
