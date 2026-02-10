@@ -1035,28 +1035,30 @@
                 <p class="subtitle">Laporan Bacaan Al-Qur'an dengan Pengaturan Font</p>
             </header>
 
-<div class="input-group">
-    <label>Kelas</label>
-    <select id="kelasSiswa">
-        <option value="">-- Pilih Kelas --</option>
-        <option value="XII-1">XII-1</option>
-        <option value="XII-2">XII-2</option>
-        <option value="XII-3">XII-3</option>
-        <option value="XII-4">XII-4</option>
-        <option value="XII-5">XII-5</option>
-        <option value="XII-6">XII-6</option>
-        <option value="XII-7">XII-7</option>
-        <option value="XII-8">XII-8</option>
-        <option value="XII-9">XII-9</option>
-    </select>
-</div>
+            <!-- GANTIAN DISINI -->
+            <div class="input-group">
+                <label>Kelas</label>
+                <select id="kelasSiswa">
+                    <option value="">-- Pilih Kelas --</option>
+                    <option value="XII-1">XII-1</option>
+                    <option value="XII-2">XII-2</option>
+                    <option value="XII-3">XII-3</option>
+                    <option value="XII-4">XII-4</option>
+                    <option value="XII-5">XII-5</option>
+                    <option value="XII-6">XII-6</option>
+                    <option value="XII-7">XII-7</option>
+                    <option value="XII-8">XII-8</option>
+                    <option value="XII-9">XII-9</option>
+                </select>
+            </div>
 
-<div class="input-group">
-    <label>Nama Lengkap Siswa</label>
-    <select id="namaSiswa" disabled>
-        <option value="">-- Pilih kelas terlebih dahulu --</option>
-    </select>
-</div>
+            <div class="input-group">
+                <label>Nama Lengkap Siswa</label>
+                <select id="namaSiswa" disabled>
+                    <option value="">-- Pilih kelas terlebih dahulu --</option>
+                </select>
+            </div>
+            <!-- SAMPAI DISINI -->
 
             <hr>
 
@@ -1303,149 +1305,121 @@
     </div>
 
     <script>
-     // Data siswa dalam format JavaScript (salin dari kode kedua)
-const dataSiswa = {
-    "XII-1": [
-        "AUFA ASLAM ANJABI", "AISYAH RAHMA AULIA", "ANISA MAULIDYA HASANAH", "ARINA MANASIKANA",
-        "ARUM NOOR SETIANY", "DEWI WINDYAWATI", "DIAH ANGGRAINI", "DZU AISY YESAWA AUFA JULETHA",
-        "EKI NURWIDIASTUTI", "EMHA HASANAIN MAHLUF AQMA", "FADZILLAH AINITHA RAHMAN", "HAMZAH AQIL AL MUSTAFA",
-        "ICHA SEPTIANA WULANDARI", "LAELI MUNA", "LAYLA SYARIFA RAHMADHANI", "LINTANG APRILLIYANI",
-        "MADINA RAMADHANI", "MARSYA NUR MAULIDINA", "MAULIDA MAHARANI", "MAZIDA RIFQI AFFANI",
-        "MUHAMMAD AHNAF SYAIBAN", "MUHAMMAD DESTA ARIYANSYAH", "MUHAMMAD RIZYK ABDILLAH",
-        "MUHAMMAD SYAUQY MUSTHOFA", "NAILA PUTRI AFIFAH", "NAJWA BALQIS SYAFIRA",
-        "NAURAH LAELATUL FAHRIYAH", "NUR RAISYA RAHMADANI", "OLIVIA RISKA RAMANDHANI",
-        "QURROTU AINII PUTRI HARTUTI", "RACHEL AZEERA MARSYA PUTRI", "SAMDYA FADLIKA",
-        "WULAN WIDYA AYU PRATIWI", "ZAHARA BUNGA KAMELIA", "ZIZNI RIZKI ADITIYA", "ZULFATURROHMAH AZZAHRA"
-    ],
-    "XII-2": [
-        "AGESTA FADILAH ADAM", "ARYA MAHENDRA RYANSYAH NOOR", "AULIA PUSPA LESTARI",
-        "AULIA ZAIDATUSSALWA", "CAHYO HADI LAKSONO", "CHESYLLA AZ-ZAHRA WIDYANDA", "DESTA AMELIA",
-        "FARAH NAILA AMANI", "FEBRIANA RIZKY NURSANDI", "GITA CITRA CINTA", "IKRIMAH SYADIDA",
-        "IMANIA SALMA FARIZAH", "JIBRIL ASYKAR CHABIBILLAH", "KHASNA SALSABILA",
-        "KUSUMA AMMARY KHOIRUNNISA", "M. RIKI IMAMUDDIN", "MALIKHA MAHRASSALISA", "MOCHAMAD FACHRI",
-        "MOH FAYRUZ SYAF TAFTAZANI", "MUHAMAD KHOIRUL ANAM", "MUHAMMAD DANY ROKAN",
-        "MUHAMMAD HISYAM AKMAL", "MUHAMMAD NABIL DZAKIY", "MUHAMMAD RIO FABIAN", "NABILATUL KHASANAH",
-        "OCTAVIA RAMADHANI", "RATNA MAULIDAH KHASANAH", "RISMA DUMA FITRI", "RIZQIATUL AZZAHRA",
-        "SALMA DIAN SAFIRA", "SAYLA ARZAQINA", "SINDIA KIRAN MUSTIKA", "UMI LIFGIATUN RAMDANI",
-        "VITARI AZIZAH", "WINDI SILVIANA", "ZAHRAKHAN FARABI"
-    ],
-    "XII-3": [
-        "ACHMAD RIZQI ABIANSYAH", "AISYAH KUSUMANINGSIH", "AISYATUN NISAFITRI",
-        "AMALIA FARIDA AININ WIBOWO", "ANINDYA QUTROTUNNANDA", "ANITA PUTRI PRADHITA",
-        "AZZAHRA NUR MUFIDA", "DHIKA BINTANG PRATAMA", "FATIHATUL ZATIN AGAINI",
-        "FEBRINA SUKMA TYASSHOFA", "FEBRYANA EIVANOVICH", "HAMIM FAIQ BUDIMAN", "HANA DHIA KARIMAH",
-        "INKAFALAH SATYATUHU NIATRIA", "KHUSNA AQILA ROSYADA", "M.  AFIQ NABIL ILMI", "MAELA ZULFAA",
-        "MUHAMMAD FIKRI NAZHIF", "MUHAMMAD NUR KHOLIS", "MUHAMMAD RAFFI FARIZQI",
-        "MUHAMMAD ROYYAN HUDAYANTO", "NAOFAL SANTOSO", "NAYLA ZAHRATU ATHA", "NUR SYIFA RAMADHINA",
-        "PUTRA PRIMA NUGRAHA", "RIBKA RIZKI ZAHRANI", "SALSA OKTA AMELIA", "SHAFIA DAVISYA KHOLIQ",
-        "SHERLINA KHAERANI", "SURYA AJI JANUARTA", "TIARA SEPTY RAMADHANI", "TRI PERTIWI HANDAYANI",
-        "WAHYU RAHARDIAN ARSANATA", "YODHANO ALBERN HAIDAR SUSANTO", "ZAKY ANWAR", "ZIDNI ILMAN NAAFI'AN"
-    ],
-    "XII-4": [
-        "ALEARAFA ZADA HUKAMA", "ARGA PRANADYA NASUTION", "ARKAN ARI ANANTO", "AULIA ZAMZAMAH",
-        "CEISYA SILVI SALSABILLA", "DEVA ADITYA NUGROHO", "FIRDA AULIA IZZATI", "GILANG ADI WIRATAMA",
-        "HAIDAR HUSAIN PRADITA", "HISYAAM DZAKY MUBAROK", "ISTIQOMAH", "KHURIDAH KHASANAH",
-        "M. IKHSANUDDIN LATIF", "M. ZAKY KENNEDY SAPUTRA", "MARSYA ELLEN FATMIKA", "MAULANA NIBAS",
-        "MUCH. AUFAR ABID", "MUHAMMAD ARDIANSYAH ARYA PUTRA PRATAMA", "MUHAMMAD HYZAM KURNIAWAN",
-        "MUHAMMAD KHAIDAR MAULANA", "MUHAMMAD RAIFAN KHALED", "MUHAMMAD REYHAN ADAKY",
-        "MUHAMMAD SHAVO SATRIANI", "NADYA PUTRI RAMADHANI", "NASRUL KHOLBI", "NATASYA AZKA HINDRIANA",
-        "NISWA MAZILA FIJANA", "NURUL ISLAMIYATI", "PRICO ANDRIANO", "SEVILA ARDHIA ROHMA",
-        "SHERLY ARDIANTI SUKMA", "SUN CANDHA RENDY SULAIMAN", "SYIFA JULIA MAULA", "VITA AZZARIA",
-        "ZAHRA SEPTI RAMADHANI"
-    ],
-    "XII-5": [
-        "ADINDA AINUN MAHYA", "ADINDA NURAINI", "ADINDA ZHAFIRAH HELMAPUTRI",
-        "AFIFTIAN RASYA MAULANA", "BILQIS RAMADHANI DJUNAEDY PUTRI", "CHELSEA KHATYA AZ ZAHRA",
-        "DAFFA AUFA NASWA", "DHANURWENDHA ILHAMRAKA SASKARA", "EZAR HAFIZH DWIPANDYA",
-        "FIANTIKA AULIA ZIVANESTHA", "GANESHA ARDIANEDRIA HERBIMO", "HANIIF RAMDHAN SYARIIF",
-        "HARYA TIRTA SANTOSO", "HAYUNING TYAS KUSUMARDANI", "JASMINE YUMN MUMTAZ",
-        "LUTFI FARHAN ADITYA", "MELLYSA AZLYA SALLYMA", "MUHAMMAD AL GHIFARI",
-        "MUHAMMAD DIMAS DWI ANDREAN", "MUHAMMAD FIRMAN GHADAFFI", "MUHAMMAD IBNU ABDI SALAM",
-        "MUHAMMAD LUTHFI MAHARDIKA", "MUHAMMAD SHALAHUDDIN", "MUHAMMAD SURYA NUGRAHA",
-        "NADIA SHARLIZ RAIHANA", "NADINE DAMARA RAFA", "NAURA JANNAH", "NAURA MAZIIDATUL KHAIRA",
-        "NISRINA ARIFIN", "NURUL ISNI ALDILA", "PRATAMA EMIR MAULIDA", "RIFKI ALWI HIDAYAT",
-        "SANGGA ADYA SETYAGITA", "WIDYA MUFLIHATUN NISA", "YASMIN KAMILA", "ZAIDAAN GHATHFAN NAAFI"
-    ],
-    "XII-6": [
-        "AHMAD NADA AL-AFGANI", "ALIN IHSAN", "AMELA ASIFA CINTA SALSA BILLA",
-        "ANDIKA ELVAN ZANI", "ARADJA ADIGWAN", "AZEL DANISWARA", "BELLA OKTALIDYA PUTRI",
-        "CLAUDIA ALFRI YANTI", "DIBENZAQI", "DINDA DWI LASITA", "ELSA INDRILASARI",
-        "FRISKA ASKINADIA", "ISNU PRAMUSINTHO", "LULUK AINI NAFISAH", "M. DHANNIES FEBRIANO",
-        "M. ZAFQI ALIEF UZZAMAN", "MUHAMMAD AGHIS MUSTAGHIS", "MUHAMMAD ALWAN FAKHRI",
-        "MUHAMMAD FAREL", "MUHAMMAD FATWA ADITYA", "MUHAMMAD GUNTUR ALFA RIZQY",
-        "MUHAMMAD RIZQI JANWAR", "MUHAMMAD UBAIDILLAH", "NAYAKA ADWITIYA FATHONY",
-        "NUR ISROATUL ULA", "PRISKA GAVRILA RIYADI", "PUTRA CAHYA RAMADHAN",
-        "RACHEL SETYA UTAMA", "RAKHA SYAFIQ AN NAJIB", "RAVENO ANDREAN MEVALDI",
-        "ZAHIRA NUR KHASANAH", "ZAKI ALMAS MUSYAFA"
-    ],
-    "XII-7": [
-        "ADINDA ANATASYA STEVANIE", "AISYA NISRINA PUTRI", "ALFINDO SURYA SATRIAGUNG",
-        "ANUGRAHENING HERSYA NOVIA WIJAYA", "AULIA JANATU SIEVA", "AURA ZAHRA",
-        "AYUN SHINTA FEBRIANI MAZIYAH", "CAHYA AYU ANGGITA", "CHAYLA MARZA DIANOVA",
-        "DESI RAKHMAWATI", "DINI LISTIANA", "FANY FALASIFA", "GHINA SYAKIRAH IHSAN",
-        "HANDIS EL FAIQOH", "HAYYA WAHIDATUN NASWA", "IMALIKHA FATYA KURNIALLAH",
-        "IVAN TRIANSYAH", "KINARD FIAN MAHARANI", "LAILATUL HABIBAH", "MAUREL ZASKYA ZAKY",
-        "MOCHAMMAD ERRIN PANCA RIZKI", "MUHAMMAD HILMY NABIHA", "NIBRAS AISYAH ANINDITAWIJAYA",
-        "NOVA AULIA BERLIANI", "RIZA DAMAYANTI", "SAFFANATU IHTAZANA", "SEKAR SARI",
-        "SELVI IBFAQOTUL WAFA", "SHETI ALTHAFI RANTI", "SYAFIRA MAULIDATUR RISQI",
-        "TSABHITA AURELYA SAFA KARISA", "UMI DZINNU ROINI", "VANIA KRISTIANINGRUM",
-        "YESINA SALWA AURELIA", "ZARA FIRJATUL HUSNA", "ZHAFRAN ARVA NAUFALINO"
-    ],
-    "XII-8": [
-        "AHMAD IQBAL MAULANA", "ARSYA SAFIRA", "ASYIFA DWI AMELIA", "AULIA ANURRIZA",
-        "AZARIA CALLISTA", "BUNGA FINA DWI YANTI", "CANTIKA SEPTIANI RAMADHANI",
-        "DIAN AYU AGUSTINA", "DINA MELISA", "ENDITO CAHYA PRATAMA", "GUIDO GANANG SAPUTRA",
-        "HAFIDZ MUHAMAD NOVIAN", "JAZILA NAFAANI ISNADA", "KEISYA REVALINA",
-        "KRIS TRIANTO RAMADHANI", "LABIDAH", "LUKI SEBA LUKITO", "M. IKROM MAULIDIN",
-        "MUHAMMAD MAKRUF", "MUHAMMAD NAUFAL RIZQI", "MUSLIKHA", "NADIA RAMA", "NAILA AMELINDA",
-        "NATASYA DEKA ALVISKA", "NESYA HAFIZTA PUTRI", "NONIQ AQUINI BALQIS",
-        "NUR KHOMSATUN KHASANAH", "QONITA PUTRI ADIZA", "RACHEL DESINTHA FANY",
-        "RAFIF EGA PRATAMA", "RAISYA HANUM AGITA", "SATRIA ABDUL MAJID",
-        "SYARIFAH NAADIYA MUHAIMIN", "TIVANI NUR AULYA"
-    ],
-    "XII-9": [
-        "AHMAD FAESOL AL MURSYIDI", "ALINA CAHYA KARTIKA", "ARDIAN AZMI LAZUARDI",
-        "ARISKA AMILIA", "ATTIYATUL FAHIRA", "AZMI ARFITA SARI", "CAHAYA SEKAR AYU",
-        "CHATERINE ALIKA SAWITRI", "DWI SAFITRI", "ESHAL DELBAR DINAR",
-        "FADIA AZZAHRA SISYANA PUTTRI", "GENDIES TALITHA ZAIN", "HAMMAM NAYAKA ABIUDAYA",
-        "JUTIA RAMADANI", "KHANZA AZ ZAHRA", "KHOLIFATUS SYAHIRAH", "KUS NAENI",
-        "MARSYA KHARINA NAZIFAH", "MISKIYAH", "MUHAMMAD KHILMI HAIDAR", "MUNAH AININ WAFIQAH",
-        "NADIRA RIFDA ARSIANDANA", "NAUVA ALMAS SHINA", "NAYSILA MAULIDA AZKYA",
-        "NIZA BELLA PUTRI", "PUTRI NINGSIH", "RAHMA ZAHRATUSITA", "RAHMAT HIDAYAH",
-        "RIKA DWI ARDIANTI", "RISKIYA HASNA SAFIRAH", "RISQINAFIATUL KHUSNA",
-        "RIZKA DWI AMELIA", "SARAH REVALINA ACHMAD", "SCHATZI NABILA SARI",
-        "SHINTA AULIA DEWI", "SYAKILA KARIMA PRANOTO"
-    ]
-};
+        // Data siswa dalam format JavaScript (TAMBAHKAN DI AWAL SCRIPT)
+        const dataSiswa = {
+            "XII-1": [
+                "AUFA ASLAM ANJABI", "AISYAH RAHMA AULIA", "ANISA MAULIDYA HASANAH", "ARINA MANASIKANA",
+                "ARUM NOOR SETIANY", "DEWI WINDYAWATI", "DIAH ANGGRAINI", "DZU AISY YESAWA AUFA JULETHA",
+                "EKI NURWIDIASTUTI", "EMHA HASANAIN MAHLUF AQMA", "FADZILLAH AINITHA RAHMAN", "HAMZAH AQIL AL MUSTAFA",
+                "ICHA SEPTIANA WULANDARI", "LAELI MUNA", "LAYLA SYARIFA RAHMADHANI", "LINTANG APRILLIYANI",
+                "MADINA RAMADHANI", "MARSYA NUR MAULIDINA", "MAULIDA MAHARANI", "MAZIDA RIFQI AFFANI",
+                "MUHAMMAD AHNAF SYAIBAN", "MUHAMMAD DESTA ARIYANSYAH", "MUHAMMAD RIZYK ABDILLAH",
+                "MUHAMMAD SYAUQY MUSTHOFA", "NAILA PUTRI AFIFAH", "NAJWA BALQIS SYAFIRA",
+                "NAURAH LAELATUL FAHRIYAH", "NUR RAISYA RAHMADANI", "OLIVIA RISKA RAMANDHANI",
+                "QURROTU AINII PUTRI HARTUTI", "RACHEL AZEERA MARSYA PUTRI", "SAMDYA FADLIKA",
+                "WULAN WIDYA AYU PRATIWI", "ZAHARA BUNGA KAMELIA", "ZIZNI RIZKI ADITIYA", "ZULFATURROHMAH AZZAHRA"
+            ],
+            "XII-2": [
+                "AGESTA FADILAH ADAM", "ARYA MAHENDRA RYANSYAH NOOR", "AULIA PUSPA LESTARI",
+                "AULIA ZAIDATUSSALWA", "CAHYO HADI LAKSONO", "CHESYLLA AZ-ZAHRA WIDYANDA", "DESTA AMELIA",
+                "FARAH NAILA AMANI", "FEBRIANA RIZKY NURSANDI", "GITA CITRA CINTA", "IKRIMAH SYADIDA",
+                "IMANIA SALMA FARIZAH", "JIBRIL ASYKAR CHABIBILLAH", "KHASNA SALSABILA",
+                "KUSUMA AMMARY KHOIRUNNISA", "M. RIKI IMAMUDDIN", "MALIKHA MAHRASSALISA", "MOCHAMAD FACHRI",
+                "MOH FAYRUZ SYAF TAFTAZANI", "MUHAMAD KHOIRUL ANAM", "MUHAMMAD DANY ROKAN",
+                "MUHAMMAD HISYAM AKMAL", "MUHAMMAD NABIL DZAKIY", "MUHAMMAD RIO FABIAN", "NABILATUL KHASANAH",
+                "OCTAVIA RAMADHANI", "RATNA MAULIDAH KHASANAH", "RISMA DUMA FITRI", "RIZQIATUL AZZAHRA",
+                "SALMA DIAN SAFIRA", "SAYLA ARZAQINA", "SINDIA KIRAN MUSTIKA", "UMI LIFGIATUN RAMDANI",
+                "VITARI AZIZAH", "WINDI SILVIANA", "ZAHRAKHAN FARABI"
+            ],
+            "XII-3": [
+                "ACHMAD RIZQI ABIANSYAH", "AISYAH KUSUMANINGSIH", "AISYATUN NISAFITRI",
+                "AMALIA FARIDA AININ WIBOWO", "ANINDYA QUTROTUNNANDA", "ANITA PUTRI PRADHITA",
+                "AZZAHRA NUR MUFIDA", "DHIKA BINTANG PRATAMA", "FATIHATUL ZATIN AGAINI",
+                "FEBRINA SUKMA TYASSHOFA", "FEBRYANA EIVANOVICH", "HAMIM FAIQ BUDIMAN", "HANA DHIA KARIMAH",
+                "INKAFALAH SATYATUHU NIATRIA", "KHUSNA AQILA ROSYADA", "M.  AFIQ NABIL ILMI", "MAELA ZULFAA",
+                "MUHAMMAD FIKRI NAZHIF", "MUHAMMAD NUR KHOLIS", "MUHAMMAD RAFFI FARIZQI",
+                "MUHAMMAD ROYYAN HUDAYANTO", "NAOFAL SANTOSO", "NAYLA ZAHRATU ATHA", "NUR SYIFA RAMADHINA",
+                "PUTRA PRIMA NUGRAHA", "RIBKA RIZKI ZAHRANI", "SALSA OKTA AMELIA", "SHAFIA DAVISYA KHOLIQ",
+                "SHERLINA KHAERANI", "SURYA AJI JANUARTA", "TIARA SEPTY RAMADHANI", "TRI PERTIWI HANDAYANI",
+                "WAHYU RAHARDIAN ARSANATA", "YODHANO ALBERN HAIDAR SUSANTO", "ZAKY ANWAR", "ZIDNI ILMAN NAAFI'AN"
+            ],
+            "XII-4": [
+                "ALEARAFA ZADA HUKAMA", "ARGA PRANADYA NASUTION", "ARKAN ARI ANANTO", "AULIA ZAMZAMAH",
+                "CEISYA SILVI SALSABILLA", "DEVA ADITYA NUGROHO", "FIRDA AULIA IZZATI", "GILANG ADI WIRATAMA",
+                "HAIDAR HUSAIN PRADITA", "HISYAAM DZAKY MUBAROK", "ISTIQOMAH", "KHURIDAH KHASANAH",
+                "M. IKHSANUDDIN LATIF", "M. ZAKY KENNEDY SAPUTRA", "MARSYA ELLEN FATMIKA", "MAULANA NIBAS",
+                "MUCH. AUFAR ABID", "MUHAMMAD ARDIANSYAH ARYA PUTRA PRATAMA", "MUHAMMAD HYZAM KURNIAWAN",
+                "MUHAMMAD KHAIDAR MAULANA", "MUHAMMAD RAIFAN KHALED", "MUHAMMAD REYHAN ADAKY",
+                "MUHAMMAD SHAVO SATRIANI", "NADYA PUTRI RAMADHANI", "NASRUL KHOLBI", "NATASYA AZKA HINDRIANA",
+                "NISWA MAZILA FIJANA", "NURUL ISLAMIYATI", "PRICO ANDRIANO", "SEVILA ARDHIA ROHMA",
+                "SHERLY ARDIANTI SUKMA", "SUN CANDHA RENDY SULAIMAN", "SYIFA JULIA MAULA", "VITA AZZARIA",
+                "ZAHRA SEPTI RAMADHANI"
+            ],
+            "XII-5": [
+                "ADINDA AINUN MAHYA", "ADINDA NURAINI", "ADINDA ZHAFIRAH HELMAPUTRI",
+                "AFIFTIAN RASYA MAULANA", "BILQIS RAMADHANI DJUNAEDY PUTRI", "CHELSEA KHATYA AZ ZAHRA",
+                "DAFFA AUFA NASWA", "DHANURWENDHA ILHAMRAKA SASKARA", "EZAR HAFIZH DWIPANDYA",
+                "FIANTIKA AULIA ZIVANESTHA", "GANESHA ARDIANEDRIA HERBIMO", "HANIIF RAMDHAN SYARIIF",
+                "HARYA TIRTA SANTOSO", "HAYUNING TYAS KUSUMARDANI", "JASMINE YUMN MUMTAZ",
+                "LUTFI FARHAN ADITYA", "MELLYSA AZLYA SALLYMA", "MUHAMMAD AL GHIFARI",
+                "MUHAMMAD DIMAS DWI ANDREAN", "MUHAMMAD FIRMAN GHADAFFI", "MUHAMMAD IBNU ABDI SALAM",
+                "MUHAMMAD LUTHFI MAHARDIKA", "MUHAMMAD SHALAHUDDIN", "MUHAMMAD SURYA NUGRAHA",
+                "NADIA SHARLIZ RAIHANA", "NADINE DAMARA RAFA", "NAURA JANNAH", "NAURA MAZIIDATUL KHAIRA",
+                "NISRINA ARIFIN", "NURUL ISNI ALDILA", "PRATAMA EMIR MAULIDA", "RIFKI ALWI HIDAYAT",
+                "SANGGA ADYA SETYAGITA", "WIDYA MUFLIHATUN NISA", "YASMIN KAMILA", "ZAIDAAN GHATHFAN NAAFI"
+            ],
+            "XII-6": [
+                "AHMAD NADA AL-AFGANI", "ALIN IHSAN", "AMELA ASIFA CINTA SALSA BILLA",
+                "ANDIKA ELVAN ZANI", "ARADJA ADIGWAN", "AZEL DANISWARA", "BELLA OKTALIDYA PUTRI",
+                "CLAUDIA ALFRI YANTI", "DIBENZAQI", "DINDA DWI LASITA", "ELSA INDRILASARI",
+                "FRISKA ASKINADIA", "ISNU PRAMUSINTHO", "LULUK AINI NAFISAH", "M. DHANNIES FEBRIANO",
+                "M. ZAFQI ALIEF UZZAMAN", "MUHAMMAD AGHIS MUSTAGHIS", "MUHAMMAD ALWAN FAKHRI",
+                "MUHAMMAD FAREL", "MUHAMMAD FATWA ADITYA", "MUHAMMAD GUNTUR ALFA RIZQY",
+                "MUHAMMAD RIZQI JANWAR", "MUHAMMAD UBAIDILLAH", "NAYAKA ADWITIYA FATHONY",
+                "NUR ISROATUL ULA", "PRISKA GAVRILA RIYADI", "PUTRA CAHYA RAMADHAN",
+                "RACHEL SETYA UTAMA", "RAKHA SYAFIQ AN NAJIB", "RAVENO ANDREAN MEVALDI",
+                "ZAHIRA NUR KHASANAH", "ZAKI ALMAS MUSYAFA"
+            ],
+            "XII-7": [
+                "ADINDA ANATASYA STEVANIE", "AISYA NISRINA PUTRI", "ALFINDO SURYA SATRIAGUNG",
+                "ANUGRAHENING HERSYA NOVIA WIJAYA", "AULIA JANATU SIEVA", "AURA ZAHRA",
+                "AYUN SHINTA FEBRIANI MAZIYAH", "CAHYA AYU ANGGITA", "CHAYLA MARZA DIANOVA",
+                "DESI RAKHMAWATI", "DINI LISTIANA", "FANY FALASIFA", "GHINA SYAKIRAH IHSAN",
+                "HANDIS EL FAIQOH", "HAYYA WAHIDATUN NASWA", "IMALIKHA FATYA KURNIALLAH",
+                "IVAN TRIANSYAH", "KINARD FIAN MAHARANI", "LAILATUL HABIBAH", "MAUREL ZASKYA ZAKY",
+                "MOCHAMMAD ERRIN PANCA RIZKI", "MUHAMMAD HILMY NABIHA", "NIBRAS AISYAH ANINDITAWIJAYA",
+                "NOVA AULIA BERLIANI", "RIZA DAMAYANTI", "SAFFANATU IHTAZANA", "SEKAR SARI",
+                "SELVI IBFAQOTUL WAFA", "SHETI ALTHAFI RANTI", "SYAFIRA MAULIDATUR RISQI",
+                "TSABHITA AURELYA SAFA KARISA", "UMI DZINNU ROINI", "VANIA KRISTIANINGRUM",
+                "YESINA SALWA AURELIA", "ZARA FIRJATUL HUSNA", "ZHAFRAN ARVA NAUFALINO"
+            ],
+            "XII-8": [
+                "AHMAD IQBAL MAULANA", "ARSYA SAFIRA", "ASYIFA DWI AMELIA", "AULIA ANURRIZA",
+                "AZARIA CALLISTA", "BUNGA FINA DWI YANTI", "CANTIKA SEPTIANI RAMADHANI",
+                "DIAN AYU AGUSTINA", "DINA MELISA", "ENDITO CAHYA PRATAMA", "GUIDO GANANG SAPUTRA",
+                "HAFIDZ MUHAMAD NOVIAN", "JAZILA NAFAANI ISNADA", "KEISYA REVALINA",
+                "KRIS TRIANTO RAMADHANI", "LABIDAH", "LUKI SEBA LUKITO", "M. IKROM MAULIDIN",
+                "MUHAMMAD MAKRUF", "MUHAMMAD NAUFAL RIZQI", "MUSLIKHA", "NADIA RAMA", "NAILA AMELINDA",
+                "NATASYA DEKA ALVISKA", "NESYA HAFIZTA PUTRI", "NONIQ AQUINI BALQIS",
+                "NUR KHOMSATUN KHASANAH", "QONITA PUTRI ADIZA", "RACHEL DESINTHA FANY",
+                "RAFIF EGA PRATAMA", "RAISYA HANUM AGITA", "SATRIA ABDUL MAJID",
+                "SYARIFAH NAADIYA MUHAIMIN", "TIVANI NUR AULYA"
+            ],
+            "XII-9": [
+                "AHMAD FAESOL AL MURSYIDI", "ALINA CAHYA KARTIKA", "ARDIAN AZMI LAZUARDI",
+                "ARISKA AMILIA", "ATTIYATUL FAHIRA", "AZMI ARFITA SARI", "CAHAYA SEKAR AYU",
+                "CHATERINE ALIKA SAWITRI", "DWI SAFITRI", "ESHAL DELBAR DINAR",
+                "FADIA AZZAHRA SISYANA PUTTRI", "GENDIES TALITHA ZAIN", "HAMMAM NAYAKA ABIUDAYA",
+                "JUTIA RAMADANI", "KHANZA AZ ZAHRA", "KHOLIFATUS SYAHIRAH", "KUS NAENI",
+                "MARSYA KHARINA NAZIFAH", "MISKIYAH", "MUHAMMAD KHILMI HAIDAR", "MUNAH AININ WAFIQAH",
+                "NADIRA RIFDA ARSIANDANA", "NAUVA ALMAS SHINA", "NAYSILA MAULIDA AZKYA",
+                "NIZA BELLA PUTRI", "PUTRI NINGSIH", "RAHMA ZAHRATUSITA", "RAHMAT HIDAYAH",
+                "RIKA DWI ARDIANTI", "RISKIYA HASNA SAFIRAH", "RISQINAFIATUL KHUSNA",
+                "RIZKA DWI AMELIA", "SARAH REVALINA ACHMAD", "SCHATZI NABILA SARI",
+                "SHINTA AULIA DEWI", "SYAKILA KARIMA PRANOTO"
+            ]
+        };
 
-// Elemen DOM untuk combo nama dan kelas
-const kelasSiswaSelect = document.getElementById('kelasSiswa');
-const namaSiswaSelect = document.getElementById('namaSiswa');
-
-// Event listener untuk combo kelas
-kelasSiswaSelect.addEventListener('change', function() {
-    const selectedKelas = this.value;
-    
-    // Reset combo siswa
-    namaSiswaSelect.innerHTML = '<option value="">-- Pilih siswa --</option>';
-    namaSiswaSelect.disabled = !selectedKelas;
-    
-    if (selectedKelas) {
-        // Populate combo siswa
-        dataSiswa[selectedKelas].forEach((siswa, index) => {
-            const option = document.createElement('option');
-            option.value = siswa;
-            option.textContent = siswa;
-            namaSiswaSelect.appendChild(option);
-        });
-        
-        // Trigger ekstrakData untuk update info panel
-        ekstrakData();
-    }
-});
-
-// Event listener untuk combo nama siswa
-namaSiswaSelect.addEventListener('change', ekstrakData);
         // Data juz dan materi
         const rawData = `**JUZ 1#Al-Fatihah 1-7|Al-Baqarah 1-7|Al-Baqarah 8-14|Al-Baqarah 15-21|Al-Baqarah 22-29|Al-Baqarah 30-36|Al-Baqarah 37-42|Al-Baqarah 43-50|Al-Baqarah 51-56|Al-Baqarah 57-64|Al-Baqarah 65-72|Al-Baqarah 73-80|Al-Baqarah 81-88|Al-Baqarah 89-95|Al-Baqarah 96-111|Al-Baqarah 112-118|Al-Baqarah 118-121|Al-Baqarah 122-128|Al-Baqarah 129-136|Al-Baqarah 137-141
 **JUZ 2#Al-Baqarah 142-147|Al-Baqarah 148-153|Al-Baqarah 154-159|Al-Baqarah 160-165|Al-Baqarah 166-171|Al-Baqarah 172-178|Al-Baqarah 179-183|Al-Baqarah 184-189|Al-Baqarah 190-195|Al-Baqarah 196-201|Al-Baqarah 202-207|Al-Baqarah 208-213|Al-Baqarah 214-219|Al-Baqarah 220-226|Al-Baqarah 227-232|Al-Baqarah 233-238|Al-Baqarah 239-243|Al-Baqarah 244-247|Al-Baqarah 248-250|Al-Baqarah 251-252
@@ -1466,7 +1440,7 @@ namaSiswaSelect.addEventListener('change', ekstrakData);
 **JUZ 17#Al-Anbiya 1-10|Al-Anbiya 11-24|Al-Anbiya 25-35|Al-Anbiya 36-44|Al-Anbiya 45-57|Al-Anbiya 58-72|Al-Anbiya 73-81|Al-Anbiya 82-90|Al-Anbiya 91-101|Al-Anbiya 102-112|Al-Hajj 1-5|Al-Hajj 6-15|Al-Hajj 16-23|Al-Hajj 24-30|Al-Hajj 31-38|Al-Hajj 39-46|Al-Hajj 47-55|Al-Hajj 56-64|Al-Hajj 65-72|Al-Hajj 73-78
 **JUZ 18#Al-Mu'minun 1-17|Al-Mu'minun 18-27|Al-Mu'minun 28-42|Al-Mu'minun 43-59|Al-Mu'minun 60-74|Al-Mu'minun 75-89|Al-Mu'minun 90-104|Al-Mu'minun 105-118|An-Nuur 1-10|An-Nuur 11-20|An-Nuur 21-27|An-Nuur 28-31|An-Nuur 32-36|An-Nuur 37-43|An-Nuur 44-53|An-Nuur 54-58|An-Nuur 59-61|An-Nuur 62- Al-Furqan 2|Al-Furqan 3-11|Al-Furqan 12-20
 **JUZ 19#Al-Furqan 21-32|Al-Furqan 33-43|Al-Furqan 44-55|Al-Furqan 56-67|Al-Furqan 68-77|Asy-Syura 1-19|Asy-Syura 20-39|Asy-Syura 40-60|Asy-Syura 61-83|Asy-Syura 84-111|Asy-Syura 112-136|Asy-Syura 137-159|Asy-Syura 160-183|Asy-Syura 184-206|Asy-Syura 207-227|An-Naml 1-13|An-Naml 14-22|An-Naml 23-35|An-Naml 36-44|An-Naml 45-55
-**JUZ 20#An-Naml 56-73|An-Naml 74-76|An-Naml 77-88|An-Naml 89- Al-Qasas 5|Al-Qasas 6-13|Al-Qasas 14-21|Al-Qasas 22-28|Al-Qasas 29-35|Al-Qasas 36-43|Al-Qasas 44-50|Al-Qasas 51-59|Al-Qasas 60-70|Al-Qasas 71-77|Al-Qasas 78-84|Al-Qasas 85- Al-Ankabut 6|Al-Ankabut 7-14|Al-Ankabut 15-23|Al-Ankabut 24-30|Al-Ankabut 31-38|Al-Ankabut 39-45
+**JUZ 20#An-Naml 56-73|An-Naml 74-76|An-Naml 77-88|An-Naml 89 - Al-Qasas 5|Al-Qasas 6-13|Al-Qasas 14-21|Al-Qasas 22-28|Al-Qasas 29-35|Al-Qasas 36-43|Al-Qasas 44-50|Al-Qasas 51-59|Al-Qasas 60-70|Al-Qasas 71-77|Al-Qasas 78-84|Al-Qasas 85- Al-Ankabut 6|Al-Ankabut 7-14|Al-Ankabut 15-23|Al-Ankabut 24-30|Al-Ankabut 31-38|Al-Ankabut 39-45
 **JUZ 21#Al-Ankabut 46-52|Al-Ankabut 53-63|Al-Ankabut 64 - Ar-Ruum 5|Ar-Ruum 6-15|Ar-Ruum 16-24|Ar-Ruum 25-32|Ar-Ruum 33-41|Ar-Ruum 42-50|Ar-Ruum 51-60|Luqman 1-11|Luqman 12-19|Luqman 20-28|Luqman 29-34|As-Sajdah 1-11|As-Sajdah 12-20|As-Sajdah 21-30|Al-Ahzab 1-6|Al-Ahzab 7-15|Al-Ahzab 16-22|Al-Ahzab 23-30
 **JUZ 22#Al-Ahzab 31-35|Al-Ahzab 36-43|Al-Ahzab 44-50|Al-Ahzab 51-54|Al-Ahzab 55-62|Al-Ahzab 63-73|Saba 1-7|Saba 8-14|Saba 15-22|Saba 23-31|Saba 32-39|Saba 40-48|Saba 49 - Fatir 3|Fatir 4-11|Fatir 12-18|Fatir 19-30|Fatir 31-38|Fatir 39-44|Fatir 45 - Yasin 12|Yasin 13-27
 **JUZ 23#Yasin 28-40|Yasin 41-54|Yasin 55-70|Yasin 71-83|As-Saffat 1-24|As-Saffat 25-51|As-Saffat 52-76|As-Saffat 77-102|As-Saffat 103-126|As-Saffat 127-153|As-Saffat 154-182|Sad 1-16|Sad 17-26|Sad 27-42|Sad 43-61|Sad 62-83|Sad 84 - Az-Zumar 5|Az-Zumar 6-10|Az-Zumar 11-21|Az-Zumar 22-31
@@ -1486,7 +1460,7 @@ namaSiswaSelect.addEventListener('change', ekstrakData);
 
         // Data surat Juz 30 untuk hafalan
         const juz30Surat = [
-            "An-Nas", "Al-Falaq", "Al-Ikhlas", "Al-Lahab", "An-Nasr",
+            "An-Nas", "Al-Falaq", "Al-Ikhlas", "Al-Lahab", "An-Nashr",
             "Al-Kafirun", "Al-Kautsar", "Al-Ma'un", "Quraisy", "Al-Fil",
             "Al-Humazah", "Al-Asr", "At-Takatsur", "Al-Qariah", "Al-Adiyat",
             "Az-Zalzalah", "Al-Bayyinah", "Al-Qadr", "Al-Alaq", "At-Tin",
@@ -1653,8 +1627,8 @@ namaSiswaSelect.addEventListener('change', ekstrakData);
         const ayatErrorMessage = document.getElementById('ayatErrorMessage');
         const btnPrint = document.getElementById('btnPrint');
         const btnCopy = document.getElementById('btnCopy');
-        const namaSiswaInput = document.getElementById('namaSiswa');
         const kelasSiswaSelect = document.getElementById('kelasSiswa');
+        const namaSiswaSelect = document.getElementById('namaSiswa');
         const arabicFontSizeSlider = document.getElementById('arabicFontSize');
         const arabicFontSizeDisplay = document.getElementById('arabicFontSizeDisplay');
         const translationFontSizeSlider = document.getElementById('translationFontSize');
@@ -1685,6 +1659,31 @@ namaSiswaSelect.addEventListener('change', ekstrakData);
 
         // Inisialisasi pilihan Juz
         Object.keys(juzMap).forEach(key => comboJuz.add(new Option(key, key)));
+
+        // Inisialisasi combo siswa
+        kelasSiswaSelect.addEventListener('change', function() {
+            const selectedKelas = this.value;
+            
+            // Reset combo siswa
+            namaSiswaSelect.innerHTML = '<option value="">-- Pilih siswa --</option>';
+            namaSiswaSelect.disabled = !selectedKelas;
+            
+            if (selectedKelas) {
+                // Populate combo siswa
+                dataSiswa[selectedKelas].forEach((siswa, index) => {
+                    const option = document.createElement('option');
+                    option.value = siswa;
+                    option.textContent = siswa;
+                    namaSiswaSelect.appendChild(option);
+                });
+                
+                // Trigger ekstrakData untuk update info panel
+                ekstrakData();
+            }
+        });
+
+        // Event listener untuk combo nama siswa
+        namaSiswaSelect.addEventListener('change', ekstrakData);
 
         // Inisialisasi hafalan Juz 30
         function initJuz30Checkboxes() {
@@ -1761,9 +1760,9 @@ namaSiswaSelect.addEventListener('change', ekstrakData);
 
         // Ekstrak data dari materi yang dipilih
         function ekstrakData() {
-          const checked = Array.from(document.querySelectorAll('.chk-materi:checked'));
-    const nama = namaSiswaSelect.value || "Siswa";
-    const kelas = kelasSiswaSelect.value || "";
+            const checked = Array.from(document.querySelectorAll('.chk-materi:checked'));
+            const nama = namaSiswaSelect.value || "Siswa";
+            const kelas = kelasSiswaSelect.value || "";
 
             if (checked.length === 0) {
                 resultInfo.style.display = 'none';
@@ -1847,10 +1846,9 @@ namaSiswaSelect.addEventListener('change', ekstrakData);
 
         // Fungsi untuk mengumpulkan semua data
         function collectAllData() {
-    const nama = namaSiswaSelect.value || "Siswa";
-    const kelas = kelasSiswaSelect.value || "";
-    const juz = comboJuz.value || "";
-    
+            const nama = namaSiswaSelect.value || "Siswa";
+            const kelas = kelasSiswaSelect.value || "";
+            const juz = comboJuz.value || "";
             
             // Daftar materi yang dipilih
             const checkedMateri = Array.from(document.querySelectorAll('.chk-materi:checked'));
@@ -1918,11 +1916,11 @@ namaSiswaSelect.addEventListener('change', ekstrakData);
 
         // Event listener untuk tombol simpan
         btnSimpan.addEventListener('click', function() {
-            const nama = namaSiswaInput.value;
+            const nama = namaSiswaSelect.value;
             const kelas = kelasSiswaSelect.value;
             
             if (!nama || !kelas) {
-                alert('Silakan lengkapi nama dan kelas terlebih dahulu!');
+                alert('Silakan pilih kelas dan nama siswa terlebih dahulu!');
                 return;
             }
             
@@ -1976,8 +1974,19 @@ namaSiswaSelect.addEventListener('change', ekstrakData);
             const lastData = localStorage.getItem('lastSavedData');
             if (lastData) {
                 const data = JSON.parse(lastData);
-                namaSiswaInput.value = data.nama || '';
-                kelasSiswaSelect.value = data.kelas || '';
+                
+                // Set kelas dan trigger perubahan
+                if (data.kelas) {
+                    kelasSiswaSelect.value = data.kelas;
+                    kelasSiswaSelect.dispatchEvent(new Event('change'));
+                    
+                    // Tunggu sedikit untuk combo nama terisi
+                    setTimeout(() => {
+                        if (data.nama) {
+                            namaSiswaSelect.value = data.nama;
+                        }
+                    }, 100);
+                }
                 
                 // Load checkbox berdasarkan data
                 if (data.shalatWajib) {
@@ -2018,14 +2027,14 @@ namaSiswaSelect.addEventListener('change', ekstrakData);
 
         // Fungsi untuk mengambil ayat dari AlQuran.cloud API
         async function fetchAyatFromAPI() {
-          if (!currentSurat || currentSelectedSegments.length === 0) {
-        errorMessage.textContent = "⚠️ Silakan pilih materi terlebih dahulu.";
-        errorMessage.style.display = 'block';
-        return;
-    }
+            if (!currentSurat || currentSelectedSegments.length === 0) {
+                errorMessage.textContent = "⚠️ Silakan pilih materi terlebih dahulu.";
+                errorMessage.style.display = 'block';
+                return;
+            }
 
-    const nama = namaSiswaSelect.value || "Siswa";
-    const kelas = kelasSiswaSelect.value || "";
+            const nama = namaSiswaSelect.value || "Siswa";
+            const kelas = kelasSiswaSelect.value || "";
             
             // Switch ke tampilan ayat
             formCard.style.display = 'none';
@@ -2130,7 +2139,7 @@ namaSiswaSelect.addEventListener('change', ekstrakData);
                 ayatErrorMessage.textContent = `⚠️ Gagal memuat ayat. Silakan coba lagi.`;
                 ayatErrorMessage.style.display = 'block';
                 
-                // Show fallback message
+                // Show fallback ayat
                 showFallbackAyat();
             }
         }
@@ -2350,11 +2359,6 @@ namaSiswaSelect.addEventListener('change', ekstrakData);
         btnZoomOut.addEventListener('click', function() {
             updateArabicFontSize(currentArabicFontSize - 1);
         });
-
-        // Event listeners untuk update otomatis
- // Event listeners untuk update otomatis
-kelasSiswaSelect.addEventListener('change', ekstrakData);
-namaSiswaSelect.addEventListener('change', ekstrakData);
 
         // Initialize with default settings
         window.onload = function() {
