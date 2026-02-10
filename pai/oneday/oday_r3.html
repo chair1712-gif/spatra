@@ -2018,14 +2018,14 @@ namaSiswaSelect.addEventListener('change', ekstrakData);
 
         // Fungsi untuk mengambil ayat dari AlQuran.cloud API
         async function fetchAyatFromAPI() {
-            if (!currentSurat || currentSelectedSegments.length === 0) {
-                errorMessage.textContent = "⚠️ Silakan pilih materi terlebih dahulu.";
-                errorMessage.style.display = 'block';
-                return;
-            }
+          if (!currentSurat || currentSelectedSegments.length === 0) {
+        errorMessage.textContent = "⚠️ Silakan pilih materi terlebih dahulu.";
+        errorMessage.style.display = 'block';
+        return;
+    }
 
-            const nama = namaSiswaInput.value || "Siswa";
-            const kelas = kelasSiswaSelect.value || "";
+    const nama = namaSiswaSelect.value || "Siswa";
+    const kelas = kelasSiswaSelect.value || "";
             
             // Switch ke tampilan ayat
             formCard.style.display = 'none';
