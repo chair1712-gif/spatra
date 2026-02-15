@@ -106,17 +106,15 @@
         <!-- FORM CARD -->
         <div class="card form-card" id="formCard">
             <header>
-                <h1><i class="fas fa-book-quran"></i> Laporan Kegiatan Ramadhan Kelas XII</h1>
-                <p class="subtitle">SMA N 1 WIRADESA Kab. Pekalongan</p>
+                <h1><i class="fas fa-book-quran"></i> Laporan Harian Santri</h1>
+                <p class="subtitle">Input Amal Harian & Setoran Al-Qur'an</p>
             </header>
-<p> Silakan kamu input data di bawah ini, dengan mengisi Kelas, pilih Nama Siswa, lalu pilih bacaan ONE DAY ONE JUZ , 
- Pilih Juz, lalu bagian bacaan, kemudian bacalah dng klik Tampilkan Ayat, jika selesai kik SELESAI, SIMPAN LAPORAN
-dilanjutkan dengan mengisi aktivitas, shalat fardhu mulai Dzuhur ( kemarin ) sd subuh ( tadi padi ) </p>
+
             <!-- Identitas -->
             <div class="input-group">
                 <label>Kelas</label>
                 <select id="kelasSiswa" onchange="updateNamaSiswa()">
-                    <option value="">-- Memuat Data Kelas --</option>
+                    <option value="">-- Pilih Kelas --</option>
                 </select>
             </div>
             <div class="input-group">
@@ -132,7 +130,7 @@ dilanjutkan dengan mengisi aktivitas, shalat fardhu mulai Dzuhur ( kemarin ) sd 
             <div class="input-group">
                 <label>Pilih Juz</label>
                 <select id="comboJuz">
-                    <option value="">-- Memuat Data Juz --</option>
+                    <option value="">-- Pilih Juz --</option>
                 </select>
             </div>
 
@@ -260,21 +258,19 @@ dilanjutkan dengan mengisi aktivitas, shalat fardhu mulai Dzuhur ( kemarin ) sd 
 **JUZ 24#Az-Zumar 32-40|Az-Zumor 42-47|Az-Zumor 48-56|Az-Zumor 57-67|Az-Zumor 68-74|Az-Zumor 75-Al-Ghafir 7|Al-Ghafir 8-16|Al-Ghafir 17-25|Al-Ghafir 26-33|Al-Ghafir 34-40|Al-Ghafir 41-49|Al-Ghafir 50-58|Al-Ghafir 59-66|Al-Ghafir 67-77|Al-Ghafir 78-85|Al-Fushilat 1-11|Al-Fushilat 12-20|Al-Fushilat 21-29|Al-Fushilat 30-38|Al-Fushilat 39-46
 **JUZ 25#Al-Fushilat 47-54|Asy-Syura 1-10|Asy-Syura 11-15|Asy-Syura 16-22|Asy-Syura 23-31|Asy-Syura 32-44|Asy-Syura 35-51|Asy-Syura 52- Az-Zukhr43 10|Az-Zukhr43 11-22|Az-Zukhr43 23-33|Az-Zukhr43 34-47|Az-Zukhr43 48-60|Az-Zukhr43 61-73|Az-Zukhr43 74-89|Ad-Dukhan 1-18|Ad-Dukhan 19-39|Ad-Dukhan 40-59|Al-Ghaasyiyah 1-13|Al-Ghaasyiyah 14-22|Al-Ghaasyiyah 23-32
 **JUZ 26#Al-Jasiyah 33 - Al-Ahq46 5|Al-Ahq46 6-14|Al-Ahq46 15-20|Al-Ahq46 21-28|Al-Ahq46 29-35|Muhammad 1-11|Muhammad 12-19|Muhammad 20-29|Muhammad 30-38|Al-Fath 1-9|Al-Fath 10-15|Al-Fath 16-23|Al-Fath 24-28|Al-Fath 29 - Al-Hujurat 4|Al-Hujurat 5-11|Al-Hujurat 12-18|Qaf 1-15|Qaf 16-35|Qaf 36 - Az-Zariyat 6|Az-Zariyat 7-30
-**JUZ 27#Az-Zariyat 31-51|Az-Zariyat 52 - At-Tur 14|At-Tur 15-31|At-Tur 32-49|An-Najm 1-26|An-Najm 27-44|An-Najm 45- Al-Qamar 6|Al-Qamar 7-27|Al-Q54 28-49|Al-Q54 50 - Ar-Rahman 16|Ar-Rahman 17-40|Ar-Rahman 41-67|Ar-Rahman 68-Al-Waq56 16|Al-Waq56 17-50|Al-Waq56 51-76|Al-Waq56 77-Al-Hadid 3|Al-Hadid 4-11|Al-Hadid 12-18|Al-Hadid 19-24|Al-Hadid 25-26
+**JUZ 27#Az-Zariyat 31-51|Az-Zariyat 52 - At-Tur 14|At-Tur 15-31|At-Tur 32-49|An-Najm 1-26|An-Najm 27-44|An-Najm 45- Al-Q54 6|Al-Q54 7-27|Al-Q54 28-49|Al-Q54 50 - Ar-Rahman 16|Ar-Rahman 17-40|Ar-Rahman 41-67|Ar-Rahman 68-Al-Waq56 16|Al-Waq56 17-50|Al-Waq56 51-76|Al-Waq56 77-Al-Hadid 3|Al-Hadid 4-11|Al-Hadid 12-18|Al-Hadid 19-24|Al-Hadid 25-26
 **JUZ 28#Al-Mujadiah 1-6|Al-Mujadiah 7-11|Al-Mujadiah 12-21|Al-Mujadiah 22-Al-Hasyr 3|Al-Hasyr 4-9|Al-Hasyr 10-16|Al-Hasyr 17-24|Al-Mumtahanah 1-5|Al-Mumtahanah 6-11|Al-Mumtahanah 12-As-Saff 5|As-Saff 6-14|Al-Jumu'ah 1-8|Al-Jumu'ah 9-Al-Munafiqun 4|Al-Munafiqun 5-11|At-Tagabun 1-9|At-Tagabun 10-18|At-Talaq 1-5|At-Talaq 6-12|At-Tahrim 1-7|At-Tahrim 8-12
 **JUZ 29#Al-Mulk 1-12|Al-Mulk 13-26|Al-Mulk 27-Al-Q68 15|Al-Q68 42-Al-Haqq69 8|Al-Haqq69 9-34|Al-Haqq69 35- Al-Maarij 10|Al-Maarij 11-39|Al-Maarij 40-Nuh 10|Nuh 11-28|Al-Jinn 1-13|Al-Jinn 14-28|Al-Muzzanmil 1-19|Al-Muzzanmil 20-Al-Muddassir 17|Al-Muddassir 18-47|Al-Muddassir 48-Al-Qiyamah 19|Al-Qiyamah 20-Al-Ins76 5|Al-Ins76 25|Al-Ins76 26-Al-Mursalat 19|Al-Mursalat 20-50
-**JUZ 30#An-Naba 1-40|An-Naaziaat 1-46|Abasa 1-42|At-Takwiir 1-29|Al-Infithaar 1-19|Al-Muthaffifiin 1-36|Al-Insyiqaaq 1-25|Al-Buruuj 1-22|Ath-Thaari86-17|Al-Alaa 1-19|Al-Ghaasyiy88-26|Al-Fajr 1-30|Al-Balad 1-20|Asy-Syams 1-15|Al-Lail 1-21|Adh-Dhuhaa 1-11|Al-Insyirah 1-8|At-Tin 1-8|Al-Alac 1-19|Al-Qadr 1-5|Al-Bayyinah 1-8|Az-Zalzalah 1-8|Al-Aadiyaat 1-11|Al-Qaariah 1-11|At-Takaatsur 1-8|Al-Ashr 1-3|Al-Humazah 1-9|Al-Fiil 1-5|Quraisy 1-4|Al-Maauun 1-7|Al-Kautsar 1-3|Al-Kaafiruun 1-6|An-Nashr 1-3|Al-Lahab 1-5|Al-Ikhlash 1-4|Al-Falaq 1-5|An-Naas 1-6`;
+**JUZ 30#An-Naba 1-40|An-Naaziaot 1-46|Abasa 1-42|At-Takwiir 1-29|Al-Infithaar 1-19|Al-Muthaffifiin 1-36|Al-Insyiqaaq 1-25|Al-Buruuj 1-22|Ath-Thaari86-17|Al-Alaa 1-19|Al-Ghaasyiy88-26|Al-Fajr 1-30|Al-Balad 1-20|Asy-Syams 1-15|Al-Lail 1-21|Adh-Dhuhaa 1-11|Al-Insyirah 1-8|At-Tin 1-8|Al-Alac 1-19|Al-Qadr 1-5|Al-Bayyinah 1-8|Az-Zalzalah 1-8|Al-Aadiyaot 1-11|Al-Qaariah 1-11|At-Takaatsur 1-8|Al-Ashr 1-3|Al-Humazah 1-9|Al-Fiil 1-5|Quraisy 1-4|Al-Maauon 1-7|Al-Kautsar 1-3|Al-Kaafiruun 1-6|An-Nashr 1-3|Al-Lahab 1-5|Al-Ikhlash 1-4|Al-Falaq 1-5|An-Naas 1-6`;
 
         const shalatWajibList = ["Subuh", "Dzuhur", "Ashar", "Maghrib", "Isya"];
         const shalatSunnahList = ["Dhuha", "Tahajjud", "Witir", "Rawatib", "Sunnah Mutlaq"];
         const juz30List = ["An-Naba", "An-Nazi'at", "Abasa", "At-Takwir", "Al-Infitar", "Al-Mutaffifin", "Al-Insyiqaq", "Al-Buruj", "At-Tariq", "Al-A'la", "Al-Ghasyiyah", "Al-Fajr", "Al-Balad", "Asy-Syams", "Al-Lail", "Ad-Duha", "Al-Insyirah", "At-Tin", "Al-Alac", "Al-Qadr", "Al-Bayyinah", "Az-Zalzalah", "Al-'Adiyat", "Al-Qari'ah", "At-Takatsur", "Al-Asr", "Al-Humazah", "Al-Fil", "Quraisy", "Al-Ma'un", "Al-Kautsar", "Al-Kafirun", "An-Nasr", "Al-Lahab", "Al-Ikhlas", "Al-Falaq", "An-Nas"];
 
-        // MAPPING DIPERBAIKI: Mengakomodasi typo di rawData (Al-Q68, Al-Ins76, dll)
         const suratMapping = {
             'Al-Fatihah': 1, 'Al-Baqarah': 2, 'Ali Imran': 3, 'An-Nisa': 4, 'Al-Maidah': 5, 'Al-Anam': 6, 'Al-Araf': 7, 'Al-Anfal': 8, 'At-Taubah': 9, 'Yunus': 10, 'Hud': 11, 'Yusuf': 12, 'Ar-Rad': 13, 'Ibrahim': 14, 'Al-Hijr': 15, 'An-Nahl': 16, 'Al-Isra': 17, 'Al-Kahf': 18, 'Maryam': 19, 'Taha': 20, 'Al-Anbiya': 21, 'Al-Hajj': 22, 'Al-Muminun': 23, 'An-Nur': 24, 'Al-Furqan': 25, 'Ash-Shuara': 26, 'An-Naml': 27, 'Al-Qasas': 28, 'Al-Ankabut': 29, 'Ar-Rum': 30, 'Luqman': 31, 'As-Sajda': 32, 'Al-Ahzab': 33, 'Saba': 34, 'Fatir': 35, 'Yasin': 36, 'As-Saffat': 37, 'Sad': 38, 'Az-Zumor': 39, 'Ghafir': 40, 'Fussilat': 41, 'Ash-Shura': 42, 'Az-Zukhr43': 43, 'Az-Zukhruf': 43, 'Ad-Dukhan': 44, 'Al-Jathiya': 45, 'Al-Ahq46': 46, 'Al-Ahqaf': 46, 'Muhammad': 47, 'Al-Fath': 48, 'Al-Hujurat': 49, 'Qaf': 50, 'Adh-Dhariyat': 51, 'At-Tur': 52, 'An-Najm': 53, 'Al-Q54': 54, 'Al-Qamar': 54, 'Ar-Rahman': 55, 'Al-Waq56': 56, 'Al-Waqia': 56, 'Al-Hadid': 57, 'Al-Mujadila': 58, 'Al-Hashr': 59, 'Al-Mumtahana': 60, 'As-Saff': 61, 'Al-Jumuah': 62, 'Al-Munafiqun': 63, 'At-Taghabun': 64, 'At-Talaq': 65, 'At-Tahrim': 66, 'Al-Mulk': 67, 'Al-Q68': 68, 'Al-Qalam': 68, 'Al-Haqqa': 69, 'Al-Maarij': 70, 'Nuh': 71, 'Al-Jinn': 72, 'Al-Muzzammil': 73, 'Al-Muddathir': 74, 'Al-Qiyama': 75, 'Al-Ins76': 76, 'Al-Insan': 76, 'Al-Mursalat': 77, 'An-Naba': 78, 'An-Naziot': 79, 'An-Nazi\'at': 79, 'Abasa': 80, 'At-Takwir': 81, 'Al-Infitar': 82, 'Al-Mutaffifin': 83, 'Al-Insyiqaq': 84, 'Al-Buruj': 85, 'At-Tariq': 86, 'Al-Ala': 87, 'Al-Ghashiya': 88, 'Al-Fajr': 89, 'Al-Balad': 90, 'Ash-Shams': 91, 'Al-Lail': 92, 'Ad-Duha': 93, 'Ash-Sharh': 94, 'At-Tin': 95, 'Al-Alac': 96, 'Al-Alaq': 96, 'Al-Qadr': 97, 'Al-Bayyina': 98, 'Az-Zalzalah': 99, 'Al-Adiyat': 100, 'Al-Qaria': 101, 'At-Takathur': 102, 'Al-Asr': 103, 'Al-Humazah': 104, 'Al-Fil': 105, 'Quraish': 106, 'Al-Maun': 107, 'Al-Kawthar': 108, 'Al-Kafirun': 109, 'An-Nasr': 110, 'Al-Masad': 111, 'Al-Ikhlas': 112, 'Al-Falaq': 113, 'An-Nas': 114
         };
 
-        // URL DATABASE
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxGzMNcOzlIBmh4MY3QAxzUO6tlp0xbaFaYNNbh8C9NvSv8RO0nfVZMkytVQzn_x7Gj7g/exec"; 
 
         let juzMap = {};
@@ -282,7 +278,6 @@ dilanjutkan dengan mengisi aktivitas, shalat fardhu mulai Dzuhur ( kemarin ) sd 
         let currentSurat = "", currentAwal = 0, currentAkhir = 0, currentSuratNumber = 0;
         let isReadingFinished = false;
 
-        // DOM ELEMENTS
         const comboJuz = document.getElementById('comboJuz');
         const materiList = document.getElementById('materiList');
         const resultInfo = document.getElementById('resultInfo');
@@ -305,17 +300,11 @@ dilanjutkan dengan mengisi aktivitas, shalat fardhu mulai Dzuhur ( kemarin ) sd 
             generateCheckboxes('containerShalatWajib', shalatWajibList, 'chkWajib');
             generateCheckboxes('containerShalatSunnah', shalatSunnahList, 'chkSunnah');
             generateCheckboxes('containerHafalan', juz30List, 'chkHafalan');
-
-            const kelasSelect = document.getElementById('kelasSiswa');
-            if (siswaMap['XII-1']) {
-                kelasSelect.value = "XII-1";
-                updateNamaSiswa();
-            }
         }
 
         function parseSiswaData() {
             const kelasSelect = document.getElementById('kelasSiswa');
-            kelasSelect.innerHTML = '';
+            kelasSelect.innerHTML = '<option value="">-- Pilih Kelas --</option>';
             const kelasBlocks = rawSiswaData.trim().split('#').filter(block => block.length > 0);
             kelasBlocks.forEach(block => {
                 const parts = block.split('|');
@@ -421,14 +410,9 @@ dilanjutkan dengan mengisi aktivitas, shalat fardhu mulai Dzuhur ( kemarin ) sd 
             resultInfo.style.display = 'block';
         }
 
-        // FUNGSI TAMPILKAN AYAT YANG DIPERBAIKI
         async function tampilkanAyat() {
             const checked = Array.from(document.querySelectorAll('.chk-materi:checked'));
-            if (checked.length === 0) {
-                alert("Pilih materi terlebih dahulu.");
-                return;
-            }
-
+            if (checked.length === 0) return;
             const firstVal = checked[0].value;
             const lastVal = checked[checked.length - 1].value;
             const regex = /^(.+?)\s(\d+)(?:-(\d+))?$/;
@@ -438,24 +422,15 @@ dilanjutkan dengan mengisi aktivitas, shalat fardhu mulai Dzuhur ( kemarin ) sd 
             if (start && end) {
                 currentSurat = start[1].trim();
                 const suratEnd = end[1].trim();
-                
-                // Validasi Surat Sama
                 if (currentSurat !== suratEnd) {
                     alert("Harap pilih materi dalam satu surat yang sama.");
                     return;
                 }
-
                 currentAwal = parseInt(start[2]);
                 currentAkhir = parseInt(end[3] || end[2]);
-                
-                // Mengambil Nomor Surat (Mapping diperbaiki)
                 currentSuratNumber = getSuratNumberByName(currentSurat);
-            } else {
-                alert("Format data materi salah.");
-                return;
             }
 
-            // Pindah Tampilan
             formCard.classList.add('hidden');
             ayatCard.classList.remove('hidden');
             
@@ -468,16 +443,12 @@ dilanjutkan dengan mengisi aktivitas, shalat fardhu mulai Dzuhur ( kemarin ) sd 
             await fetchAyat();
         }
 
-        // Fungsi Cerdas Mencari ID Surat
         function getSuratNumberByName(suratName) {
-            // Cek eksak di mapping
             if (suratMapping[suratName]) return suratMapping[suratName];
-
-            // Jika tidak ketemu, lakukan pencarian samar (fuzzy search) untuk mengatasi typo di rawData
             const normalizedName = suratName.toLowerCase()
                 .replace(/['\s-]/g, '')
                 .replace(/aa/g, 'a').replace(/yy/g, 'y').replace(/ii/g, 'i').replace(/uu/g, 'u')
-                .replace(/86/g, '86').replace(/76/g, '76').replace(/56/g, '56').replace(/43/g, '43').replace(/46/g, '46'); // normalisasi typo angka
+                .replace(/86/g, '86').replace(/76/g, '76').replace(/56/g, '56').replace(/43/g, '43').replace(/46/g, '46');
 
             for (const [name, number] of Object.entries(suratMapping)) {
                 const normalizedMapName = name.toLowerCase()
@@ -486,7 +457,7 @@ dilanjutkan dengan mengisi aktivitas, shalat fardhu mulai Dzuhur ( kemarin ) sd 
                 
                 if (normalizedName === normalizedMapName) return number;
             }
-            return 1; // Default fallback
+            return 1; 
         }
 
         async function fetchAyat() {
@@ -535,6 +506,35 @@ dilanjutkan dengan mengisi aktivitas, shalat fardhu mulai Dzuhur ( kemarin ) sd 
             document.getElementById('fontSizeLabel').textContent = val + 'px';
         }
 
+        // --- FUNGSI RESET FORM (BARU) ---
+        function resetForm() {
+            // 1. Reset Inputs Text
+            document.getElementById('kajianInput').value = "";
+            
+            // 2. Reset Dropdown
+            document.getElementById('kelasSiswa').value = "";
+            document.getElementById('namaSiswa').innerHTML = '<option value="">-- Pilih Nama --</option>';
+            
+            // 3. Reset Checkboxes (Semua Checkbox di halaman)
+            const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+            allCheckboxes.forEach(cb => cb.checked = false);
+
+            // 4. Reset Pilihan Juz
+            document.getElementById('comboJuz').value = "";
+            document.getElementById('materiList').innerHTML = '<div class="empty-state" style="color:#999; padding: 40px 0;">Silakan pilih Juz terlebih dahulu</div>';
+            document.getElementById('btnTampilkanAyat').disabled = true;
+
+            // 5. Sembunyakan Kotak Hijau Recap
+            document.getElementById('resultInfo').style.display = 'none';
+
+            // 6. Reset Variable Global
+            currentSurat = "";
+            currentAwal = 0;
+            currentAkhir = 0;
+            isReadingFinished = false;
+        }
+
+        // --- FUNGSI SIMPAN KE DATABASE DENGAN PESAN & RESET ---
         async function simpanKeDatabase() {
             const btn = document.getElementById('btnSimpanDatabase');
             const originalText = btn.innerHTML;
@@ -579,11 +579,17 @@ dilanjutkan dengan mengisi aktivitas, shalat fardhu mulai Dzuhur ( kemarin ) sd 
                 });
 
                 const result = await response.json();
+                
                 if (result.result === 'success') {
-                    alert(result.message);
+                    // PESAN KHUSUS SESUAI REQUEST
+                    alert("Terima kasih telah melakukan presensi kegiatan ramadhan, semoga menjadi amal kalian");
+                    
+                    // Jalankan Reset Form setelah berhasil simpan
+                    resetForm();
                 } else {
                     alert("Gagal menyimpan: " + result.message);
                 }
+
             } catch (error) {
                 console.error(error);
                 alert("Terjadi kesalahan koneksi ke database.");
