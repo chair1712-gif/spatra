@@ -1,605 +1,201 @@
- <!DOCTYPE html>
-<html lang="id">
+  <!DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sistem Laporan Harian Santri</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --primary-color: #1a5e63;
-            --secondary-color: #2a9d8f;
-            --accent-color: #e76f51;
-            --bg-gradient: linear-gradient(135deg, #1a5e63 0%, #0d3c3f 100%);
-            --arabic-font-size: 2.2rem;
-        }
+  <title>Laporan Ramadhan</title>
+  <style>
+    body { font-family: Arial; margin:30px; }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    h2 { margin-bottom:5px; }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--bg-gradient);
-            color: #333;
-            line-height: 1.6;
-            min-height: 100vh;
-            padding: 10px;
-        }
+    .tanggal-box {
+      margin-bottom:15px;
+      font-size:14px;
+    }
 
-        .main-container {
-            max-width: 800px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            padding-bottom: 40px;
-        }
+    .divider {
+      border-top:2px solid #000;
+      margin:10px 0;
+    }
 
-        .card {
-            background-color: rgba(255, 255, 255, 0.96);
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-            overflow: hidden;
-            padding: 25px;
-            width: 100%;
-        }
+    .tabs {
+      display:flex;
+      flex-wrap:wrap;
+      gap:5px;
+      margin-bottom:10px;
+    }
 
-        header { text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid var(--secondary-color); }
-        header h1 { font-size: 1.5rem; color: var(--primary-color); font-weight: 600; }
-        .subtitle { font-size: 0.9rem; color: #666; }
+    .tab {
+      padding:8px 15px;
+      background:#eee;
+      cursor:pointer;
+      border-radius:4px;
+      font-size:13px;
+    }
 
-        .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-weight: 500; margin-bottom: 8px; color: var(--primary-color); font-size: 0.9rem; }
-        .input-group input[type="text"], .input-group select, .input-group textarea {
-            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 10px; font-size: 1rem; background: white; appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat; background-position: right 12px center; background-size: 1em;
-        }
-        .input-group textarea { background-image: none; height: 100px; resize: vertical; }
+    .tab:hover {
+      background:#2e7d32;
+      color:white;
+    }
 
-        .scroll-check-container {
-            height: 140px; overflow-y: auto; border: 1px solid #ddd; border-radius: 10px; background: #fff; padding: 10px; margin-bottom: 15px;
-        }
-        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-        @media (max-width: 480px) { .grid-3 { grid-template-columns: repeat(2, 1fr); } }
-        .check-item { display: flex; align-items: center; font-size: 0.85rem; cursor: pointer; }
-        .check-item input { margin-right: 8px; accent-color: var(--secondary-color); transform: scale(1.1); }
+    .tab.active {
+      background:#2e7d32;
+      color:white;
+    }
 
-        .info-panel {
-            margin-top: 20px; padding: 20px; background: linear-gradient(135deg, #2a9d8f 0%, #1a5e63 100%);
-            color: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            white-space: pre-wrap; font-family: 'Courier New', Courier, monospace;
-            font-size: 0.9rem; line-height: 1.8; display: none;
-        }
+    table {
+      border-collapse: collapse;
+      width:100%;
+      font-size:13px;
+    }
 
-        .btn {
-            width: 100%; padding: 14px; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600;
-            cursor: pointer; color: white; transition: transform 0.1s; display: flex; align-items: center; justify-content: center; gap: 10px;
-        }
-        .btn:active { transform: scale(0.98); }
-        .btn-primary { background: var(--secondary-color); }
-        .btn-success { background: #28a745; }
-        .btn-secondary { background: #6c757d; }
-        .btn-database { background: #1e3a8a; margin-top: 20px; }
+    th, td {
+      border:1px solid #ccc;
+      padding:6px;
+    }
 
-        .ayat-header { background: linear-gradient(to right, var(--secondary-color), var(--primary-color)); color: white; padding: 20px; border-radius: 16px 16px 0 0; margin: -25px -25px 20px -25px; text-align: center; }
-        .ayat-display-container { max-height: 70vh; overflow-y: auto; padding: 5px; }
-        .ayat-item { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-right: 4px solid var(--secondary-color); }
-        .ayat-arabic { font-family: 'Amiri', serif; font-size: var(--arabic-font-size); text-align: right; line-height: 2.2; margin-bottom: 15px; color: #000; direction: rtl; padding: 10px; background: #fdfdfd; border-radius: 8px; }
-        .ayat-translation { font-size: 1rem; color: #444; line-height: 1.6; padding: 12px; background-color: #f0f9ff; border-radius: 8px; border-left: 3px solid var(--secondary-color); text-align: justify; }
-        
-        .font-control-wrapper { background: #f8f9fa; padding: 12px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #e0e0e0; }
-        input[type=range] { width: 100%; }
+    th {
+      background:#2e7d32;
+      color:white;
+    }
 
-        .loading, .error-message, .empty-state { text-align: center; padding: 30px; }
-        .error-message { background: #ffeaea; color: #c0392b; border-radius: 8px; margin-bottom: 15px; display: none; font-size: 0.9rem; }
-
-        footer { text-align: center; padding-top: 20px; color: rgba(255,255,255,0.8); font-size: 0.8rem; }
-
-        .hidden { display: none !important; }
-    </style>
+  </style>
 </head>
 <body>
-    <div class="main-container">
-        <!-- FORM CARD -->
-        <div class="card form-card" id="formCard">
-            <header>
-                <h1><i class="fas fa-book-quran"></i> Laporan Harian Santri</h1>
-                <p class="subtitle">Input Amal Harian & Setoran Al-Qur'an</p>
-            </header>
 
-            <!-- Identitas -->
-            <div class="input-group">
-                <label>Kelas</label>
-                <select id="kelasSiswa" onchange="updateNamaSiswa()">
-                    <option value="">-- Pilih Kelas --</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <label>Nama Siswa</label>
-                <select id="namaSiswa" onchange="updateRecap()">
-                    <option value="">-- Pilih Nama --</option>
-                </select>
-            </div>
+<h2>LAPORAN KEGIATAN RAMADHAN</h2>
 
-            <hr style="border:0; border-top:1px dashed #ddd; margin: 20px 0;">
+<div class="tanggal-box">
+  Tanggal :
+  <input type="date" id="filterTanggal">
+</div>
 
-            <!-- Bacaan Al-Qur'an -->
-            <div class="input-group">
-                <label>Pilih Juz</label>
-                <select id="comboJuz">
-                    <option value="">-- Pilih Juz --</option>
-                </select>
-            </div>
+<div class="divider"></div>
 
-            <div class="input-group">
-                <label>Daftar Materi (Klik Berurutan)</label>
-                <div id="materiList" class="scroll-check-container">
-                    <div class="empty-state" style="color:#999; padding: 40px 0;">Silakan pilih Juz terlebih dahulu</div>
-                </div>
-            </div>
+<div class="tabs" id="tabs"></div>
 
-            <!-- Tombol Tampilkan Ayat -->
-            <button class="btn btn-primary" id="btnTampilkanAyat" disabled onclick="tampilkanAyat()">
-                <i class="fas fa-book-open"></i> Tampilkan Ayat
-            </button>
+<div class="divider"></div>
 
-            <!-- Bagian Ibadah Lain -->
-            <hr style="border:0; border-top:1px dashed #ddd; margin: 20px 0;">
-            
-            <div class="input-group">
-                <label>Shalat Wajib (Tandai yang sudah dikerjakan)</label>
-                <div class="scroll-check-container grid-2" id="containerShalatWajib"></div>
-            </div>
+<div id="data"></div>
 
-            <div class="input-group">
-                <label>Shalat Sunnah</label>
-                <div class="scroll-check-container grid-2" id="containerShalatSunnah"></div>
-            </div>
+<script>
+const spreadsheetId = "1bcg6d9_5LgcE1kEQw2iEGLJuv_789p-k4PbXHb1YRDg";
+const sheetName = "Sheet1";
 
-            <div class="input-group">
-                <label>Hafalan Juz 30 (Sebutkan Surat)</label>
-                <div class="scroll-check-container grid-3" id="containerHafalan"></div>
-            </div>
+let kelasAktif = "";
 
-            <div class="input-group">
-                <label>Kajian Islam</label>
-                <textarea id="kajianInput" placeholder="Materi : ....... Tempat : ..... Waktu : ( hari/tgl, jam ) , Pemateri : ustd. ..... ( atau Membaca buku Keislaman : Judul : ...., pengarang : .... , hal : ..... )" oninput="updateRecap()"></textarea>
-            </div>
+/* ===== DEFAULT TANGGAL = HARI INI ===== */
+function setToday(){
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth()+1).padStart(2,'0');
+  const dd = String(today.getDate()).padStart(2,'0');
+  document.getElementById("filterTanggal").value = `${yyyy}-${mm}-${dd}`;
+}
 
-            <!-- Error Message -->
-            <div id="errorMessage" class="error-message"></div>
+/* ===== FORMAT KE dd/MM/yyyy ===== */
+function formatTanggalIndonesia(dateValue){
+  if(!dateValue) return "";
+  const t = new Date(dateValue);
+  const dd = String(t.getDate()).padStart(2,'0');
+  const mm = String(t.getMonth()+1).padStart(2,'0');
+  const yyyy = t.getFullYear();
+  return `${dd}/${mm}/${yyyy}`;
+}
 
-            <!-- KOTAK INFORMASI HIJAU (RECAP) -->
-            <div id="resultInfo" class="info-panel"></div>
+/* ===== BUAT TAB KELAS ===== */
+function buatTab(){
+  const kelasList = [
+    "XII-1","XII-2","XII-3","XII-4",
+    "XII-5","XII-6","XII-7","XII-8","XII-9"
+  ];
 
-            <!-- TOMBOL SIMPAN KE DATABASE -->
-            <button class="btn btn-database" id="btnSimpanDatabase" onclick="simpanKeDatabase()">
-                <i class="fas fa-database"></i> SIMPAN KE DATABASE
-            </button>
-        </div>
+  const container = document.getElementById("tabs");
 
-        <!-- AYAT DISPLAY CARD -->
-        <div class="card ayat-card hidden" id="ayatCard">
-            <div class="ayat-header">
-                <h2 id="ayatTitle">Bacaan Ayat</h2>
-                <div id="ayatSubtitle" style="font-size: 0.9rem; opacity: 0.9;"></div>
-            </div>
+  kelasList.forEach(kelas=>{
+    const tab = document.createElement("div");
+    tab.className = "tab";
+    tab.innerText = kelas;
 
-            <div class="font-control-wrapper">
-                <div class="font-label">
-                    <span><i class="fas fa-text-height"></i> Ukuran Huruf Arab</span>
-                    <span id="fontSizeLabel">Normal</span>
-                </div>
-                <input type="range" id="fontSizeControl" min="20" max="80" value="35" step="1" oninput="updateFontSize(this.value)">
-            </div>
+    tab.onclick = ()=>{
+      document.querySelectorAll(".tab")
+        .forEach(t=>t.classList.remove("active"));
 
-            <div id="loadingDisplay" class="loading hidden">
-                <div class="spinner" style="border: 5px solid #f3f3f3; border-top: 5px solid #2a9d8f; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto 15px;"></div>
-                <p>Memuat ayat dari server...</p>
-            </div>
+      tab.classList.add("active");
+      kelasAktif = kelas;
+      loadData();
+    };
 
-            <div id="ayatDisplay" class="ayat-display-container"></div>
+    container.appendChild(tab);
+  });
+}
 
-            <div id="ayatErrorMessage" class="error-message"></div>
+/* ===== LOAD DATA ===== */
+ function loadData(){
+  if(!kelasAktif) return;
 
-            <!-- Tombol SELESAI -->
-            <button class="btn btn-success" id="btnSelesai" onclick="selesaiBacaan()" style="margin-top: 20px;">
-                <i class="fas fa-check-circle"></i> SELESAI - SIMPAN LAPORAN
-            </button>
+  const tanggalInput = document.getElementById("filterTanggal").value;
+  if(!tanggalInput) return;
 
-            <button class="btn btn-secondary" onclick="kembaliKeForm()" style="margin-top: 10px;">
-                <i class="fas fa-arrow-left"></i> Batal / Kembali
-            </button>
-        </div>
+  const startDate = `${tanggalInput} 00:00:00`;
+  const endDate   = `${tanggalInput} 23:59:59`;
 
-        <footer>
-            <p>Sistem Laporan Santri &copy; 2024</p>
-        </footer>
-    </div>
+  let query = `
+    select * 
+    where A='${kelasAktif}'
+    and H >= datetime '${startDate}'
+    and H <= datetime '${endDate}'
+  `;
 
-    <script>
-        // --- 1. DATA VARIABEL ---
-        const rawSiswaData = `#XII-1|A. AUFA ASLAM ANJABI|AISYAH RAHMA AULIA|ANISA MAULIDYA HASANAH|ARINA MANASIKANA|ARUM NOOR SETIANY|DEWI WINDYAWATI|DIAH ANGGRAINI|DZU AISY YESAWA AUFA JULETHA|EKI NURWIDIASTUTI|EMHA HASANAIN MAHLUF AQMA|FADZILLAH AINITHA RAHMAN|HAMZAH AQIL AL MUSTAFA|ICHA SEPTIANA WULANDARI|LAELI MUNA|LAYLA SYARIFA RAHMADHANI|LINTANG APRILLIYANI|MADINA RAMADHANI|MARSYA NUR MAULIDINA|MAULIDA MAHARANI|MAZIDA RIFQI AFFANI|MUHAMMAD AHNAF SYAIBAN|MUHAMMAD DESTA ARIYANSYAH|MUHAMMAD RIZYK ABDILLAH|MUHAMMAD SYAUQY MUSTHOFA|NAILA PUTRI AFIFAH|NAJWA BALQIS SYAFIRA|NAURAH LAELATUL FAHRIYAH|NUR RAISYA RAHMADANI|OLIVIA RISKA RAMANDHANI|QURROTU AINII PUTRI HARTUTI|RACHEL AZEERA MARSYA PUTRI|SAMDYA FADLIKA|WULAN WIDYA AYU PRATIWI|ZAHARA BUNGA KAMELIA|ZIZNI RIZKI ADITIYA|ZULFATURROHMAH AZZAHRA
-#XII-2|AGESTA FADILAH ADAM|ARYA MAHENDRA RYANSYAH NOOR|AULIA PUSPA LESTARI|AULIA ZAIDATUSSALWA|CAHYO HADI LAKSONO|CHESYLLA AZ-ZAHRA WIDYANDA|DESTA AMELIA|FARAH NAILA AMANI|FEBRIANA RIZKY NURSANDI|GITA CITRA CINTA|IKRIMAH SYADIDA|IMANIA SALMA FARIZAH|JIBRIL ASYKAR CHABIBILLAH|KHASNA SALSABILA|KUSUMA AMMARY KHOIRUNNISA|M. RIKI IMAMUDDIN|MALIKHA MAHRASSALISA|MOCHAMAD FACHRI|MOH FAYRUZ SYAF TAFTAZANI|MUHAMAD KHOIRUL ANAM|MUHAMMAD DANY ROKAN|MUHAMMAD HISYAM AKMAL|MUHAMMAD NABIL DZAKIY|MUHAMMAD RIO FABIAN|NABILATUL KHASANAH|OCTAVIA RAMADHANI|RATNA MAULIDAH KHASANAH|RISMA DUMA FITRI|RIZQIATUL AZZAHRA|SALMA DIAN SAFIRA|SAYLA ARZAQINA|SINDIA KIRAN MUSTIKA|UMI LIFGIATUN RAMDANI|VITARI AZIZAH|WINDI SILVIANA|ZAHRAKHAN FARABI
-#XII-3|ACHMAD RIZQI ABIANSYAH|AISYAH KUSUMANINGSIH|AISYATUN NISAFITRI|AMALIA FARIDA AININ WIBOWO|ANINDYA QUTROTUNNANDA|ANITA PUTRI PRADHITA|AZZAHRA NUR MUFIDA|DHIKA BINTANG PRATAMA|FATIHATUL ZATIN AGAINI|FEBRINA SUKMA TYASSHOFA|FEBRYANA EIVANOVICH|HAMIM FAIQ BUDIMAN|HANA DHIA KARIMAH|INKAFALAH SATYATUHU NIATRIA|KHUSNA AQILA ROSYADA|M.  AFIQ NABIL ILMI|MAELA ZULFAA|MUHAMMAD FIKRI NAZHIF|MUHAMMAD NUR KHOLIS|MUHAMMAD RAFFI FARIZQI|MUHAMMAD ROYYAN HUDAYANTO|NAOFAL SANTOSO|NAYLA ZAHRATU ATHA|NUR SYIFA RAMADHINA|PUTRA PRIMA NUGRAHA|RIBKA RIZKI ZAHRANI|SALSA OKTA AMELIA|SHAFIA DAVISYA KHOLIQ|SHERLINA KHAERANI|SURYA AJI JANUARTA|TIARA SEPTY RAMADHANI|TRI PERTIWI HANDAYANI|WAHYU RAHARDIAN ARSANATA|YODHANO ALBERN HAIDAR SUSANTO|ZAKY ANWAR|ZIDNI ILMAN NAAFI'AN
-#XII-4|ALEARAFA ZADA HUKAMA|ARGA PRANADYA NASUTION|ARKAN ARI ANANTO|AULIA ZAMZAMAH|CEISYA SILVI SALSABILLA|DEVA ADITYA NUGROHO|FIRDA AULIA IZZATI|GILANG ADI WIRATAMA|HAIDAR HUSAIN PRADITA|HISYAAM DZAKY MUBAROK|ISTIQOMAH|KHURIDAH KHASANAH|M. IKHSANUDDIN LATIF|M. ZAKY KENNEDY SAPUTRA|MARSYA ELLEN FATMIKA|MAULANA NIBAS|MUCH. AUFAR ABID|MUHAMMAD ARDIANSYAH ARYA PUTRA PRATAMA|MUHAMMAD HYZAM KURNIAWAN|MUHAMMAD KHAIDAR MAULANA|MUHAMMAD RAIFAN KHALED|MUHAMMAD REYHAN ADAKY|MUHAMMAD SHAVO SATRIANI|NADYA PUTRI RAMADHANI|NASRUL KHOLBI|NATASYA AZKA HINDRIANA|NISWA MAZILA FIJANA|NURUL ISLAMIYATI|PRICO ANDRIANO|SEVILA ARDHIA ROHMA|SHERLY ARDIANTI SUKMA|SUN CANDHA RENDY SULAIMAN|SYIFA JULIA MAULA|VITA AZZARIA|ZAHRA SEPTI RAMADHANI
-#XII-5|ADINDA AINUN MAHYA|ADINDA NURAINI|ADINDA ZHAFIRAH HELMAPUTRI|AFIFTIAN RASYA MAULANA|BILQIS RAMADHANI DJUNAEDY PUTRI|CHELSEA KHATYA AZ ZAHRA|DAFFA AUFA NASWA|DHANURWENDHA ILHAMRAKA SASKARA|EZAR HAFIZH DWIPANDYA|FIANTIKA AULIA ZIVANESTHA|GANESHA ARDIANEDRIA HERBIMO|HANIIF RAMDHAN SYARIIF|HARYA TIRTA SANTOSO|HAYUNING TYAS KUSUMARDANI|JASMINE YUMN MUMTAZ|LUTFI FARHAN ADITYA|MELLYSA AZLYA SALLYMA|MUHAMMAD AL GHIFARI|MUHAMMAD DIMAS DWI ANDREAN|MUHAMMAD FIRMAN GHADAFFI|MUHAMMAD IBNU ABDI SALAM|MUHAMMAD LUTHFI MAHARDIKA|MUHAMMAD SHALAHUDDIN|MUHAMMAD SURYA NUGRAHA|NADIA SHARLIZ RAIHANA|NADINE DAMARA RAFA|NAURA JANNAH|NAURA MAZIIDATUL KHAIRA|NISRINA ARIFIN|NURUL ISNI ALDILA|PRATAMA EMIR MAULIDA|RIFKI ALWI HIDAYAT|SANGGA ADYA SETYAGITA|WIDYA MUFLIHATUN NISA|YASMIN KAMILA|ZAIDAAN GHATHFAN NAAFI
-#XII-6|AHMAD NADA AL-AFGANI|ALIN IHSAN|AMELA ASIFA CINTA SALSA BILLA|ANDIKA ELVAN ZANI|ARADJA ADIGWAN|AZEL DANISWARA|BELLA OKTALIDYA PUTRI|CLAUDIA ALFRI YANTI|DIBENZAQI|DINDA DWI LASITA|ELSA INDRILASARI|FRISKA ASKINADIA|ISNU PRAMUSINTHO|LULUK AINI NAFISAH|M. DHANNIES FEBRIANO|M. ZAFQI ALIEF UZZAMAN|MUHAMMAD AGHIS MUSTAGHIS|MUHAMMAD ALWAN FAKHRI|MUHAMMAD FAREL|MUHAMMAD FATWA ADITYA|MUHAMMAD GUNTUR ALFA RIZQY|MUHAMMAD RIZQI JANWAR|MUHAMMAD UBAIDILLAH|NAYAKA ADWITIYA FATHONY|NUR ISROATUL ULA|PRISKA GAVRILA RIYADI|PUTRA CAHYA RAMADHAN|RACHEL SETYA UTAMA|RAKHA SYAFIQ AN NAJIB|RAVENO ANDREAN MEVALDI|ZAHIRA NUR KHASANAH|ZAKI ALMAS MUSYAFA
-#XII-7|ADINDA ANATASYA STEVANIE|AISYA NISRINA PUTRI|ALFINDO SURYA SATRIAGUNG|ANUGRAHENING HERSYA NOVIA WIJAYA|AULIA JANATU SIEVA|AURA ZAHRA|AYUN SHINTA FEBRIANI MAZIYAH|CAHYA AYU ANGGITA|CHAYLA MARZA DIANOVA|DESI RAKHMAWATI|DINI LISTIANA|FANY FALASIFA|GHINA SYAKIRAH IHSAN|HANDIS EL FAIQOH|HAYYA WAHIDATUN NASWA|IMALIKHA FATYA KURNIALLAH|IVAN TRIANSYAH|KINARD FIAN MAHARANI|LAILATUL HABIBAH|MAUREL ZASKYA ZAKY|MOCHAMMAD ERRIN PANCA RIZKI|MUHAMMAD HILMY NABIHA|NIBRAS AISYAH ANINDITAWIJAYA|NOVA AULIA BERLIANI|RIZA DAMAYANTI|SAFFANATU IHTAZANA|SEKAR SARI|SELVI IBFAQOTUL WAFA|SHETI ALTHAFI RANTI|SYAFIRA MAULIDATUR RISQI|TSABHITA AURELYA SAFA KARISA|UMI DZINNU ROINI|VANIA KRISTIANINGRUM|YESINA SALWA AURELIA|ZARA FIRJATUL HUSNA|ZHAFRAN ARVA NAUFALINO
-#XII-8|AHMAD IQBAL MAULANA|ARSYA SAFIRA|ASYIFA DWI AMELIA|AULIA ANURRIZA|AZARIA CALLISTA|BUNGA FINA DWI YANTI|CANTIKA SEPTIANI RAMADHANI|DIAN AYU AGUSTINA|DINA MELISA|ENDITO CAHYA PRATAMA|GUIDO GANANG SAPUTRA|HAFIDZ MUHAMAD NOVIAN|JAZILA NAFAANI ISNADA|KEISYA REVALINA|KRIS TRIANTO RAMADHANI|LABIDAH|LUKI SEBA LUKITO|M. IKROM MAULIDIN|MUHAMMAD MAKRUF|MUHAMMAD NAUFAL RIZQI|MUSLIKHA|NADIA RAMA|NAILA AMELINDA|NATASYA DEKA ALVISKA|NESYA HAFIZTA PUTRI|NONIQ AQUINI BALQIS|NUR KHOMSATUN KHASANAH|QONITA PUTRI ADIZA|RACHEL DESINTHA FANY|RAFIF EGA PRATAMA|RAISYA HANUM AGITA|SATRIA ABDUL MAJID|SYARIFAH NAADIYA MUHAIMIN|TIVANI NUR AULYA
-#XII-9|AHMAD FAESOL AL MURSYIDI|ALINA CAHYA KARTIKA|ARDIAN AZMI LAZUARDI|ARISKA AMILIA|ATTIYATUL FAHIRA|AZMI ARFITA SARI|CAHAYA SEKAR AYU|CHATERINE ALIKA SAWITRI|DWI SAFITRI|ESHAL DELBAR DINAR|FADIA AZZAHRA SISYANA PUTTRI|GENDIES TALITHA ZAIN|HAMMAM NAYAKA ABIUDAYA|JUTIA RAMADANI|KHANZA AZ ZAHRA|KHOLIFATUS SYAHIRAH|KUS NAENI|MARSYA KHARINA NAZIFAH|MISKIYAH|MUHAMMAD KHILMI HAIDAR|MUNAH AININ WAFIQAH|NADIRA RIFDA ARSIANDANA|NAUVA ALMAS SHINA|NAYSILA MAULIDA AZKYA|NIZA BELLA PUTRI|PUTRI NINGSIH|RAHMA ZAHRATUSITA|RAHMAT HIDAYAH|RIKA DWI ARDIANTI|RISKIYA HASNA SAFIRAH|RISQINAFIATUL KHUSNA|RIZKA DWI AMELIA|SARAH REVALINA ACHMAD|SCHATZI NABILA SARI|SHINTA AULIA DEWI|SYAKILA KARIMA PRANOTO`;
+  const url = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?sheet=${sheetName}&tq=${encodeURIComponent(query)}`;
 
-        const rawData = `**JUZ 1#Al-Fatihah 1-7|Al-Baqarah 1-7|Al-Baqarah 8-14|Al-Baqarah 15-21|Al-Baqarah 22-29|Al-Baqarah 30-36|Al-Baqarah 37-42|Al-Baqarah 43-50|Al-Baqarah 51-56|Al-Baqarah 57-64|Al-Baqarah 65-72|Al-Baqarah 73-80|Al-Baqarah 81-88|Al-Baqarah 89-95|Al-Baqarah 96-111|Al-Baqarah 112-118|Al-Baqarah 118-121|Al-Baqarah 122-128|Al-Baqarah 129-136|Al-Baqarah 137-141
-**JUZ 2#Al-Baqarah 142-147|Al-Baqarah 148-153|Al-Baqarah 154-159|Al-Baqarah 160-165|Al-Baqarah 166-171|Al-Baqarah 172-178|Al-Baqarah 179-183|Al-Baqarah 184-189|Al-Baqarah 190-195|Al-Baqarah 196-201|Al-Baqarah 202-207|Al-Baqarah 208-213|Al-Baqarah 214-219|Al-Baqarah 220-226|Al-Baqarah 227-232|Al-Baqarah 233-238|Al-Baqarah 239-243|Al-Baqarah 244-247|Al-Baqarah 248-250|Al-Baqarah 251-252
-**JUZ 3#Al-Baqarah 253-256|Al-Baqarah 257-259|Al-Baqarah 260-264|Al-Baqarah 265-269|Al-Baqarah 270-274|Al-Baqarah 275-281|Al-Baqarah 282|Al-Baqarah 283-286|Ali-Imran 1-9|Ali-Imran 10-15|Ali-Imran 16-22|Ali-Imran 23-29|Ali-Imran 30-37|Ali-Imran 38-45|Ali-Imran 46-52|Ali-Imran 53-61|Ali-Imran 62-70|Ali-Imran 71-77|Ali-Imran 78-83|Ali-Imran 84-91
-**JUZ 4#Ali-Imran 92-100|Ali-Imran 101-108|Ali-Imran 109-115|Ali-Imran 115-121|Ali-Imran 122-132|Ali-Imran 133-140|Ali-Imran 141-148|Ali-Imran 149-153|Ali-Imran 154-157|Ali-Imran 158-165|Ali-Imran 167-173|Ali-Imran 174-180|Ali-Imran 181-186|Ali-Imran 187-194|Ali-Imran 195-200|An-Nisa 1-6|An-Nisa 7-11|An-Nisa 12-14|An-Nisa 15-19|An-Nisa 20-23
-**JUZ 5#An-Nisa 24-26|An-Nisa 27-33|An-Nisa 34-37|An-Nisa 38-44|An-Nisa 45-51|An-Nisa 52-59|An-Nisa 60-65|An-Nisa 66-74|An-Nisa 75-79|An-Nisa 80-86|An-Nisa 87-91|An-Nisa 92-94|An-Nisa 95-101|An-Nisa 102-105|An-Nisa 106-113|An-Nisa 114-121|An-Nisa 122-127|An-Nisa 128-134|An-Nisa 135-140|An-Nisa 141-147
-**JUZ 6#An-Nisa 148-154|An-Nisa 155-162|An-Nisa 163-170|An-Nisa 171-175|An-Nisa 176 - Al-Maidah 2|Al-Maidah 3-5|Al-Maidah 6-9|Al-Maidah 10-13|Al-Maidah 14-17|Al-Maidah 18-23|Al-Maidah 24-31|Al-Maidah 32-36|Al-Maidah 37-41|Al-Maidah 42-45|Al-Maidah 46-50|Al-Maidah 51-57|Al-Maidah 58-64|Al-Maidah 65-70|Al-Maidah 71-76|Al-Maidah 77-82
-**JUZ 7#Al-Maidah 83-89|Al-Maidah 90-95|Al-Maidah 96-103|Al-Maidah 104-108|Al-Maidah 109-113|Al-Maidah 114-120|Al-Anam 1-8|Al-Anam 9-18|Al-Anam 19-27|Al-Anam 28-35|Al-Anam 36-44|Al-Anam 45-52|Al-Anam 53-59|Al-Anam 60-68|Al-Anam 69-73|Al-Anam 74-81|Al-Anam 82-90|Al-Anam 91-94|Al-Anam 95-101|Al-Anam 102-110
-**JUZ 8#Al-Anam 111-118|Al-Anam 119-124|Al-Anam 125-131|Al-Anam 132-137|Al-Anam 138-142|Al-Anam 143-146|Al-Anam 147-151|Al-Anam 152-157|Al-Anam 158-165|Al-Aaraf 1-11|Al-Aaraf 12-22|Al-Aaraf 23-30|Al-Aaraf 31-37|Al-Aaraf 38-43|Al-Aaraf 44-51|Al-Aaraf 52-57|Al-Aaraf 58-67|Al-Aaraf 68-73|Al-Aaraf 74-81|Al-Aaraf 82-87
-**JUZ 9#Al-Aaraf 88-95|Al-Aaraf 96-104|Al-Aaraf 105-120|Al-Aaraf 121-130|Al-Aaraf 131-137|Al-Aaraf 138-143|Al-Aaraf 144-149|Al-Aaraf 150-155|Al-Aaraf 156-159|Al-Aaraf 160-163|Al-Aaraf 164-170|Al-Aaraf 171-178|Al-Aaraf 179-187|Al-Aaraf 188-195|Al-Aaraf 196-206|Al-Anfal 1-8|Al-Anfal 9-16|Al-Anfal 17-25|Al-Anfal 26-33|Al-Anfal 34-40
-**JUZ 10#Al-Anfal 41-45|Al-Anfal 46-52|Al-Anfal 53-61|Al-Anfal 62-69|Al-Anfal 70-75|At-Taubah 1-6|At-Taubah 7-13|At-Taubah 14-20|At-Taubah 21-26|At-Taubah 27-31|At-Taubah 32-36|At-Taubah 37-40|At-Taubah 41-47|At-Taubah 48-54|At-Taubah 55-61|At-Taubah 62-68|At-Taubah 69-72|At-Taubah 73-79|At-Taubah 80-86|At-Taubah 87-93
-**JUZ 11#At-Taubah 94-99|At-Taubah 100-106|At-Taubah 107-111|At-Taubah 112-117|At-Taubah 118-122|At-Taubah 123-129|Yunus 1-6|Yunus 7-14|Yunus 15-20|Yunus 21-25|Yunus 26-33|Yunus 34-42|Yunus 43-53|Yunus 54-61|Yunus 62-70|Yunus 71-78|Yunus 79-88|Yunus 89-97|Yunus 98-106|Yunus 107- Hud 5
-**JUZ 12#Hud 6-12|Hud 13-19|Hud 20-28|Hud 29-37|Hud 38-45|Hud 46-53|Hud 54-62|Hud 63-71|Hud 72-81|Hud 82-88|Hud 89-97|Hud 98-108|Hud 109-117|Hud 118- Yusuf 4|Yusuf 5-14|Yusuf 15-22|Yusuf 23-30|Yusuf 31-37|Yusuf 38-43|Yusuf 44-52
-**JUZ 13#Yusuf 53-63|Yusuf 64-69|Yusuf 70-78|Yusuf 79-86|Yusuf 87-95|Yusuf 96-103|Yusuf 104-111|Ar-Rad 1-5|Ar-Rad 6-13|Ar-Rad 14-18|Ar-Rad 19-28|Ar-Rad 29-34|Ar-Rad 35-42|Ar-Rad 43-Ibrahim 5|Ibrahim 6-10|Ibrahim 11-18|Ibrahim 19-24|Ibrahim 25-33|Ibrahim 34-42|Ibrahim 43-52
-**JUZ 14#Al-Hijr 1-15|Al-Hijr 16-31|Al-Hijr 32-51|Al-Hijr 52-70|Al-Hijr 71-90|Al-Hijr 91-An-Nahl 6|An-Nahl 7-14|An-Nahl 15-26|An-Nahl 27-34|An-Nahl 35-42|An-Nahl 43-54|An-Nahl 55-64|An-Nahl 65-72|An-Nahl 73-79|An-Nahl 80-87|An-Nahl 88-93|An-Nahl 94-102|An-Nahl 103-110|An-Nahl 111-118|An-Nahl 119-128
-**JUZ 15#Al-Isra 1-7|Al-Isra 8-17|Al-Isra 18-27|Al-Isra 28-38|Al-Isra 39-49|Al-Isra 50-58|Al-Isra 59-66|Al-Isra 67-75|Al-Isra 76-86|Al-Isra 87-96|Al-Isra 97-104|Al-Isra 105-Al-Kahf 4|Al-Kahf 5-15|Al-Kahf 16-20|Al-Kahf 21-27|Al-Kahf 28-34|Al-Kahf 35-45|Al-Kahf 46-53|Al-Kahf 54-61|Al-Kahf 62-74
-**JUZ 16#Al-Kahf 75-83|Al-Kahf 84-97|Al-Kahf 98-110|Maryam 1-11|Maryam 12-25|Maryam 26-38|Maryam 39-51|Maryam 52-64|Maryam 65-76|Maryam 77-95|Maryam 96-Taha 12|Taha 13-37|Taha 38-51|Taha 52-64|Taha 65-76|Taha 77-87|Taha 88-98|Taha 99-113|Taha 114-125|Taha 126-135
-**JUZ 17#Al-Anbiya 1-10|Al-Anbiya 11-24|Al-Anbiya 25-35|Al-Anbiya 36-44|Al-Anbiya 45-57|Al-Anbiya 58-72|Al-Anbiya 73-81|Al-Anbiya 82-90|Al-Anbiya 91-101|Al-Anbiya 102-112|Al-Hajj 1-5|Al-Hajj 6-15|Al-Hajj 16-23|Al-Hajj 24-30|Al-Hajj 31-38|Al-Hajj 39-46|Al-Hajj 47-55|Al-Hajj 56-64|Al-Hajj 65-72|Al-Hajj 73-78
-**JUZ 18#Al-Mu'minun 1-17|Al-Mu'minun 18-27|Al-Mu'minun 28-42|Al-Mu'minun 43-59|Al-Mu'minun 60-74|Al-Mu'minun 75-89|Al-Mu'minun 90-104|Al-Mu'minun 105-118|An-Nuur 1-10|An-Nuur 11-20|An-Nuur 21-27|An-Nuur 28-31|An-Nuur 32-36|An-Nuur 37-43|An-Nuur 44-53|An-Nuur 54-58|An-Nuur 59-61|An-Nuur 62- Al-Furqan 2|Al-Furqan 3-11|Al-Furqan 12-20
-**JUZ 19#Al-Furqan 21-32|Al-Furqan 33-43|Al-Furqan 44-55|Al-Furqan 56-67|Al-Furqan 68-77|Asy-Syura 1-19|Asy-Syura 20-39|Asy-Syura 40-60|Asy-Syura 61-83|Asy-Syura 84-111|Asy-Syura 112-136|Asy-Syura 137-159|Asy-Syura 160-183|Asy-Syura 184-206|Asy-Syura 207-227|An-Naml 1-13|An-Naml 14-22|An-Naml 23-35|An-Naml 36-44|An-Naml 45-55
-**JUZ 20#An-Naml 56-73|An-Naml 74-76|An-Naml 77-88|An-Naml 89- Al-Qasas 5|Al-Qasas 6-13|Al-Qasas 14-21|Al-Qasas 22-28|Al-Qasas 29-35|Al-Qasas 36-43|Al-Qasas 44-50|Al-Qasas 51-59|Al-Qasas 60-70|Al-Qasas 71-77|Al-Qasas 78-84|Al-Qasas 85- Al-Ankabut 6|Al-Ankabut 7-14|Al-Ankabut 15-23|Al-Ankabut 24-30|Al-Ankabut 31-38|Al-Ankabut 39-45
-**JUZ 21#Al-Ankabut 46-52|Al-Ankabut 53-63|Al-Ankabut 64 - Ar-Ruum 5|Ar-Ruum 6-15|Ar-Ruum 16-24|Ar-Ruum 25-32|Ar-Ruum 33-41|Ar-Ruum 42-50|Ar-Ruum 51-60|Luqman 1-11|Luqman 12-19|Luqman 20-28|Luqman 29-34|As-Sajdah 1-11|As-Sajdah 12-20|As-Sajdah 21-30|Al-Ahzab 1-6|Al-Ahzab 7-15|Al-Ahzab 16-22|Al-Ahzab 23-30
-**JUZ 22#Al-Ahzab 31-35|Al-Ahzab 36-43|Al-Ahzab 44-50|Al-Ahzab 51-54|Al-Ahzab 55-62|Al-Ahzab 63-73|Saba 1-7|Saba 8-14|Saba 15-22|Saba 23-31|Saba 32-39|Saba 40-48|Saba 49 - Fatir 3|Fatir 4-11|Fatir 12-18|Fatir 19-30|Fatir 31-38|Fatir 39-44|Fatir 45 - Yasin 12|Yasin 13-27
-**JUZ 23#Yasin 28-40|Yasin 41-54|Yasin 55-70|Yasin 71-83|As-Saffat 1-24|As-Saffat 25-51|As-Saffat 52-76|As-Saffat 77-102|As-Saffat 103-126|As-Saffat 127-153|As-Saffat 154-182|Sad 1-16|Sad 17-26|Sad 27-42|Sad 43-61|Sad 62-83|Sad 84 - Az-Zumar 5|Az-Zumar 6-10|Az-Zumar 11-21|Az-Zumar 22-31
-**JUZ 24#Az-Zumar 32-40|Az-Zumor 42-47|Az-Zumor 48-56|Az-Zumor 57-67|Az-Zumor 68-74|Az-Zumor 75-Al-Ghafir 7|Al-Ghafir 8-16|Al-Ghafir 17-25|Al-Ghafir 26-33|Al-Ghafir 34-40|Al-Ghafir 41-49|Al-Ghafir 50-58|Al-Ghafir 59-66|Al-Ghafir 67-77|Al-Ghafir 78-85|Al-Fushilat 1-11|Al-Fushilat 12-20|Al-Fushilat 21-29|Al-Fushilat 30-38|Al-Fushilat 39-46
-**JUZ 25#Al-Fushilat 47-54|Asy-Syura 1-10|Asy-Syura 11-15|Asy-Syura 16-22|Asy-Syura 23-31|Asy-Syura 32-44|Asy-Syura 35-51|Asy-Syura 52- Az-Zukhr43 10|Az-Zukhr43 11-22|Az-Zukhr43 23-33|Az-Zukhr43 34-47|Az-Zukhr43 48-60|Az-Zukhr43 61-73|Az-Zukhr43 74-89|Ad-Dukhan 1-18|Ad-Dukhan 19-39|Ad-Dukhan 40-59|Al-Ghaasyiyah 1-13|Al-Ghaasyiyah 14-22|Al-Ghaasyiyah 23-32
-**JUZ 26#Al-Jasiyah 33 - Al-Ahq46 5|Al-Ahq46 6-14|Al-Ahq46 15-20|Al-Ahq46 21-28|Al-Ahq46 29-35|Muhammad 1-11|Muhammad 12-19|Muhammad 20-29|Muhammad 30-38|Al-Fath 1-9|Al-Fath 10-15|Al-Fath 16-23|Al-Fath 24-28|Al-Fath 29 - Al-Hujurat 4|Al-Hujurat 5-11|Al-Hujurat 12-18|Qaf 1-15|Qaf 16-35|Qaf 36 - Az-Zariyat 6|Az-Zariyat 7-30
-**JUZ 27#Az-Zariyat 31-51|Az-Zariyat 52 - At-Tur 14|At-Tur 15-31|At-Tur 32-49|An-Najm 1-26|An-Najm 27-44|An-Najm 45- Al-Q54 6|Al-Q54 7-27|Al-Q54 28-49|Al-Q54 50 - Ar-Rahman 16|Ar-Rahman 17-40|Ar-Rahman 41-67|Ar-Rahman 68-Al-Waq56 16|Al-Waq56 17-50|Al-Waq56 51-76|Al-Waq56 77-Al-Hadid 3|Al-Hadid 4-11|Al-Hadid 12-18|Al-Hadid 19-24|Al-Hadid 25-26
-**JUZ 28#Al-Mujadiah 1-6|Al-Mujadiah 7-11|Al-Mujadiah 12-21|Al-Mujadiah 22-Al-Hasyr 3|Al-Hasyr 4-9|Al-Hasyr 10-16|Al-Hasyr 17-24|Al-Mumtahanah 1-5|Al-Mumtahanah 6-11|Al-Mumtahanah 12-As-Saff 5|As-Saff 6-14|Al-Jumu'ah 1-8|Al-Jumu'ah 9-Al-Munafiqun 4|Al-Munafiqun 5-11|At-Tagabun 1-9|At-Tagabun 10-18|At-Talaq 1-5|At-Talaq 6-12|At-Tahrim 1-7|At-Tahrim 8-12
-**JUZ 29#Al-Mulk 1-12|Al-Mulk 13-26|Al-Mulk 27-Al-Q68 15|Al-Q68 42-Al-Haqq69 8|Al-Haqq69 9-34|Al-Haqq69 35- Al-Maarij 10|Al-Maarij 11-39|Al-Maarij 40-Nuh 10|Nuh 11-28|Al-Jinn 1-13|Al-Jinn 14-28|Al-Muzzanmil 1-19|Al-Muzzanmil 20-Al-Muddassir 17|Al-Muddassir 18-47|Al-Muddassir 48-Al-Qiyamah 19|Al-Qiyamah 20-Al-Ins76 5|Al-Ins76 25|Al-Ins76 26-Al-Mursalat 19|Al-Mursalat 20-50
-**JUZ 30#An-Naba 1-40|An-Naaziaot 1-46|Abasa 1-42|At-Takwiir 1-29|Al-Infithaar 1-19|Al-Muthaffifiin 1-36|Al-Insyiqaaq 1-25|Al-Buruuj 1-22|Ath-Thaari86-17|Al-Alaa 1-19|Al-Ghaasyiy88-26|Al-Fajr 1-30|Al-Balad 1-20|Asy-Syams 1-15|Al-Lail 1-21|Adh-Dhuhaa 1-11|Al-Insyirah 1-8|At-Tin 1-8|Al-Alac 1-19|Al-Qadr 1-5|Al-Bayyinah 1-8|Az-Zalzalah 1-8|Al-Aadiyaot 1-11|Al-Qaariah 1-11|At-Takaatsur 1-8|Al-Ashr 1-3|Al-Humazah 1-9|Al-Fiil 1-5|Quraisy 1-4|Al-Maauon 1-7|Al-Kautsar 1-3|Al-Kaafiruun 1-6|An-Nashr 1-3|Al-Lahab 1-5|Al-Ikhlash 1-4|Al-Falaq 1-5|An-Naas 1-6`;
+  fetch(url)
+    .then(res=>res.text())
+    .then(rep=>{
+      const json = JSON.parse(rep.substring(47).slice(0,-2));
+      tampilkanTabel(json);
+    });
+}
 
-        const shalatWajibList = ["Subuh", "Dzuhur", "Ashar", "Maghrib", "Isya"];
-        const shalatSunnahList = ["Dhuha", "Tahajjud", "Witir", "Rawatib", "Sunnah Mutlaq"];
-        const juz30List = ["An-Naba", "An-Nazi'at", "Abasa", "At-Takwir", "Al-Infitar", "Al-Mutaffifin", "Al-Insyiqaq", "Al-Buruj", "At-Tariq", "Al-A'la", "Al-Ghasyiyah", "Al-Fajr", "Al-Balad", "Asy-Syams", "Al-Lail", "Ad-Duha", "Al-Insyirah", "At-Tin", "Al-Alac", "Al-Qadr", "Al-Bayyinah", "Az-Zalzalah", "Al-'Adiyat", "Al-Qari'ah", "At-Takatsur", "Al-Asr", "Al-Humazah", "Al-Fil", "Quraisy", "Al-Ma'un", "Al-Kautsar", "Al-Kafirun", "An-Nasr", "Al-Lahab", "Al-Ikhlas", "Al-Falaq", "An-Nas"];
 
-        const suratMapping = {
-            'Al-Fatihah': 1, 'Al-Baqarah': 2, 'Ali Imran': 3, 'An-Nisa': 4, 'Al-Maidah': 5, 'Al-Anam': 6, 'Al-Araf': 7, 'Al-Anfal': 8, 'At-Taubah': 9, 'Yunus': 10, 'Hud': 11, 'Yusuf': 12, 'Ar-Rad': 13, 'Ibrahim': 14, 'Al-Hijr': 15, 'An-Nahl': 16, 'Al-Isra': 17, 'Al-Kahf': 18, 'Maryam': 19, 'Taha': 20, 'Al-Anbiya': 21, 'Al-Hajj': 22, 'Al-Muminun': 23, 'An-Nur': 24, 'Al-Furqan': 25, 'Ash-Shuara': 26, 'An-Naml': 27, 'Al-Qasas': 28, 'Al-Ankabut': 29, 'Ar-Rum': 30, 'Luqman': 31, 'As-Sajda': 32, 'Al-Ahzab': 33, 'Saba': 34, 'Fatir': 35, 'Yasin': 36, 'As-Saffat': 37, 'Sad': 38, 'Az-Zumor': 39, 'Ghafir': 40, 'Fussilat': 41, 'Ash-Shura': 42, 'Az-Zukhr43': 43, 'Az-Zukhruf': 43, 'Ad-Dukhan': 44, 'Al-Jathiya': 45, 'Al-Ahq46': 46, 'Al-Ahqaf': 46, 'Muhammad': 47, 'Al-Fath': 48, 'Al-Hujurat': 49, 'Qaf': 50, 'Adh-Dhariyat': 51, 'At-Tur': 52, 'An-Najm': 53, 'Al-Q54': 54, 'Al-Qamar': 54, 'Ar-Rahman': 55, 'Al-Waq56': 56, 'Al-Waqia': 56, 'Al-Hadid': 57, 'Al-Mujadila': 58, 'Al-Hashr': 59, 'Al-Mumtahana': 60, 'As-Saff': 61, 'Al-Jumuah': 62, 'Al-Munafiqun': 63, 'At-Taghabun': 64, 'At-Talaq': 65, 'At-Tahrim': 66, 'Al-Mulk': 67, 'Al-Q68': 68, 'Al-Qalam': 68, 'Al-Haqqa': 69, 'Al-Maarij': 70, 'Nuh': 71, 'Al-Jinn': 72, 'Al-Muzzammil': 73, 'Al-Muddathir': 74, 'Al-Qiyama': 75, 'Al-Ins76': 76, 'Al-Insan': 76, 'Al-Mursalat': 77, 'An-Naba': 78, 'An-Naziot': 79, 'An-Nazi\'at': 79, 'Abasa': 80, 'At-Takwir': 81, 'Al-Infitar': 82, 'Al-Mutaffifin': 83, 'Al-Insyiqaq': 84, 'Al-Buruj': 85, 'At-Tariq': 86, 'Al-Ala': 87, 'Al-Ghashiya': 88, 'Al-Fajr': 89, 'Al-Balad': 90, 'Ash-Shams': 91, 'Al-Lail': 92, 'Ad-Duha': 93, 'Ash-Sharh': 94, 'At-Tin': 95, 'Al-Alac': 96, 'Al-Alaq': 96, 'Al-Qadr': 97, 'Al-Bayyina': 98, 'Az-Zalzalah': 99, 'Al-Adiyat': 100, 'Al-Qaria': 101, 'At-Takathur': 102, 'Al-Asr': 103, 'Al-Humazah': 104, 'Al-Fil': 105, 'Quraish': 106, 'Al-Maun': 107, 'Al-Kawthar': 108, 'Al-Kafirun': 109, 'An-Nasr': 110, 'Al-Masad': 111, 'Al-Ikhlas': 112, 'Al-Falaq': 113, 'An-Nas': 114
-        };
+/* ===== TAMPILKAN TABEL ===== */
+function tampilkanTabel(json){
+  const rows = json.table.rows;
 
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxGzMNcOzlIBmh4MY3QAxzUO6tlp0xbaFaYNNbh8C9NvSv8RO0nfVZMkytVQzn_x7Gj7g/exec"; 
+  if(rows.length === 0){
+    document.getElementById("data").innerHTML =
+      "<b>Tidak ada data pada tanggal ini.</b>";
+    return;
+  }
 
-        let juzMap = {};
-        let siswaMap = {};
-        let currentSurat = "", currentAwal = 0, currentAkhir = 0, currentSuratNumber = 0;
-        let isReadingFinished = false;
+  let html = "<table><tr>";
 
-        const comboJuz = document.getElementById('comboJuz');
-        const materiList = document.getElementById('materiList');
-        const resultInfo = document.getElementById('resultInfo');
-        const errorMessage = document.getElementById('errorMessage');
-        const formCard = document.getElementById('formCard');
-        const ayatCard = document.getElementById('ayatCard');
+  json.table.cols.forEach(col=>{
+    html += `<th>${col.label}</th>`;
+  });
 
-        function init() {
-            if (rawSiswaData) parseSiswaData();
-            if (rawData) {
-                rawData.trim().split('\n').forEach(line => {
-                    if (!line.includes('#')) return;
-                    const parts = line.replace('**', '').split('#');
-                    if (parts.length === 2) {
-                        juzMap[parts[0].trim()] = parts[1].split('|');
-                    }
-                });
-                Object.keys(juzMap).forEach(key => comboJuz.add(new Option(key, key)));
-            }
-            generateCheckboxes('containerShalatWajib', shalatWajibList, 'chkWajib');
-            generateCheckboxes('containerShalatSunnah', shalatSunnahList, 'chkSunnah');
-            generateCheckboxes('containerHafalan', juz30List, 'chkHafalan');
-        }
+  html += "</tr>";
 
-        function parseSiswaData() {
-            const kelasSelect = document.getElementById('kelasSiswa');
-            kelasSelect.innerHTML = '<option value="">-- Pilih Kelas --</option>';
-            const kelasBlocks = rawSiswaData.trim().split('#').filter(block => block.length > 0);
-            kelasBlocks.forEach(block => {
-                const parts = block.split('|');
-                if (parts.length > 0) {
-                    const kelas = parts[0].trim();
-                    const names = parts.slice(1).map(name => name.trim());
-                    siswaMap[kelas] = names;
-                    const opt = document.createElement('option');
-                    opt.value = kelas;
-                    opt.text = kelas;
-                    kelasSelect.appendChild(opt);
-                }
-            });
-        }
+  rows.forEach(r=>{
+    html += "<tr>";
+    r.c.forEach(c=>{
+      html += `<td>${c ? c.v : ""}</td>`;
+    });
+    html += "</tr>";
+  });
 
-        function updateNamaSiswa() {
-            const kelasSelect = document.getElementById('kelasSiswa');
-            const namaSelect = document.getElementById('namaSiswa');
-            const selectedKelas = kelasSelect.value;
-            namaSelect.innerHTML = '<option value="">-- Pilih Nama --</option>';
-            if (selectedKelas && siswaMap[selectedKelas]) {
-                siswaMap[selectedKelas].forEach(name => {
-                    const opt = document.createElement('option');
-                    opt.value = name;
-                    opt.text = name;
-                    namaSelect.appendChild(opt);
-                });
-            }
-            updateRecap();
-        }
+  html += "</table>";
 
-        function generateCheckboxes(containerId, list, namePrefix) {
-            const container = document.getElementById(containerId);
-            list.forEach(item => {
-                const div = document.createElement('div');
-                div.className = 'check-item';
-                div.innerHTML = `<input type="checkbox" name="${namePrefix}" value="${item}" onchange="updateRecap()"> <label>${item}</label>`;
-                container.appendChild(div);
-            });
-        }
-        
-        comboJuz.onchange = function() {
-            materiList.innerHTML = "";
-            isReadingFinished = false;
-            updateRecap();
-            if (!this.value) {
-                materiList.innerHTML = '<div class="empty-state" style="color:#999; padding: 40px 0;">Silakan pilih Juz terlebih dahulu</div>';
-                document.getElementById('btnTampilkanAyat').disabled = true;
-                return;
-            }
-            if (juzMap[this.value]) {
-                juzMap[this.value].forEach((item, index) => {
-                    const div = document.createElement('div');
-                    div.className = 'check-item';
-                    div.style.padding = '8px';
-                    div.style.borderBottom = '1px solid #eee';
-                    div.innerHTML = `<input type="checkbox" class="chk-materi" value="${item}" data-idx="${index}" onchange="validasiUrutan(this)"> <label>${item}</label>`;
-                    materiList.appendChild(div);
-                });
-            }
-        };
+  document.getElementById("data").innerHTML = html;
+}
 
-        function validasiUrutan(clickedCb) {
-            const allCbs = Array.from(document.querySelectorAll('.chk-materi'));
-            const checked = allCbs.filter(c => c.checked);
-            const btn = document.getElementById('btnTampilkanAyat');
+/* ===== INIT ===== */
+setToday();
+buatTab();
 
-            if (checked.length > 1) {
-                const indices = checked.map(c => parseInt(c.dataset.idx));
-                const min = Math.min(...indices);
-                const max = Math.max(...indices);
-                if (checked.length !== (max - min + 1)) {
-                    errorMessage.textContent = "⚠️ Pilihan harus berurutan. Jangan melompati materi!";
-                    errorMessage.style.display = 'block';
-                    clickedCb.checked = false;
-                    return;
-                }
-            }
-            errorMessage.style.display = 'none';
-            btn.disabled = checked.length === 0;
-            updateRecap();
-        }
+document.getElementById("filterTanggal")
+  .addEventListener("change", loadData);
 
-        function updateRecap() {
-            const nama = document.getElementById('namaSiswa').value || "-";
-            const kelas = document.getElementById('kelasSiswa').value || "-";
-            
-            const wajib = Array.from(document.querySelectorAll('input[name="chkWajib"]:checked')).map(c => c.value).join(', ');
-            const sunnah = Array.from(document.querySelectorAll('input[name="chkSunnah"]:checked')).map(c => c.value).join(', ');
-            const hafalan = Array.from(document.querySelectorAll('input[name="chkHafalan"]:checked')).map(c => c.value).join(', ');
-            const kajian = document.getElementById('kajianInput').value || "-";
+</script>
 
-            let juzText = "-";
-            if (isReadingFinished && currentSurat) {
-                juzText = `Juz : ${currentAwal}-${currentAkhir} (${currentSurat})`;
-            } else if (document.querySelectorAll('.chk-materi:checked').length > 0 && !isReadingFinished) {
-                juzText = "(Belum Selesai Baca)";
-            }
-
-            const recapString = `${kelas} | ${nama} | Shalat Fardhu: ${wajib || '-'} | Shalat Sunnah: ${sunnah || '-'} | ${juzText} | Hafalan Juz 30: ${hafalan || '-'} | Kajian: ${kajian}`;
-
-            resultInfo.textContent = recapString;
-            resultInfo.style.display = 'block';
-        }
-
-        async function tampilkanAyat() {
-            const checked = Array.from(document.querySelectorAll('.chk-materi:checked'));
-            if (checked.length === 0) return;
-            const firstVal = checked[0].value;
-            const lastVal = checked[checked.length - 1].value;
-            const regex = /^(.+?)\s(\d+)(?:-(\d+))?$/;
-            const start = firstVal.match(regex);
-            const end = lastVal.match(regex);
-
-            if (start && end) {
-                currentSurat = start[1].trim();
-                const suratEnd = end[1].trim();
-                if (currentSurat !== suratEnd) {
-                    alert("Harap pilih materi dalam satu surat yang sama.");
-                    return;
-                }
-                currentAwal = parseInt(start[2]);
-                currentAkhir = parseInt(end[3] || end[2]);
-                currentSuratNumber = getSuratNumberByName(currentSurat);
-            }
-
-            formCard.classList.add('hidden');
-            ayatCard.classList.remove('hidden');
-            
-            document.getElementById('ayatTitle').textContent = `Bacaan ${currentSurat}`;
-            document.getElementById('ayatSubtitle').textContent = `Ayat ${currentAwal} sampai ${currentAkhir}`;
-            document.getElementById('loadingDisplay').classList.remove('hidden');
-            document.getElementById('ayatDisplay').innerHTML = '';
-            document.getElementById('ayatErrorMessage').style.display = 'none';
-
-            await fetchAyat();
-        }
-
-        function getSuratNumberByName(suratName) {
-            if (suratMapping[suratName]) return suratMapping[suratName];
-            const normalizedName = suratName.toLowerCase()
-                .replace(/['\s-]/g, '')
-                .replace(/aa/g, 'a').replace(/yy/g, 'y').replace(/ii/g, 'i').replace(/uu/g, 'u')
-                .replace(/86/g, '86').replace(/76/g, '76').replace(/56/g, '56').replace(/43/g, '43').replace(/46/g, '46');
-
-            for (const [name, number] of Object.entries(suratMapping)) {
-                const normalizedMapName = name.toLowerCase()
-                    .replace(/['\s-]/g, '')
-                    .replace(/aa/g, 'a').replace(/yy/g, 'y').replace(/ii/g, 'i').replace(/uu/g, 'u');
-                
-                if (normalizedName === normalizedMapName) return number;
-            }
-            return 1; 
-        }
-
-        async function fetchAyat() {
-            try {
-                for (let i = currentAwal; i <= currentAkhir; i++) {
-                    const [arRes, trRes] = await Promise.all([
-                        fetch(`https://api.alquran.cloud/v1/ayah/${currentSuratNumber}:${i}/editions/quran-uthmani`),
-                        fetch(`https://api.alquran.cloud/v1/ayah/${currentSuratNumber}:${i}/editions/id.indonesian`)
-                    ]);
-                    const arabicData = await arRes.json();
-                    const translationData = await trRes.json();
-                    
-                    if (arabicData.code === 200 && translationData.code === 200) {
-                        const div = document.createElement('div');
-                        div.className = 'ayat-item';
-                        div.innerHTML = `
-                            <div style="font-weight:bold; color:#2a9d8f; margin-bottom:5px;">Ayat ${i}</div>
-                            <div class="ayat-arabic">${arabicData.data[0].text}</div>
-                            <div class="ayat-translation">${translationData.data[0].text}</div>
-                        `;
-                        document.getElementById('ayatDisplay').appendChild(div);
-                    }
-                }
-                document.getElementById('loadingDisplay').classList.add('hidden');
-            } catch (error) {
-                document.getElementById('loadingDisplay').classList.add('hidden');
-                document.getElementById('ayatErrorMessage').style.display = 'block';
-                document.getElementById('ayatErrorMessage').textContent = "Gagal memuat ayat. Periksa koneksi.";
-            }
-        }
-
-        function selesaiBacaan() {
-            isReadingFinished = true;
-            kembaliKeForm();
-            updateRecap();
-            resultInfo.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function kembaliKeForm() {
-            ayatCard.classList.add('hidden');
-            formCard.classList.remove('hidden');
-        }
-
-        function updateFontSize(val) {
-            document.documentElement.style.setProperty('--arabic-font-size', val + 'px');
-            document.getElementById('fontSizeLabel').textContent = val + 'px';
-        }
-
-        // --- FUNGSI RESET FORM (BARU) ---
-        function resetForm() {
-            // 1. Reset Inputs Text
-            document.getElementById('kajianInput').value = "";
-            
-            // 2. Reset Dropdown
-            document.getElementById('kelasSiswa').value = "";
-            document.getElementById('namaSiswa').innerHTML = '<option value="">-- Pilih Nama --</option>';
-            
-            // 3. Reset Checkboxes (Semua Checkbox di halaman)
-            const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
-            allCheckboxes.forEach(cb => cb.checked = false);
-
-            // 4. Reset Pilihan Juz
-            document.getElementById('comboJuz').value = "";
-            document.getElementById('materiList').innerHTML = '<div class="empty-state" style="color:#999; padding: 40px 0;">Silakan pilih Juz terlebih dahulu</div>';
-            document.getElementById('btnTampilkanAyat').disabled = true;
-
-            // 5. Sembunyakan Kotak Hijau Recap
-            document.getElementById('resultInfo').style.display = 'none';
-
-            // 6. Reset Variable Global
-            currentSurat = "";
-            currentAwal = 0;
-            currentAkhir = 0;
-            isReadingFinished = false;
-        }
-
-        // --- FUNGSI SIMPAN KE DATABASE DENGAN PESAN & RESET ---
-        async function simpanKeDatabase() {
-            const btn = document.getElementById('btnSimpanDatabase');
-            const originalText = btn.innerHTML;
-            
-            const nama = document.getElementById('namaSiswa').value;
-            const kelas = document.getElementById('kelasSiswa').value;
-            const kajian = document.getElementById('kajianInput').value;
-            
-            if (!nama || !kelas) {
-                alert("Mohon lengkapi Nama dan Kelas terlebih dahulu.");
-                return;
-            }
-
-            const shalatFardhu = Array.from(document.querySelectorAll('input[name="chkWajib"]:checked')).map(c => c.value).join(', ');
-            const shalatSunah = Array.from(document.querySelectorAll('input[name="chkSunnah"]:checked')).map(c => c.value).join(', ');
-            const hafalan = Array.from(document.querySelectorAll('input[name="chkHafalan"]:checked')).map(c => c.value).join(', ');
-            
-            let bacaQuran = "-";
-            if (isReadingFinished && currentSurat) {
-                bacaQuran = `Juz: ${currentAwal}-${currentAkhir} (${currentSurat})`;
-            } else {
-                bacaQuran = "(Belum ada bacaan)";
-            }
-
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
-            btn.disabled = true;
-
-            const payload = {
-                kelas: kelas,
-                nama: nama,
-                shalatFardhu: shalatFardhu || "-",
-                shalatSunah: shalatSunah || "-",
-                bacaQuran: bacaQuran,
-                hafalan: hafalan || "-",
-                kajian: kajian || "-"
-            };
-
-            try {
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(payload)
-                });
-
-                const result = await response.json();
-                
-                if (result.result === 'success') {
-                    // PESAN KHUSUS SESUAI REQUEST
-                    alert("Terima kasih telah melakukan presensi kegiatan ramadhan, semoga menjadi amal kalian");
-                    
-                    // Jalankan Reset Form setelah berhasil simpan
-                    resetForm();
-                } else {
-                    alert("Gagal menyimpan: " + result.message);
-                }
-
-            } catch (error) {
-                console.error(error);
-                alert("Terjadi kesalahan koneksi ke database.");
-            } finally {
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            }
-        }
-
-        window.onload = init;
-    </script>
 </body>
 </html>
