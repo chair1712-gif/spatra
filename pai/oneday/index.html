@@ -399,7 +399,7 @@
 
             let juzText = "-";
             if (isReadingFinished && currentSurat) {
-                juzText = `Juz : ${currentAwal}-${currentAkhir} (${currentSurat})`;
+                juzText = `Juz ${comboJuz.value}: ${currentAwal}-${currentAkhir} (${currentSurat})`;
             } else if (document.querySelectorAll('.chk-materi:checked').length > 0 && !isReadingFinished) {
                 juzText = "(Belum Selesai Baca)";
             }
