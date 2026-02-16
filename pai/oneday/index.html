@@ -106,7 +106,7 @@
         <!-- FORM CARD -->
         <div class="card form-card" id="formCard">
             <header>
-                <h1><i class="fas fa-book-quran"></i> Laporan Ramadhan Siswa</h1>
+                <h1><i class="fas fa-book-quran"></i> Laporan Ramadhan</h1>
                 <p class="subtitle">SMA Negeri 1 Wiradesa Pekalongan</p>
             </header>
 
@@ -216,7 +216,7 @@
         </div>
 
         <footer>
-            <p>Sistem Laporan Santri &copy; 2024</p>
+            <p>Sistem Laporan pesantren &copy; 2026 by Chairul Umar</p>
         </footer>
     </div>
 
@@ -399,7 +399,7 @@
 
             let juzText = "-";
             if (isReadingFinished && currentSurat) {
-                juzText = `Juz ${comboJuz.value}: ${currentAwal}-${currentAkhir} (${currentSurat})`;
+                juzText = `${comboJuz.value}: ${currentAwal}-${currentAkhir} (${currentSurat})`;
             } else if (document.querySelectorAll('.chk-materi:checked').length > 0 && !isReadingFinished) {
                 juzText = "(Belum Selesai Baca)";
             }
