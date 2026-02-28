@@ -1,4 +1,4 @@
-   <!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -461,7 +461,7 @@
             const sortedParts = Array.from(selectedParts).sort((a, b) => a - b);
             const partsString = sortedParts.join(',');
 
-            outputDiv.textContent = `${kelas} | ${nama} | Juz ${juzNum} | Bagian ${partsString}`;
+            outputDiv.textContent = `${kelas} | ${nama} | Juz ${juzNum} Bagian ${partsString}`;
         }
 
         // ================== FUNGSI TAMPILKAN AYAT ==================
@@ -580,30 +580,12 @@
                 return;
             }
 
-            // Dapatkan rentang ayat dari bagian pertama dan terakhir
-            const sortedParts = Array.from(selectedParts).sort((a,b)=>a-b);
-            const firstIdx = sortedParts[0];
-            const lastIdx = sortedParts[sortedParts.length-1];
-            const firstTooltip = document.getElementById(`detail-${firstIdx}`).textContent;
-            const lastTooltip = document.getElementById(`detail-${lastIdx}`).textContent;
-
-            const firstParsed = parseTooltip(firstTooltip);
-            const lastParsed = parseTooltip(lastTooltip);
-
-            if (!firstParsed || !lastParsed) {
-                alert("Tidak dapat membaca format bagian bacaan.");
-                return;
-            }
-
-            if (firstParsed.surah !== lastParsed.surah) {
-                alert("Bagian yang dipilih harus berasal dari surah yang sama.");
-                return;
-            }
-
-            const surahName = firstParsed.surah;
-            const startAyah = firstParsed.start;
-            const endAyah = lastParsed.end;
- const bacaQuran = `Juz: ${startAyah}-${endAyah} (${surahName})`;
+            // Format sesuai dengan Informasi Terpilih
+            const juzNum = juzVal.replace("JUZ ", "");
+            const sortedParts = Array.from(selectedParts).sort((a, b) => a - b);
+            const partsString = sortedParts.join(',');
+            
+            const bacaQuran = `Juz ${juzNum} Bagian ${partsString}`;
 
             const payload = {
                 kelas: kelas,
